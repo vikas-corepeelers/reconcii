@@ -1,0 +1,129 @@
+/* @import "./Pages/Styles/CardComponent.css"; */
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Cabin", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+p {
+  font-family: "Cabin", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+.body-background {
+  background-color: #f9f9f9;
+  min-height: 100vh;
+}
+
+.theme-background {
+  background-color: #1c1577;
+  color: #ffffff;
+}
+
+.content-area {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-area {
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  padding: 50px 25px;
+  margin: 15px;
+}
+
+.primary-button {
+  background-color: #1c1577 !important;
+}
+
+.primary-button:hover {
+  background-color: #1c1577 !important;
+}
+
+.primary-tab {
+  background-color: #1c1577 !important;
+}
+
+.link-text {
+  color: #1c1577 !important;
+}
+
+.text-box-error-text {
+  color: #ff0000;
+  font-size: 10px;
+}
+
+.admin-login-thumbnail {
+  height: 600px;
+}
+
+.login-page {
+  background-image: url("admin.jpg");
+  background-position: center;
+  /* Center the image */
+  background-repeat: no-repeat;
+  /* Do not repeat the image */
+  background-size: cover;
+}
+
+.navLink {
+  align-items: center;
+}
+.navLink:hover {
+  background-color: var(--text-secondary);
+  color: var(--light-color);
+}
+.navLinkSelected {
+  background-color: var(--text-secondary);
+  color: var(--light-color);
+}
+
+.box {
+  color: var(--text-secondary);
+  position: relative;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  border-radius: .375rem;
+  border-width: 1px;
+  border-color: 'var(--default-borderColor)';
+  background-color: rgb(255 255 255 / 1);
+  font-size: .875rem;
+  box-shadow: var(--default-boxShadow);
+}
+
+.box-header {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .25rem;
+  border-top-left-radius: .375rem;
+  border-top-right-radius: .375rem;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  padding-top: 1rem;
+  /* font-weight: 500; */
+}
+
+.box-title {
+  position: relative;
+  margin-inline-end: auto;
+  font-size: 14px;
+  font-weight: 700;
+  /* text-transform: uppercase; */
+  color: var(--text-secondary);
+}
+
+.box-body {
+  padding: 1.25rem;
+  /* color: rgb(var(--default-text-color)); */
+}
+
+.h4 {
+  font-size: 1.5rem;
+}

@@ -1,0 +1,10 @@
+:root {
+    --light-color: rgb(237, 240, 249, 1);
+    --bg-color: rgb(237, 240, 249, 1);
+    --text-primary: rgb(124, 135, 159, 1);
+    --text-secondary: rgb(9, 26, 75, 1);
+    --button-bg-color: rgb(13, 110, 253, 1);
+    --button-bg-hidden-color: rgb(13, 110, 253, 0.6);
+    --default-boxShadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --danger: rgb(187,33,36, 1);
+}
