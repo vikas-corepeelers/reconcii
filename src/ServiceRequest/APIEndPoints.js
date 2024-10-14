@@ -1,7 +1,3 @@
-
-// console.log("enviroment data coming", import.meta.env);
-// console.log("enviroment data coming", import.meta.env);
-
 const setEnv = () => {
   if (import.meta.env.VITE_REACT_APP_ENV == "prod") {
     return import.meta.env.VITE_REACT_APP_API_URL;
@@ -35,6 +31,7 @@ const apiEndpoints = {
   RESET_PASSWORD: `${sso}${USER}/reset/password`,
   CHANGE_PASSWORD: `${sso}${USER}/change/password`,
   PROFILE: `${sso}${USER}/profile`,
+  FORGOT_PASSWORD: `${sso}${USER}/forgot/password`,
 
   //!USER --- DO NOT TOUCH
   USERS_LIST: `${sso}${USER}/list`,

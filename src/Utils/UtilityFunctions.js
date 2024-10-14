@@ -1,20 +1,18 @@
-import { format } from 'date-fns';
-import * as XLSX from 'xlsx';
+import { format } from "date-fns";
+import * as XLSX from "xlsx";
 
 const validateEmail = (mail) => {
-    return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-        mail
-    );
-    
-
+  return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+    mail
+  );
 };
 const validateMobile = (mobile) => {
-    return /^(\+\d{1,3}[- ]?)?\d{10}$/.test(mobile);
-}
+  return /^(\+\d{1,3}[- ]?)?\d{10}$/.test(mobile);
+};
 
 const validateAge = (age) => {
   return /^[1-9]?[0-9]{1}$|^100$/.test(age);
-}
+};
 
 function isNumeric(value) {
   const regex = /^[0-9]+$/;
@@ -26,61 +24,66 @@ function isValidPassword(password) {
   return regex.test(password);
 }
 
-const getFirstCharacter = (name) =>{
-    if(name){
-        return name.charAt(0)?.toUpperCase()
-    }
-    return ''
-}
+const getFirstCharacter = (name) => {
+  if (name) {
+    return name.charAt(0)?.toUpperCase();
+  }
+  return "";
+};
 
 const readExcelFile = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      
-      reader.onload = (event) => {
-        const binaryStr = event.target.result;
-        const workbook = XLSX.read(binaryStr, { type: 'binary' });
-        
-        // Assuming the first sheet is the one we want to read
-        const sheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[sheetName];
-        
-        // Convert the sheet to JSON
-        const sheetData = XLSX.utils.sheet_to_json(worksheet);
-        resolve(sheetData);
-      };
-  
-      reader.onerror = (error) => {
-        reject(error);
-      };
-  
-      reader.readAsBinaryString(file);
-    });
-  };
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
 
-  const userTypeFromURL = (url) =>{
-    if(url?.includes('manager')){
-      return 'manager'
-    }else if(url?.includes('agent')){
-      return 'agent'
-    }
-    return 'admin'
+    reader.onload = (event) => {
+      const binaryStr = event.target.result;
+      const workbook = XLSX.read(binaryStr, { type: "binary" });
+
+      // Assuming the first sheet is the one we want to read
+      const sheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[sheetName];
+
+      // Convert the sheet to JSON
+      const sheetData = XLSX.utils.sheet_to_json(worksheet);
+      resolve(sheetData);
+    };
+
+    reader.onerror = (error) => {
+      reject(error);
+    };
+
+    reader.readAsBinaryString(file);
+  });
+};
+
+const userTypeFromURL = (url) => {
+  if (url?.includes("manager")) {
+    return "manager";
+  } else if (url?.includes("agent")) {
+    return "agent";
   }
+  return "admin";
+};
 
+const dateFormatChangerView = (dat) => {
+  return format(dat, "yyyy-MM-dd");
+};
 
+const generateDeviceCode = () => {
+  // Generate a random string or use a library to create a unique device code
+  const randomCode = Math.random().toString(36).substring(1, 10);
+  return randomCode;
+};
 
-  const dateFormatChangerView = (dat) => {
-    return format(dat, "yyyy-MM-dd");
-  };
- 
 export {
-    validateEmail,
-    validateMobile,
-    getFirstCharacter,
-    readExcelFile,
-    userTypeFromURL,
-    validateAge,
-    isNumeric,
-    isValidPassword,
-    dateFormatChangerView,
-}
+  validateEmail,
+  validateMobile,
+  getFirstCharacter,
+  readExcelFile,
+  userTypeFromURL,
+  validateAge,
+  isNumeric,
+  isValidPassword,
+  dateFormatChangerView,
+  generateDeviceCode
+};

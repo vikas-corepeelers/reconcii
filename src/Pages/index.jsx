@@ -10,9 +10,8 @@ import Uploads from "./Pages/Uploads";
 import { ToastContainer } from "react-toastify";
 import Settings from "./Pages/Settings";
 import Reports from "./Pages/Reports";
-// import AdvertisementList from "./Pages/Advertisements/List";
-// import AdvertisementAddEdit from "./Pages/Advertisements/AddEdit";
-// import TopPerformingAdList from "./Pages/Advertisements/TopPerforming";
+import ChangePassword from "./Pages/Profile/ChangePassword";
+import UpdateProfile from "./Pages/Profile/UpdateProfile";
 
 function AdminNavigator() {
   function WithFooterOnly(children) {
@@ -39,11 +38,11 @@ function AdminNavigator() {
           pauseOnHover
           theme="light"
         />
-        <div className="bg-gray-100 min-h-screen flex">
+        <div className="min-h-screen flex">
           <Sidebar />
           <div className="flex flex-col flex-grow w-96">
             <Navbar />
-            <main className="p-6 flex-grow bg-Background">{children}</main>
+            <main className="p-6 flex-grow body-background">{children}</main>
           </div>
         </div>
         {/* <Footer /> */}
@@ -52,19 +51,18 @@ function AdminNavigator() {
   }
 
   return (
-    <Routes>
-      <Route path="/" exact element={WithFooterOnly(<Login />)} />
-      <Route path="/dashboard" exact element={WithSidebar(<Dashboard />, 'dashboard')} />
-      <Route path="/reconciliations" exact element={WithSidebar(<Reconciliations />, 'reconciliations')} />
-      <Route path="/definelogic" exact element={WithSidebar(<DefineLogic />, 'definelogic')} />
-      <Route path="/uploads" exact element={WithSidebar(<Uploads />, 'uploads')} />
-      <Route path="/settings" exact element={WithSidebar(<Settings />, 'settings')} />
-      <Route path="/reports" exact element={WithSidebar(<Reports />, 'reports')} />
-      {/* <Route path="/advertisement/list" exact element={WithSidebar(<AdvertisementList />)} />
-      <Route path="/advertisement/add" exact element={WithSidebar(<AdvertisementAddEdit />)} />
-      <Route path="/advertisement/edit/:id" exact element={WithSidebar(<AdvertisementAddEdit />)} /> */}
-      {/* <Route path="/advertisement/performance/list" exact element={WithSidebar(<TopPerformingAdList />)} /> */}
-    </Routes>
+    <div className="after-login-view">
+      <Routes>
+        <Route path="/dashboard" exact element={WithSidebar(<Dashboard />, 'dashboard')} />
+        <Route path="/reconciliations" exact element={WithSidebar(<Reconciliations />, 'reconciliations')} />
+        <Route path="/definelogic" exact element={WithSidebar(<DefineLogic />, 'definelogic')} />
+        <Route path="/uploads" exact element={WithSidebar(<Uploads />, 'uploads')} />
+        <Route path="/settings" exact element={WithSidebar(<Settings />, 'settings')} />
+        <Route path="/reports" exact element={WithSidebar(<Reports />, 'reports')} />
+        <Route path="/change-password" exact element={WithSidebar(<ChangePassword />, 'changepassword')} />
+        <Route path="/update-profile" exact element={WithSidebar(<UpdateProfile />, 'update-profile')} />
+      </Routes>
+    </div>
   );
 }
 

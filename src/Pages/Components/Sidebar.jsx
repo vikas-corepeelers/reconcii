@@ -1,30 +1,45 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import ImgConst from '../../Utils/ImgConstants';
+import ImgConst from "../../Utils/ImgConstants";
 
 const MANAGER_SIDEBAR = [
-  { id: 'dashboard', label: "Dashboard", route: "/dashboard", icon: "dashboard" },
-  { id: 'reconciliations', label: "Reconciliations", route: "/Reconciliations", icon: "currency_exchange" },
-  { id: 'vouchers', label: "Vouchers", route: "/vouchers", icon: "confirmation_number" },
-  { id: 'reports', label: "Reports", route: "/reports", icon: "report" },
-  { id: 'uploads', label: "Uploads", route: "/uploads", icon: "upload_file" },
-  { id: 'settings', label: "Settings", route: "/settings", icon: "settings" },
-  { id: 'definelogic', label: "Define Logic", route: "/definelogic", icon: "input" },
-  // { id: 'my_ads', label: "My Ads", route: "/advertisers/advertisement/list", icon: "receipt_long" },
-  // { id: 'ads_performance', label: "Ads Performance", route: "/advertisers/advertisement/performance/list", icon: "ads_click" },
-  // { id: 'add_new_ad', label: "Add New Add", route: "/advertisers/advertisement/add", icon: "featured_video" },
+  {
+    id: "dashboard",
+    label: "Dashboard",
+    route: "/dashboard",
+    icon: "dashboard",
+  },
+  {
+    id: "reconciliations",
+    label: "Reconciliations",
+    route: "/Reconciliations",
+    icon: "currency_exchange",
+  },
+  {
+    id: "vouchers",
+    label: "Vouchers",
+    route: "/vouchers",
+    icon: "confirmation_number",
+  },
+  { id: "reports", label: "Reports", route: "/reports", icon: "report" },
+  { id: "uploads", label: "Uploads", route: "/uploads", icon: "upload_file" },
+  { id: "settings", label: "Settings", route: "/settings", icon: "settings" },
+  {
+    id: "definelogic",
+    label: "Define Logic",
+    route: "/definelogic",
+    icon: "input",
+  },
 ];
 
 const Sidebar = () => {
-
   const menuArray = MANAGER_SIDEBAR;
 
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const parm = useLocation();
   let path = parm.pathname;
-
 
   useEffect(() => {
     if (path) {
@@ -51,11 +66,8 @@ const Sidebar = () => {
         setSelectedIndex(4);
         break;
       case "/settings":
-          setSelectedIndex(5);
-          break;
-      // case "/reconciliation/allrequest": // as of now we are disabling /uploadConfig
-      //   setSelectedIndex(7);
-      //   break;
+        setSelectedIndex(5);
+        break;
       case "/definelogic":
         setSelectedIndex(6);
         break;
@@ -64,18 +76,24 @@ const Sidebar = () => {
         setSelectedIndex(0);
         break;
     }
-  };  
+  };
 
   return (
-    <aside className="w-64 bg-white border-r border-Background flex flex-col">
-        <div className="flex items-center justify-center my-3">
-        <img src={ImgConst.ReconciiLogo} alt="Logo" className="h-14"/>
-        </div>
-      <nav className="p-4 border-t border-Background">
-        <ul className="space-y-4">
+    <aside className="w-64 flex flex-col">
+      <div className="flex items-center justify-center my-3">
+        <img src={ImgConst.ReconciiLogo} alt="Logo" className="h-14" />
+      </div>
+      <nav>
+        <ul>
           {menuArray?.map((item, i) => {
             return (
-              <MenuItem key={item?.id} menuArray={item} selectedIndex={selectedIndex} onSelect={()=>setSelectedIndex(index)} index={i}/>
+              <MenuItem
+                key={item?.id}
+                menuArray={item}
+                selectedIndex={selectedIndex}
+                onSelect={() => setSelectedIndex(index)}
+                index={i}
+              />
             );
           })}
         </ul>
@@ -87,19 +105,35 @@ const Sidebar = () => {
 export default Sidebar;
 
 const MenuItem = ({ menuArray, selectedIndex, setSelectedIndex, index }) => {
-
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  
+
+  const onClick = (e) =>{
+    e.preventDefault();
+    if(!menuArray?.children){
+      navigate(menuArray?.route)
+    }
+    setOpen(!open);
+    setSelectedIndex(index);
+  }
+
+
   return (
     <li>
       <NavLink
         disabled={menuArray?.children}
-        onClick={() => {setOpen(!open); setSelectedIndex(index)}}
-        to={menuArray?.children ? undefined : menuArray?.route}
+        onClick={onClick}
+        to={"/"}
         exact
-        className={`flex p-2 rounded-md ${selectedIndex === index ? 'navLinkSelected' : 'navLink'}`}
+        className={`flex p-3 ${
+          selectedIndex === index ? "navLinkSelected" : "navLink"
+        }`}
       >
-        {menuArray?.icon && <span className="material-icons-outlined mr-2">{menuArray?.icon}</span> }
+        {menuArray?.icon && (
+          <span className="material-icons-outlined mr-2">
+            {menuArray?.icon}
+          </span>
+        )}
         <div className="flex-1">{menuArray?.label}</div>
         {menuArray?.children ? (
           <div className="flex justify-center items-end">
@@ -111,11 +145,9 @@ const MenuItem = ({ menuArray, selectedIndex, setSelectedIndex, index }) => {
       </NavLink>
       {menuArray?.children && open ? (
         <ul className="ml-8">
-            {menuArray?.children?.map((item)=>{
-                return(
-                    <MenuItem key={item?.id} menuArray={item} />
-                )
-            })}
+          {menuArray?.children?.map((item) => {
+            return <MenuItem key={item?.id} menuArray={item} />;
+          })}
         </ul>
       ) : null}
     </li>

@@ -5,7 +5,8 @@ import useAuth from "./useAuth";
 import Alert from "../../components/Alert";
 import { useNavigate } from "react-router-dom";
 import AuthLogo from "./AuthLogo";
-const Login = () => {
+
+const ResetPassword = () => {
   const navigate = useNavigate();
   const { loginParams, loginErrors, handleLoginParamsChanges, doLogin } =
     useAuth();
@@ -14,7 +15,7 @@ const Login = () => {
     <div>
       <div className="login-container">
         <div className="login-box">
-          <p className="text-xl text-black mb-2">WELCOME BACK</p>
+          <p className="text-xl text-black mb-2">RESET PASSWORD</p>
           <p className="text-sm text-black mb-4">
             Please log in to your account
           </p>
@@ -22,16 +23,19 @@ const Login = () => {
             <Alert type="error" message={loginErrors?.status} />
           )}
           <CustomInput
-            type="email"
-            placeholder="Username"
-            value={loginParams?.username}
-            onChange={(e) => handleLoginParamsChanges("username", e.target.value)}
-            error={loginErrors?.username}
+            type="password"
+            name={"password"}
+            placeholder="New Password"
+            value={loginParams?.password}
+            onChange={(e) =>
+              handleLoginParamsChanges("password", e.target.value)
+            }
+            error={loginErrors?.password}
           />
           <CustomInput
             type="password"
             name={"password"}
-            placeholder="Password"
+            placeholder="Confirm Password"
             value={loginParams?.password}
             onChange={(e) =>
               handleLoginParamsChanges("password", e.target.value)
@@ -39,17 +43,17 @@ const Login = () => {
             error={loginErrors?.password}
           />
           <button type="submit" className="login-button mb-2" onClick={doLogin}>
-            Login
+            UPDATE
           </button>
           <a
             href="/"
             onClick={(e) => {
               e.preventDefault();
-              navigate("/forgot-password");
+              navigate("/");
             }}
             className="forgot-password"
           >
-            Forgot your password?
+            Login
           </a>
         </div>
       </div>
@@ -58,4 +62,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ResetPassword;

@@ -192,14 +192,6 @@ export default function Settings() {
                 If you encounter any issues during this process, contact your
                 company’s IT support or relevant department for assistance.
               </h1>
-              <h1 className="text-sm mt-4">
-                Make sure to use accurate and up-to-date information when adding
-                your email address and mobile number.
-              </h1>
-              <h1 className="text-sm mt-4">
-                If you encounter any issues during this process, contact your
-                company’s IT support or relevant department for assistance.
-              </h1>
             </div>
           </div>
         }

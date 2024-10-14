@@ -1,29 +1,58 @@
-import React, { useState } from 'react';
-import UserDropdown from './UserDropdown'; // Import the UserDropdown component
-import { getFirstCharacter } from '../../Utils/UtilityFunctions';
+import React, { useState, useEffect, useRef } from "react";
+import UserDropdown from "./UserDropdown"; // Import the UserDropdown component
+import { getFirstCharacter } from "../../Utils/UtilityFunctions";
+import CustomToggle from "./CustomToggle";
+import { useSelector } from "react-redux";
 const Navbar = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State for the dropdown
+    const dropdownRef = useRef(null);  
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State for the dropdown
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+  let userDetailedProfile = useSelector((state) => state.CommonService.userDetailedProfile);
+  useEffect(() => {
+    // Set the theme on initial load
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
 
-    const openModal = () => setIsModalOpen(true);
-    const closeModal = () => setIsModalOpen(false);
+  useEffect(() => {
+    // Function to handle clicks outside the dropdown
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false); // Close the dropdown if clicked outside
+      }
+    };
 
-    const toggleDropdown = () => setIsDropdownOpen(prevState => !prevState);
+    // Add event listener to detect clicks
+    document.addEventListener('mousedown', handleClickOutside);
 
-    return (
-        <>
-            <header className="bg-white border-b border-Background flex justify-between items-center px-8 py-4">
-                <div className="flex items-center">
-                </div>
-                <div className="relative">
-                    <button onClick={toggleDropdown} className="text-gray-800 rounded-full w-10 h-10 flex items-center justify-center bg-gray-300 font-bold text-lg">
-                        {getFirstCharacter(localStorage.getItem('managerName'))}
-                    </button>
-                    {isDropdownOpen && <UserDropdown />}
-                </div>
-            </header>
-        </>
-    );
-}
+    // Cleanup the event listener on component unmount
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [dropdownRef]);
+
+  const toggleDropdown = () => setIsDropdownOpen((prevState) => !prevState);
+
+  return (
+    <>
+      <header className="flex items-center px-8 py-4 justify-end">
+        <CustomToggle
+          label={"Dark Theme"}
+          checked={theme === "dark"}
+          setChecked={(val) => setTheme(val ? "dark" : "light")}
+        />
+        <div className="relative ml-10">
+          <button
+            onClick={toggleDropdown}
+            className="text-gray-800 rounded-full w-10 h-10 flex items-center justify-center bg-gray-300 font-bold text-lg"
+          >
+            {getFirstCharacter(userDetailedProfile?.name)}
+          </button>
+          {isDropdownOpen && <div ref={dropdownRef}><UserDropdown /></div>}
+        </div>
+      </header>
+    </>
+  );
+};
 
 export default Navbar;
