@@ -4,14 +4,16 @@ import { getFirstCharacter } from "../../Utils/UtilityFunctions";
 import CustomToggle from "./CustomToggle";
 import { useSelector } from "react-redux";
 const Navbar = () => {
-    const dropdownRef = useRef(null);  
+  const dropdownRef = useRef(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State for the dropdown
-  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
-  let userDetailedProfile = useSelector((state) => state.CommonService.userDetailedProfile);
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+  let userDetailedProfile = useSelector(
+    (state) => state.CommonService.userDetailedProfile
+  );
   useEffect(() => {
     // Set the theme on initial load
     document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem('theme', theme);
+    localStorage.setItem("theme", theme);
   }, [theme]);
 
   useEffect(() => {
@@ -23,11 +25,11 @@ const Navbar = () => {
     };
 
     // Add event listener to detect clicks
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
 
     // Cleanup the event listener on component unmount
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [dropdownRef]);
 
@@ -35,12 +37,15 @@ const Navbar = () => {
 
   return (
     <>
-      <header className="flex items-center px-8 py-4 justify-end">
-        <CustomToggle
+      <header
+        className="flex items-center px-8 py-4 justify-end"
+        style={{ backgroundColor: "#f5f5f5" }}
+      >
+        {/* <CustomToggle
           label={"Dark Theme"}
           checked={theme === "dark"}
           setChecked={(val) => setTheme(val ? "dark" : "light")}
-        />
+        /> */}
         <div className="relative ml-10">
           <button
             onClick={toggleDropdown}
@@ -48,7 +53,11 @@ const Navbar = () => {
           >
             {getFirstCharacter(userDetailedProfile?.name)}
           </button>
-          {isDropdownOpen && <div ref={dropdownRef}><UserDropdown /></div>}
+          {isDropdownOpen && (
+            <div ref={dropdownRef}>
+              <UserDropdown />
+            </div>
+          )}
         </div>
       </header>
     </>

@@ -3,7 +3,7 @@ export async function requestCallPost(apiName, data, additionalHeaders = {}) {
   let headers = {};
   if (localStorage.getItem("ReconciiToken")) {
     headers = {
-      "Authorization": "Bearer "+localStorage.getItem("ReconciiToken"),
+      Authorization: "Bearer " + localStorage.getItem("ReconciiToken"),
     };
   }
   headers = { ...headers, ...additionalHeaders };
@@ -30,8 +30,8 @@ export async function requestCallPost(apiName, data, additionalHeaders = {}) {
 export async function requestCallPut(apiName, data) {
   return await AxiosInstance.put(apiName, data, {
     headers: {
-      "Authorization": "Bearer "+localStorage.getItem("ReconciiToken"),
-    }
+      Authorization: "Bearer " + localStorage.getItem("ReconciiToken"),
+    },
   })
     .then((response) => {
       return {
@@ -50,11 +50,16 @@ export async function requestCallPut(apiName, data) {
 }
 
 // API request call, get method
-export async function requestCallGet(apiName, body) {
+export async function requestCallGet(apiName, body, additionalHeaders = {}) {
+  let headers = {};
+  if (localStorage.getItem("ReconciiToken")) {
+    headers = {
+      Authorization: "Bearer " + localStorage.getItem("ReconciiToken"),
+    };
+  }
+  headers = { ...headers, ...additionalHeaders };
   return await AxiosInstance.get(apiName, {
-    headers: {
-      "Authorization": "Bearer "+localStorage.getItem("ReconciiToken"),
-    },
+    headers: headers,
     params: body,
   })
     .then((response) => {
@@ -62,6 +67,7 @@ export async function requestCallGet(apiName, body) {
         status: true,
         message: "",
         data: response.data,
+        response: response,
       };
     })
     .catch((err) => {
@@ -76,7 +82,7 @@ export async function requestCallGet(apiName, body) {
 export async function requestCallDelete(apiName, body) {
   return await AxiosInstance.delete(apiName, {
     headers: {
-      "Authorization": "Bearer "+localStorage.getItem("ReconciiToken"),
+      Authorization: "Bearer " + localStorage.getItem("ReconciiToken"),
     },
     params: body,
   })

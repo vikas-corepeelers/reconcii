@@ -1,4 +1,40 @@
+.box-with-border {
+  border-bottom: 3px solid #205ca9;
+}
 
+.icon-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  width: 100px;
+  border-radius: 50px;
+  background-color: #ffffff;
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+}
+
+.icon-box img {
+  height: 70px;
+  width: 70px;
+}
+
+.card-label {
+  color: #000000;
+  font-size: 16px;
+}
+
+.card-number {
+  color: #000000;
+  font-size: 30px;
+}
+
+.lac-label {
+  color: #000000;
+  font-size: 14px;
+  display: inline;
+}
+
+/* 
 .progress.progress-xs,
 .progress-stacked.progress-xs {
     height: .3125rem;
@@ -32,7 +68,6 @@
 }
 
 .bi-cart-check::before {
-    /* content: "\1F6D2"; */
     content: "\F23A";
     }
     
@@ -76,4 +111,4 @@
         vertical-align: -.125em;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
-        }
+        } */

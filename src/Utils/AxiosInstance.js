@@ -1,23 +1,33 @@
-import axios from 'axios';
-import { baseURL } from '../ServiceRequest/APIEndPoints';
-const instance =  axios.create({
+import axios from "axios";
+import { baseURL, ssoBaseURL, sso } from "../ServiceRequest/APIEndPoints";
+const instance = axios.create({
   baseURL: baseURL,
-  responseType: 'json',
+  responseType: "json",
   timeout: 60000,
   headers: {
     langId: 1,
-    Accept: 'application/json',
+    Accept: "application/json",
   },
 });
 
-export const handleError = ({ message, data, status })=>{
-  return Promise.reject({message,data,status});
-}
+export const handleError = ({ message, data, status }) => {
+  return Promise.reject({ message, data, status });
+};
+
+// Intercept request to set dynamic baseURL
+instance.interceptors.request.use((config) => {
+  // If a specific baseURL is passed, use it; otherwise, default to the instance's baseURL
+  if (config?.url?.includes(sso)) {
+    config.baseURL = ssoBaseURL;
+  }
+  return config;
+});
+
 instance.interceptors.response.use(
   (response) => response,
-  ({message, response: {data, status}}) => {
-    return handleError({message, data, status});
-  },
+  ({ message, response: { data, status } }) => {
+    return handleError({ message, data, status });
+  }
 );
 
 export default instance;

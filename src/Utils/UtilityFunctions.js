@@ -75,6 +75,23 @@ const generateDeviceCode = () => {
   return randomCode;
 };
 
+function formatNumberToLakhsAndCrores(number) {
+  const absNumber = Math.abs(number);
+
+  if (isNaN(number) || number === undefined) {
+    return number; // Return original value if it's not a valid number
+  }
+
+  const lakhs = absNumber / 1e5;
+  return `${formatToFixed(lakhs)}`;
+}
+
+function formatToFixed(value) {
+  // Round to 1 decimal place and remove trailing zeros
+  const roundedValue = Number(value.toFixed(2));
+  return roundedValue.toString();
+}
+
 export {
   validateEmail,
   validateMobile,
@@ -85,5 +102,6 @@ export {
   isNumeric,
   isValidPassword,
   dateFormatChangerView,
-  generateDeviceCode
+  generateDeviceCode,
+  formatNumberToLakhsAndCrores,
 };

@@ -10,21 +10,32 @@ const MANAGER_SIDEBAR = [
     route: "/dashboard",
     icon: "dashboard",
   },
+  // {
+  //   id: "detailed_dashboard",
+  //   label: "Detailed Dashboard",
+  //   route: "/detailed_dashboard",
+  //   icon: "dashboard",
+  // },
   {
     id: "reconciliations",
     label: "Reconciliations",
-    route: "/Reconciliations",
+    route: "/reconciliations",
     icon: "currency_exchange",
   },
-  {
-    id: "vouchers",
-    label: "Vouchers",
-    route: "/vouchers",
-    icon: "confirmation_number",
-  },
+  // {
+  //   id: "vouchers",
+  //   label: "Vouchers",
+  //   route: "/vouchers",
+  //   icon: "confirmation_number",
+  // },
   { id: "reports", label: "Reports", route: "/reports", icon: "report" },
   { id: "uploads", label: "Uploads", route: "/uploads", icon: "upload_file" },
-  { id: "settings", label: "Settings", route: "/settings", icon: "settings" },
+  {
+    id: "update-profile",
+    label: "Settings",
+    route: "/update-profile",
+    icon: "settings",
+  },
   {
     id: "definelogic",
     label: "Define Logic",
@@ -53,37 +64,42 @@ const Sidebar = () => {
       case "/dashboard":
         setSelectedIndex(0);
         break;
-      case "/Reconciliations":
+      // case "/detailed_dashboard":
+      //   setSelectedIndex(1);
+      //   break;
+      case "/reconciliations":
         setSelectedIndex(1);
         break;
-      case "/voucher":
+      // case "/voucher":
+      //   setSelectedIndex(2);
+      //   break;
+      case "/reports":
         setSelectedIndex(2);
         break;
-      case "/reports":
+      case "/uploads":
         setSelectedIndex(3);
         break;
-      case "/uploads":
+      case "/update-profile":
         setSelectedIndex(4);
         break;
-      case "/settings":
+      case "/definelogic":
         setSelectedIndex(5);
         break;
-      case "/definelogic":
-        setSelectedIndex(6);
-        break;
-
       default:
-        setSelectedIndex(0);
+        setSelectedIndex(50);
         break;
     }
   };
 
   return (
     <aside className="w-64 flex flex-col">
-      <div className="flex items-center justify-center my-3">
+      <div
+        className="flex items-center justify-center py-3"
+        style={{ backgroundColor: "#f5f5f5" }}
+      >
         <img src={ImgConst.ReconciiLogo} alt="Logo" className="h-14" />
       </div>
-      <nav>
+      <nav style={{ color: "#ffffff" }}>
         <ul>
           {menuArray?.map((item, i) => {
             return (
@@ -108,15 +124,14 @@ const MenuItem = ({ menuArray, selectedIndex, setSelectedIndex, index }) => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
-  const onClick = (e) =>{
+  const onClick = (e) => {
     e.preventDefault();
-    if(!menuArray?.children){
-      navigate(menuArray?.route)
+    if (!menuArray?.children) {
+      navigate(menuArray?.route);
     }
     setOpen(!open);
     setSelectedIndex(index);
-  }
-
+  };
 
   return (
     <li>

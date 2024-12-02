@@ -8,15 +8,16 @@ const setEnv = () => {
   }
 };
 
-let env = setEnv(); 
+let env = setEnv();
 
 const baseURL = `${env}`;
+const ssoBaseURL = "https://api.corepeelers.com";
 const sso = "/sso-service/api/v1";
 const AUTH = "/auth";
 const USER = "/user";
 const ROLE = "/role";
 const GROUP = "/group";
-const RECONCILIATION_SERVICE = "/reconciliation-service";
+const RECONCILIATION_SERVICE = "/subway-service";
 const PUBLIC = "/public";
 const DASHBOARD = "/dashboard";
 const _3PO = "/threepo";
@@ -60,7 +61,7 @@ const apiEndpoints = {
   REPORTING_TENDERS: `${RECONCILIATION_SERVICE}${PUBLIC}${DASHBOARD}/reportingTenders`,
   REPORT_FIELD: `${RECONCILIATION_SERVICE}${PUBLIC}${CUSTOM}/reportFields`,
   DOWNLOAD_REPORT: `${RECONCILIATION_SERVICE}${PUBLIC}${CUSTOM}/download/report`,
-  DASHBOARD_DATA: `${RECONCILIATION_SERVICE}${PUBLIC}${DASHBOARD}/data`,
+  DASHBOARD_DATA: `${RECONCILIATION_SERVICE}${PUBLIC}${DASHBOARD}/instore-data`,
   MPR_VS_BANK_DATA: `${RECONCILIATION_SERVICE}${PUBLIC}${DASHBOARD}/mpr/vs/bank`,
   MPR_VS_BANK_DOWNLOAD: `${RECONCILIATION_SERVICE}${PUBLIC}${DASHBOARD}/mpr/vs/bank/download`,
   ORDER_VS_TRM_DATA: `${RECONCILIATION_SERVICE}${PUBLIC}${DASHBOARD}/order/vs/trm`,
@@ -74,7 +75,7 @@ const apiEndpoints = {
   DOWNLOAD_TID_MISSING_STORE_MAPPING: `${RECONCILIATION_SERVICE}${PUBLIC}${DASHBOARD}/missingTIDMappingReportDownload`,
 
   // 3PO-SERVICE
-  _3PO_DATA: `${RECONCILIATION_SERVICE}${PUBLIC}${_3PO}/dashboardData`,
+  _3PO_DATA: `${RECONCILIATION_SERVICE}${PUBLIC}${_3PO}/threePODashboardData`,
   //!DOWNLOAD API'S FOR TABLE
   UNRECONCILED: `${RECONCILIATION_SERVICE}${PUBLIC}${DASHBOARD}/unreconciled/download`,
   SALE: `${RECONCILIATION_SERVICE}${PUBLIC}${DASHBOARD}/sale/download`,
@@ -107,8 +108,8 @@ const apiEndpoints = {
 
   //!STORE API'S
   GET_STORE_DATA: `${RECONCILIATION_SERVICE}/api/ve1/store/list`,
-  GET_STORE_LIST_DATA: `${RECONCILIATION_SERVICE}/api/ve1/store/codeList`,
-  GET_STATE_LIST_DATA: `${RECONCILIATION_SERVICE}/api/ve1/store/stateList`,
+  GET_STORE_LIST_DATA: `${RECONCILIATION_SERVICE}/api/ve1/store/storeList`,
+  GET_CITY_LIST_DATA: `${RECONCILIATION_SERVICE}/api/ve1/store/cityList`,
   GET_STORE_UPLOAD: `${RECONCILIATION_SERVICE}/api/ve1/store/uploadStoreList?storeUpload=`,
   GET_UPLOAD_CONFIG_MAPPING: `${RECONCILIATION_SERVICE}/api/ve1/store/listUploadConfig`,
   UPLOAD_CONFIG_DATA: `${RECONCILIATION_SERVICE}/api/ve1/store/uploadConfig`,
@@ -118,4 +119,4 @@ const apiEndpoints = {
   GET_ASYNC_GENERATE_REPORT_DATA: `${RECONCILIATION_SERVICE}/public/generated-reports/getAll`,
 };
 
-export {baseURL, apiEndpoints}
+export { baseURL, ssoBaseURL, apiEndpoints, sso };

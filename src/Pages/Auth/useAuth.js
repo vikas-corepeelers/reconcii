@@ -1,11 +1,17 @@
-import React, {useState} from 'react';
-import { apiEndpoints } from '../../ServiceRequest/APIEndPoints';
-import { requestCallGet, requestCallPost } from '../../ServiceRequest/APIFunctions';
-import { generateDeviceCode } from '../../Utils/UtilityFunctions';
-import { useDispatch } from 'react-redux';
-import { setUserDetailedProfile, setUserProfile } from '../../Redux/Slices/Common';
-import { useNavigate } from 'react-router-dom';
-import { useLoader } from '../../Utils/Loader';
+import React, { useState } from "react";
+import { apiEndpoints } from "../../ServiceRequest/APIEndPoints";
+import {
+  requestCallGet,
+  requestCallPost,
+} from "../../ServiceRequest/APIFunctions";
+import { generateDeviceCode } from "../../Utils/UtilityFunctions";
+import { useDispatch } from "react-redux";
+import {
+  setUserDetailedProfile,
+  setUserProfile,
+} from "../../Redux/Slices/Common";
+import { useNavigate } from "react-router-dom";
+import { useLoader } from "../../Utils/Loader";
 const BLANK_LOGIN = {
   username: "",
   password: "",
@@ -19,58 +25,70 @@ const FORGOT_PASSWORD = {
 const useAuth = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {setLoading, setToastMessage} = useLoader();
+  const { setLoading, setToastMessage } = useLoader();
   const [loginParams, setLoginParams] = useState(BLANK_LOGIN);
   const [loginErrors, setLoginErrors] = useState(null);
 
-  const [forgotPasswordParams, setForgotPasswordParams] = useState(FORGOT_PASSWORD);
+  const [forgotPasswordParams, setForgotPasswordParams] =
+    useState(FORGOT_PASSWORD);
   const [forgotPasswordErrors, setForgotPasswordErrors] = useState(null);
 
-
   const handleLoginParamsChanges = (name, value) => {
-    if(loginErrors !== null){
-        setLoginErrors(null)
+    if (loginErrors !== null) {
+      setLoginErrors(null);
     }
     setLoginParams({ ...loginParams, [name]: value });
   };
 
   const handleForgotPasswordParamsChanges = (name, value) => {
-    if(forgotPasswordErrors !== null){
-      setForgotPasswordErrors(null)
+    if (forgotPasswordErrors !== null) {
+      setForgotPasswordErrors(null);
     }
     setForgotPasswordParams({ ...forgotPasswordParams, [name]: value });
   };
 
   const doLogin = async () => {
     try {
-      if(loginParams.username?.trim() === ""){
-        setLoginErrors({username:"Please enter your email address."})
-        return 
-      }else if(loginParams.password?.trim() === ""){
-        setLoginErrors({password:"Please enter your password."})
-        return 
+      if (loginParams.username?.trim() === "") {
+        setLoginErrors({ username: "Please enter your email address." });
+        return;
+      } else if (loginParams.password?.trim() === "") {
+        setLoginErrors({ password: "Please enter your password." });
+        return;
       }
-      setLoading(true)
-      let deviceId = generateDeviceCode();  
+      setLoading(true);
+      let deviceId = generateDeviceCode();
       let additionalHeaders = {
-        deviceId: deviceId
-      }
-      const response = await requestCallPost(apiEndpoints.ACCESS_TOKEN, loginParams, additionalHeaders);
-      setLoading(false)
+        deviceId: deviceId,
+      };
+      const response = await requestCallPost(
+        apiEndpoints.ACCESS_TOKEN,
+        loginParams,
+        additionalHeaders
+      );
+      setLoading(false);
       if (response.status) {
-        
-        localStorage.setItem("ReconciiToken", response.data?.data?.access_token);
-        localStorage.setItem("ReconciiRefreshToken", response.data?.data?.refresh_token);
-        localStorage.setItem("userProfile", JSON.stringify(response.data?.data));
-        dispatch(setUserProfile(response.data?.data))
+        localStorage.setItem(
+          "ReconciiToken",
+          response.data?.data?.access_token
+        );
+        localStorage.setItem(
+          "ReconciiRefreshToken",
+          response.data?.data?.refresh_token
+        );
+        localStorage.setItem(
+          "userProfile",
+          JSON.stringify(response.data?.data)
+        );
+        dispatch(setUserProfile(response.data?.data));
         fetchProfile();
-        navigate("/dashboard")
-        return 
+        navigate("/dashboard");
+        return;
       }
-      setToastMessage({message: "Invalid credentials!", type:"error"})
+      setToastMessage({ message: "Invalid credentials!", type: "error" });
     } catch (error) {
-      console.log(error)
-      setToastMessage({message: "Something went wrong!", type:"error"})
+      console.log(error);
+      setToastMessage({ message: "Something went wrong!", type: "error" });
     }
   };
 
@@ -78,35 +96,49 @@ const useAuth = () => {
     try {
       const response = await requestCallGet(apiEndpoints.PROFILE);
       if (response.status) {
-        dispatch(setUserDetailedProfile(response?.data?.data))
-        localStorage.setItem("userDetailedProfile", JSON.stringify(response.data?.data));
+        dispatch(setUserDetailedProfile(response?.data?.data));
+        localStorage.setItem(
+          "userDetailedProfile",
+          JSON.stringify(response.data?.data)
+        );
       }
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   };
 
   const doForgotPassword = async () => {
     try {
-      if(forgotPasswordParams.emailId?.trim() === ""){
-        setLoginErrors({emailId:"Please enter your registered email address."})
-        return 
-      }else if(forgotPasswordParams.username?.trim() === ""){
-        setLoginErrors({username:"Please enter your username."})
-        return 
+      if (forgotPasswordParams.emailId?.trim() === "") {
+        setLoginErrors({
+          emailId: "Please enter your registered email address.",
+        });
+        return;
+      } else if (forgotPasswordParams.username?.trim() === "") {
+        setLoginErrors({ username: "Please enter your username." });
+        return;
       }
-      setLoading(true)
-      const response = await requestCallPost(apiEndpoints.FORGOT_PASSWORD, forgotPasswordParams);
-      setLoading(false)
+      setLoading(true);
+      const response = await requestCallPost(
+        apiEndpoints.FORGOT_PASSWORD,
+        forgotPasswordParams
+      );
+      setLoading(false);
       if (response.status) {
-        setToastMessage({message: "New password shared on your registered email.", type:"success"})
-        navigate("/")
-        return 
+        setToastMessage({
+          message: "New password shared on your registered email.",
+          type: "success",
+        });
+        navigate("/");
+        return;
       }
-      setToastMessage({message: "Email or Username not mapped correctly.", type:"error"})
+      setToastMessage({
+        message: "Email or Username not mapped correctly.",
+        type: "error",
+      });
     } catch (error) {
-      console.log(error)
-      setToastMessage({message: "Something went wrong!", type:"error"})
+      console.log(error);
+      setToastMessage({ message: "Something went wrong!", type: "error" });
     }
   };
 
@@ -119,7 +151,7 @@ const useAuth = () => {
     forgotPasswordParams,
     forgotPasswordErrors,
     handleForgotPasswordParamsChanges,
-    doForgotPassword
+    doForgotPassword,
   };
 };
 

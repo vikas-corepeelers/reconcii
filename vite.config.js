@@ -7,6 +7,11 @@ export default defineConfig({
   define: {
     global: {},
   },
+  resolve: {
+    alias: {
+      "@ant-design/charts": "@ant-design/charts/es",
+    },
+  },
   server: {
     port: 3000, // specify the port you want to use
   },
