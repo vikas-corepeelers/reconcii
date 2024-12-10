@@ -33,7 +33,7 @@ const ReconciliationDateModal = ({ closeModal, lastSyncList = [] }) => {
                       className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                     >
                       <td className="px-6 py-4">{`${report?.tender}(${report?.type})`}</td>
-                      <td className="px-6 py-4">
+                      <td className="px-6 py-4" style={{ width: "150px" }}>
                         {moment(report?.lastSynced, "DD-MM-YYYY").format(
                           "DD MMM, YYYY"
                         )}

@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { apiEndpoints } from "../../../ServiceRequest/APIEndPoints";
 import {
   requestCallGet,
   requestCallPost,
 } from "../../../ServiceRequest/APIFunctions";
-import { useDispatch } from "react-redux";
-import axios from "axios";
-const useReports = () => {
+const useVouchers = () => {
   const [generatedReports, setGeneratedReports] = useState([]);
   const fetchGeneratedReports = async () => {
     try {
@@ -77,4 +75,4 @@ const useReports = () => {
   };
 };
 
-export default useReports;
+export default useVouchers;

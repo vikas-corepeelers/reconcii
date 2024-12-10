@@ -50,7 +50,12 @@ export async function requestCallPut(apiName, data) {
 }
 
 // API request call, get method
-export async function requestCallGet(apiName, body, additionalHeaders = {}) {
+export async function requestCallGet(
+  apiName,
+  body,
+  additionalHeaders = {},
+  topLevelConfig = {}
+) {
   let headers = {};
   if (localStorage.getItem("ReconciiToken")) {
     headers = {
@@ -61,6 +66,7 @@ export async function requestCallGet(apiName, body, additionalHeaders = {}) {
   return await AxiosInstance.get(apiName, {
     headers: headers,
     params: body,
+    ...topLevelConfig,
   })
     .then((response) => {
       return {

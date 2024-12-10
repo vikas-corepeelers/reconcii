@@ -22,12 +22,12 @@ const MANAGER_SIDEBAR = [
     route: "/reconciliations",
     icon: "currency_exchange",
   },
-  // {
-  //   id: "vouchers",
-  //   label: "Vouchers",
-  //   route: "/vouchers",
-  //   icon: "confirmation_number",
-  // },
+  {
+    id: "vouchers",
+    label: "Vouchers",
+    route: "/vouchers",
+    icon: "confirmation_number",
+  },
   { id: "reports", label: "Reports", route: "/reports", icon: "report" },
   { id: "uploads", label: "Uploads", route: "/uploads", icon: "upload_file" },
   {
@@ -70,20 +70,20 @@ const Sidebar = () => {
       case "/reconciliations":
         setSelectedIndex(1);
         break;
-      // case "/voucher":
-      //   setSelectedIndex(2);
-      //   break;
-      case "/reports":
+      case "/vouchers":
         setSelectedIndex(2);
         break;
-      case "/uploads":
+      case "/reports":
         setSelectedIndex(3);
         break;
-      case "/update-profile":
+      case "/uploads":
         setSelectedIndex(4);
         break;
-      case "/definelogic":
+      case "/update-profile":
         setSelectedIndex(5);
+        break;
+      case "/definelogic":
+        setSelectedIndex(6);
         break;
       default:
         setSelectedIndex(50);

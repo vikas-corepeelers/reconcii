@@ -1,23 +1,31 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../../Styles/DefineLogic.css";
 import ExpandableCard from "./ExpandableCard";
-import PickFile from "./Components/PickFile";
+import ManageDataSet from "./Components/ManageDataSet";
 import { useSelector } from "react-redux";
 import SetLogics from "./SetLogics";
+import useLogic from "./useLogic";
 
 const DefineLogic = () => {
-  let excelFiles = useSelector((state) => state.LogicsService.excelFiles);
+  const { getTenderList } = useLogic();
+  let tableList = useSelector((state) => state.LogicsService.tableList);
+
+  useEffect(() => {
+    getTenderList();
+  }, []);
+
   return (
     <div className="">
-      <ExpandableCard header={"Upload Data File"} dataSetNos={excelFiles?.length} >
-        <PickFile />
+      <ExpandableCard header={"Select Data Source"}>
+        <ManageDataSet />
       </ExpandableCard>
-      <ExpandableCard header={"Set Logics"}>
-        <SetLogics />
-      </ExpandableCard>  
+      {tableList?.length > 0 && (
+        <ExpandableCard header={"Set Logics"}>
+          <SetLogics />
+        </ExpandableCard>
+      )}
     </div>
   );
-
 };
 
 export default DefineLogic;

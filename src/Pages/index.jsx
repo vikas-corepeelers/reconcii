@@ -13,6 +13,7 @@ import Reports from "./Pages/Reports";
 import ChangePassword from "./Pages/Profile/ChangePassword";
 import UpdateProfile from "./Pages/Profile/UpdateProfile";
 import MainDashboard from "./Pages/MainDashboard";
+import Vouchers from "./Pages/Vouchers";
 
 function AdminNavigator() {
   function WithFooterOnly(children) {
@@ -68,6 +69,11 @@ function AdminNavigator() {
           path="/reconciliations"
           exact
           element={WithSidebar(<Reconciliations />, "reconciliations")}
+        />
+        <Route
+          path="/vouchers"
+          exact
+          element={WithSidebar(<Vouchers />, "vouchers")}
         />
         <Route
           path="/definelogic"

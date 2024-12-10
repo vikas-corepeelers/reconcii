@@ -117,6 +117,14 @@ const apiEndpoints = {
   DOWNLOAD_STORE_TEMPLATE_DATA: `${RECONCILIATION_SERVICE}/api/ve1/store/downloadStoreSync`,
   DOWNLOAD_ASYNC_GENERATE_REPORT_DATA: `${RECONCILIATION_SERVICE}/public/generated-reports/download`,
   GET_ASYNC_GENERATE_REPORT_DATA: `${RECONCILIATION_SERVICE}/public/generated-reports/getAll`,
+
+  // New URLs
+  GET_TENDER_LIST: `${RECONCILIATION_SERVICE}/public/api/v1/tenderList`,
+  GET_TENDER_WISE_TABLES_LIST: `${RECONCILIATION_SERVICE}/public/api/v1/tenderWisetables`,
+  SAVE_ALL_RECO_LOGICS: `${RECONCILIATION_SERVICE}/public/recologics/save`,
+  UPDATE_ALL_RECO_LOGICS: `${RECONCILIATION_SERVICE}/public/recologics/update`,
+  GET_ALL_RECO_LOGICS: `${RECONCILIATION_SERVICE}/public/recologics/getAll`,
+  GET_RECO_LOGICS_BY_TOPIC: `${RECONCILIATION_SERVICE}/public/recologics/get`,
 };
 
 export { baseURL, ssoBaseURL, apiEndpoints, sso };
