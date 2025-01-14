@@ -5,48 +5,28 @@ import ImgConst from "../../Utils/ImgConstants";
 
 const MANAGER_SIDEBAR = [
   {
-    id: "dashboard",
-    label: "Dashboard",
-    route: "/dashboard",
-    icon: "dashboard",
-  },
-  // {
-  //   id: "detailed_dashboard",
-  //   label: "Detailed Dashboard",
-  //   route: "/detailed_dashboard",
-  //   icon: "dashboard",
-  // },
-  {
-    id: "reconciliations",
-    label: "Reconciliations",
-    route: "/reconciliations",
-    icon: "currency_exchange",
+    id: "groups",
+    label: "Groups",
+    route: "/admin/groups",
+    icon: "diversity_3",
   },
   {
-    id: "vouchers",
-    label: "Vouchers",
-    route: "/vouchers",
-    icon: "confirmation_number",
-  },
-  { id: "reports", label: "Reports", route: "/reports", icon: "report" },
-  { id: "uploads", label: "Uploads", route: "/uploads", icon: "upload_file" },
-  {
-    id: "excel-db-mapping",
-    label: "Excel-DB Mapping",
-    route: "/excel-db-mapping",
-    icon: "handshake",
+    id: "users",
+    label: "Users",
+    route: "/admin/users",
+    icon: "badge",
   },
   {
-    id: "definelogic",
-    label: "Define Logic",
-    route: "/definelogic",
-    icon: "input",
+    id: "upload-config",
+    label: "Upload Config",
+    route: "/admin/upload-config",
+    icon: "cloud_upload",
   },
   {
-    id: "update-profile",
-    label: "Settings",
-    route: "/update-profile",
-    icon: "settings",
+    id: "user-data",
+    label: "User Data",
+    route: "/admin/user-data",
+    icon: "manage_accounts",
   },
 ];
 
@@ -67,32 +47,23 @@ const Sidebar = () => {
   const selectedSidebar = (key) => {
     // console.log(")(", key);
     switch (key) {
-      case "/dashboard":
+      case "/admin/groups":
         setSelectedIndex(0);
         break;
-      // case "/detailed_dashboard":
-      //   setSelectedIndex(1);
-      //   break;
-      case "/reconciliations":
+      case "/admin/groups/description":
+        setSelectedIndex(0);
+        break;
+      case "/admin/groups/create":
+        setSelectedIndex(0);
+        break;
+      case "/admin/users":
         setSelectedIndex(1);
         break;
-      case "/vouchers":
+      case "/admin/upload-config":
         setSelectedIndex(2);
         break;
-      case "/reports":
+      case "/admin/user-data":
         setSelectedIndex(3);
-        break;
-      case "/uploads":
-        setSelectedIndex(4);
-        break;
-      case "/excel-db-mapping":
-        setSelectedIndex(5);
-        break;
-      case "/definelogic":
-        setSelectedIndex(6);
-        break;
-      case "/update-profile":
-        setSelectedIndex(7);
         break;
       default:
         setSelectedIndex(50);

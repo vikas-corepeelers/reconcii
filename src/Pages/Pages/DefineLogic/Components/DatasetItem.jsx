@@ -4,13 +4,15 @@ const DatasetItem = ({ item }) => {
   return (
     <div className="dataset-item">
       <div className="header">
-        <p className="title">{item?.tableName}</p>
+        <p className="title">{item?.dataSourceName}</p>
       </div>
       <div className="container">
         <ul>
           {item?.columns?.map((columnItem) => {
             return (
-              <li key={columnItem?.columnName}>{columnItem?.columnName}</li>
+              <li key={columnItem?.excelColumnName}>
+                {columnItem?.excelColumnName}
+              </li>
             );
           })}
         </ul>

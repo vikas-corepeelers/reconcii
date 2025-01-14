@@ -81,7 +81,7 @@ const DropdownWithCheckbox = ({
   };
 
   return (
-    <div style={{ position: "relative", width: "200px" }} ref={dropdownRef}>
+    <div style={{ position: "relative", minWidth: "200px" }} ref={dropdownRef}>
       {/* Dropdown Trigger */}
       <div onClick={toggleDropdown} className="custom-checkbox-dropdown-view">
         <span>

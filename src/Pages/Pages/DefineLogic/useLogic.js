@@ -88,29 +88,34 @@ const useLogic = () => {
     return [];
   };
 
-  const getTableList = async (tender) => {
-    getSavedFormulas(tender);
+  const getTableList = async (tenders) => {
+    // console.log("tender", tender);
+    // return;
+    getSavedFormulas(tenders);
+    let tenderList = tenders?.map((tender) => tender?.value);
     try {
       let params = {
-        tender: tender,
+        tenders: tenderList,
       };
-      dispatch(setActiveTender(tender));
+      dispatch(setActiveTender(tenderList));
       dispatch(setLogicData([]));
-      const response = await requestCallGet(
+      const response = await requestCallPost(
         apiEndpoints.GET_TENDER_WISE_TABLES_LIST,
         params
       );
-      // const response = {
-      //   status: true,
-      //   data: {
-      //     data: Swiggy?.data,
-      //   },
-      // };
 
       if (response.status && response?.data?.data?.length > 0) {
-        let tables = response?.data?.data[0]?.tableWiseColumns?.map((table) => {
-          return { ...table, dataset_name: table.tableName };
+        // let tables = response?.data?.data[0]?.tableWiseColumns?.map((table) => {
+        //   return { ...table, dataset_name: table.tableName };
+        // });
+
+        let tables = [];
+        response?.data?.data?.forEach((tender) => {
+          tender?.dataSourceWiseColumns.forEach((dataSource) => {
+            tables.push({ ...dataSource, tender: tender.tender });
+          });
         });
+        console.log("tables", tables);
         dispatch(setTableList(tables));
       }
     } catch (error) {

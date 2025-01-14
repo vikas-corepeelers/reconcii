@@ -16,7 +16,7 @@ const DefineLogic = () => {
 
   return (
     <div className="">
-      <ExpandableCard header={"Select Data Source"}>
+      <ExpandableCard header={"Select Tender"}>
         <ManageDataSet />
       </ExpandableCard>
       {tableList?.length > 0 && (

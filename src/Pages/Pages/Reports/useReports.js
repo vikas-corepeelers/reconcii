@@ -4,10 +4,39 @@ import {
   requestCallGet,
   requestCallPost,
 } from "../../../ServiceRequest/APIFunctions";
-import { useDispatch } from "react-redux";
-import axios from "axios";
+
+const BLANK_CUSTOM_REPORT_PARAMS = {
+  startDate: new Date(),
+  endDate: new Date(),
+  selectedTender: "",
+  selectedColumns: [],
+};
+
 const useReports = () => {
   const [generatedReports, setGeneratedReports] = useState([]);
+  const [reportTenders, setReportTenders] = useState([]);
+  const [reportColumns, setReportColumns] = useState([]);
+  const [filterValues, setFilterValues] = useState(BLANK_CUSTOM_REPORT_PARAMS);
+  const handleFilterChange = (name, value) => {
+    setFilterValues({ ...filterValues, [name]: value });
+  };
+
+  const fetchReportingTenders = async () => {
+    try {
+      const response = await requestCallGet(apiEndpoints.REPORTING_TENDERS);
+      if (response.status) {
+        // let ThreePOTenders = response?.data?.data?.filter(
+        //   (tenderType) => tenderType?.category === "3PO"
+        // );
+        // if (ThreePOTenders?.length > 0) {
+        //   dispatch(setReconciliationTenders(ThreePOTenders[0]?.tenders));
+        // }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const fetchGeneratedReports = async () => {
     try {
       const response = await requestCallPost(
@@ -71,9 +100,15 @@ const useReports = () => {
 
   return {
     generatedReports,
+    reportTenders,
+    reportColumns,
+    filterValues,
     fetchGeneratedReports,
     downloadGeneratedReports,
     downloadMissingMappedStores,
+    fetchReportingTenders,
+    handleFilterChange,
+    setFilterValues,
   };
 };
 

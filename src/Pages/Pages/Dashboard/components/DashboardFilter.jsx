@@ -136,13 +136,14 @@ const DashboardFilter = () => {
 
   return (
     <div>
-      <div className="box filter-row">
+      <div className="box filter-row gap-3">
         <CustomSelect
           data={DASHBOARD_ITEMS}
           option_value={"key"}
           option_label={"label"}
           onChange={(e) => handleFilterChange("salesLocation", e.target.value)}
           value={filterValues?.salesLocation}
+          additionalStyle={{ minWidth: "150px" }}
         />
         <DateRangeComponent
           startDate={filterValues?.startDate}
@@ -159,6 +160,7 @@ const DashboardFilter = () => {
           option_label={"label"}
           onChange={(e) => handleFilterChange("salesType", e.target.value)}
           value={filterValues?.salesType}
+          additionalStyle={{ minWidth: "150px" }}
         />
         <DropdownWithCheckbox
           placeholder={"Select City"}

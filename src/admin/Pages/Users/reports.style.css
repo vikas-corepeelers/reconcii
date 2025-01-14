@@ -1,0 +1,25 @@
+.custom-file-picker > label {
+  width: 100%;
+  background-color: #ffffff;
+}
+
+.drag-drop-component {
+  flex-direction: column;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  height: 250px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user.active {
+  color: #4caf50;
+  font-weight: 600;
+}
+
+.user.inactive {
+  color: #ff0000;
+  font-weight: 600;
+}

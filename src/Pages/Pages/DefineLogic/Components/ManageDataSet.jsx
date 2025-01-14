@@ -11,14 +11,15 @@ export default function ManageDataSet() {
     <div className="font-Roboto text-Text-secondary border-text-primary rounded-md p-3">
       <div className="w-50">
         <p>
-          Data Source <span style={{ color: "#ff0000" }}>*</span>
+          Tenders <span style={{ color: "#ff0000" }}>*</span>
         </p>
         <Select
-          onChange={(e) => getTableList(e.value)}
+          onChange={(e) => getTableList(e)}
           options={tenderList.map((option) => ({
             label: option,
             value: option,
           }))}
+          isMulti
         />
       </div>
       <div className="dataset-list mt-3">

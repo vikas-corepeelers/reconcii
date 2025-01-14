@@ -10,10 +10,10 @@ export default function DateRangeComponent({
   const ExampleCustomInput = forwardRef(
     ({ value, onClick, className }, ref) => (
       <div className="date-range-picker">
-        <span className="material-icons-outlined">date_range</span>
         <button className={`${className} mt-0.5`} onClick={onClick} ref={ref}>
           {value}
         </button>
+        <span className="material-icons-outlined">date_range</span>
       </div>
     )
   );

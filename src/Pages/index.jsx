@@ -14,6 +14,7 @@ import ChangePassword from "./Pages/Profile/ChangePassword";
 import UpdateProfile from "./Pages/Profile/UpdateProfile";
 import MainDashboard from "./Pages/MainDashboard";
 import Vouchers from "./Pages/Vouchers";
+import ExcelDBMapping from "./Pages/ExcelDBMapping";
 
 function AdminNavigator() {
   function WithFooterOnly(children) {
@@ -74,6 +75,11 @@ function AdminNavigator() {
           path="/vouchers"
           exact
           element={WithSidebar(<Vouchers />, "vouchers")}
+        />
+        <Route
+          path="/excel-db-mapping"
+          exact
+          element={WithSidebar(<ExcelDBMapping />, "excel-db-mapping")}
         />
         <Route
           path="/definelogic"

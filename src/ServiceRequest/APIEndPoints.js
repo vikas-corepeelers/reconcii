@@ -70,6 +70,7 @@ const apiEndpoints = {
   TRM_VS_MPR_DOWNLOAD: `${RECONCILIATION_SERVICE}${PUBLIC}${DASHBOARD}/trm/vs/mpr/download`,
   DATA_SOURCE_FIELD: `${RECONCILIATION_SERVICE}${PUBLIC}/api/v1/datasource`,
   UPLOAD_SOURCE_FIELD: `${RECONCILIATION_SERVICE}${PUBLIC}/api/v1/upload/data`,
+
   RECONCILIATION_LAST_SYNCED: `${RECONCILIATION_SERVICE}/api/ve1/datalog/lastSynced`,
   MISSING_TID_STORE_MAPPING: `${RECONCILIATION_SERVICE}${PUBLIC}${DASHBOARD}/missingTIDMapping`,
   DOWNLOAD_TID_MISSING_STORE_MAPPING: `${RECONCILIATION_SERVICE}${PUBLIC}${DASHBOARD}/missingTIDMappingReportDownload`,
@@ -119,12 +120,15 @@ const apiEndpoints = {
   GET_ASYNC_GENERATE_REPORT_DATA: `${RECONCILIATION_SERVICE}/public/generated-reports/getAll`,
 
   // New URLs
-  GET_TENDER_LIST: `${RECONCILIATION_SERVICE}/public/api/v1/tenderList`,
-  GET_TENDER_WISE_TABLES_LIST: `${RECONCILIATION_SERVICE}/public/api/v1/tenderWisetables`,
+  GET_TENDER_LIST: `${RECONCILIATION_SERVICE}/api/v1/tenderList`,
+  GET_TENDER_WISE_TABLES_LIST: `${RECONCILIATION_SERVICE}/api/v1/tenderWisetables`,
   SAVE_ALL_RECO_LOGICS: `${RECONCILIATION_SERVICE}/public/recologics/save`,
   UPDATE_ALL_RECO_LOGICS: `${RECONCILIATION_SERVICE}/public/recologics/update`,
   GET_ALL_RECO_LOGICS: `${RECONCILIATION_SERVICE}/public/recologics/getAll`,
   GET_RECO_LOGICS_BY_TOPIC: `${RECONCILIATION_SERVICE}/public/recologics/get`,
+  GET_ALL_DATA_SOURCE_FOR_MAPPING: `${RECONCILIATION_SERVICE}/api/v1/datasource`,
+  EXCEL_DB_COLUMN_MAPPING_BY_DATASOURCE: `${RECONCILIATION_SERVICE}/api/ve1/customisedfields/getExcelDbColumMappingByDataSource/`,
+  UPDATE_EXCEL_DB_COLUMN_MAPPING_BY_DATASOURCE: `${RECONCILIATION_SERVICE}/api/ve1/customisedfields/updateExcelDbColumMapping`,
 };
 
 export { baseURL, ssoBaseURL, apiEndpoints, sso };
