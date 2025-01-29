@@ -54,10 +54,10 @@ const useExcelDBMapping = () => {
     setLoading(true);
     try {
       const response = await requestCallGet(
-        `${apiEndpoints.GET_ALL_DATA_SOURCE_FOR_MAPPING}`
+        `${apiEndpoints.NEW_DATA_SOURCE_FIELDS}`
       );
       if (response.status) {
-        setDataCategoryList(response?.data);
+        setDataCategoryList(response?.data?.data);
       }
     } catch (error) {
       console.error(error);

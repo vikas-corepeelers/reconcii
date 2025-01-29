@@ -13,6 +13,8 @@ let env = setEnv();
 const baseURL = `${env}`;
 const ssoBaseURL = "https://api.corepeelers.com";
 const sso = "/sso-service/api/v1";
+const reconcii = "/reconcii-service/api";
+const reconciiBaseURL = "https://reconciiapi.corepeelers.com";
 const AUTH = "/auth";
 const USER = "/user";
 const ROLE = "/role";
@@ -68,7 +70,7 @@ const apiEndpoints = {
   ORDER_VS_TRM_DOWNLOAD: `${RECONCILIATION_SERVICE}${PUBLIC}${DASHBOARD}/order/vs/trm/download`,
   TRM_VS_MPR_DATA: `${RECONCILIATION_SERVICE}${PUBLIC}${DASHBOARD}/trm/vs/mpr`,
   TRM_VS_MPR_DOWNLOAD: `${RECONCILIATION_SERVICE}${PUBLIC}${DASHBOARD}/trm/vs/mpr/download`,
-  DATA_SOURCE_FIELD: `${RECONCILIATION_SERVICE}${PUBLIC}/api/v1/datasource`,
+  DATA_SOURCE_FIELD: `${RECONCILIATION_SERVICE}/api/v1/datasource`,
   UPLOAD_SOURCE_FIELD: `${RECONCILIATION_SERVICE}${PUBLIC}/api/v1/upload/data`,
 
   RECONCILIATION_LAST_SYNCED: `${RECONCILIATION_SERVICE}/api/ve1/datalog/lastSynced`,
@@ -129,6 +131,11 @@ const apiEndpoints = {
   GET_ALL_DATA_SOURCE_FOR_MAPPING: `${RECONCILIATION_SERVICE}/api/v1/datasource`,
   EXCEL_DB_COLUMN_MAPPING_BY_DATASOURCE: `${RECONCILIATION_SERVICE}/api/ve1/customisedfields/getExcelDbColumMappingByDataSource/`,
   UPDATE_EXCEL_DB_COLUMN_MAPPING_BY_DATASOURCE: `${RECONCILIATION_SERVICE}/api/ve1/customisedfields/updateExcelDbColumMapping`,
+  FIND_OLDEST_EFFECTIVE_DATE: `${RECONCILIATION_SERVICE}/public/recologics/findOldestEffectiveDate`,
+
+  // Upload URLs
+  NEW_DATA_SOURCE_FIELDS: `${reconcii}/datasource`,
+  UPLOAD_FILE: `${reconcii}/upload`,
 };
 
-export { baseURL, ssoBaseURL, apiEndpoints, sso };
+export { baseURL, ssoBaseURL, apiEndpoints, sso, reconcii, reconciiBaseURL };

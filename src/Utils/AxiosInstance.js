@@ -1,5 +1,11 @@
 import axios from "axios";
-import { baseURL, ssoBaseURL, sso } from "../ServiceRequest/APIEndPoints";
+import {
+  baseURL,
+  ssoBaseURL,
+  sso,
+  reconcii,
+  reconciiBaseURL,
+} from "../ServiceRequest/APIEndPoints";
 const instance = axios.create({
   baseURL: baseURL,
   responseType: "json",
@@ -19,6 +25,9 @@ instance.interceptors.request.use((config) => {
   // If a specific baseURL is passed, use it; otherwise, default to the instance's baseURL
   if (config?.url?.includes(sso)) {
     config.baseURL = ssoBaseURL;
+  }
+  if (config?.url?.includes(reconcii)) {
+    config.baseURL = reconciiBaseURL;
   }
   return config;
 });

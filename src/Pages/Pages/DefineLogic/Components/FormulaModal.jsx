@@ -4,7 +4,11 @@ import useUtilFunctions from "../useUtilFunctions";
 import PrimaryButton from "../../../../components/PrimaryButton";
 import OutlineButton from "../../../../components/OutlineButton";
 import { useDispatch, useSelector } from "react-redux";
-import { setActiveLogic, setLogicData } from "../../../../Redux/Slices/Logics";
+import {
+  setActiveLogic,
+  setLogicData,
+  setLogicGroups,
+} from "../../../../Redux/Slices/Logics";
 import BLANK_FORMULA from "../constants";
 const FormulaModal = ({ dataSetOptions }) => {
   const dispatch = useDispatch();
@@ -18,8 +22,8 @@ const FormulaModal = ({ dataSetOptions }) => {
     logicData,
     activeLogic: logicItem,
     activeLogicIndex,
+    logicGroups,
   } = useSelector((state) => state.LogicsService);
-
   const { renderFormula, renderMiddleFieldView, handleFieldValueChange } =
     useUtilFunctions(dataSetOptions);
 
@@ -51,6 +55,7 @@ const FormulaModal = ({ dataSetOptions }) => {
     let currentLogicItem = {
       ...logicItem,
       formulaText: processedFormula?.normalizedFormula,
+      excelFormulaText: processedFormula?.excelFormulaText,
       logicNameKey: processedFormula?.logicNameKey,
     };
     let allLogics = [...logicData];
@@ -61,6 +66,12 @@ const FormulaModal = ({ dataSetOptions }) => {
     }
 
     dispatch(setLogicData(allLogics));
+
+    let groupList = [...logicGroups];
+    let activeGroup = { ...groupList[logicItem?.active_group_index] };
+    activeGroup = { ...activeGroup, recologic: allLogics };
+    groupList[logicItem?.active_group_index] = activeGroup;
+    dispatch(setLogicGroups(groupList));
     dispatch(setActiveLogic(null));
   };
 
@@ -290,7 +301,7 @@ export default FormulaModal;
 const FormulaText = ({ formulaObj }) => {
   return (
     <div>
-      <b>{formulaObj?.normalizedFormula}</b>
+      <b>{formulaObj?.excelFormulaText}</b>
       {!formulaObj?.isValid && (
         <span style={{ color: "#ff0000", fontSize: "9px" }}>
           {" "}

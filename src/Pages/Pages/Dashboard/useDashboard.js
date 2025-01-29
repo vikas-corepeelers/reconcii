@@ -9,6 +9,7 @@ import {
   setCityList,
   setDashboard3POData,
   setDashboardData,
+  setDataEffectiveDate,
   setLoadingDashboard,
   setStoreList,
   setTenderWiseStoresMissedInMapping,
@@ -20,6 +21,21 @@ const useDashboard = () => {
   const dispatch = useDispatch();
   const { setToastMessage, setLoading } = useLoader();
   let { currentDashboardRequest } = useSelector((state) => state.CommonService);
+
+  const fetchOldEffectiveDate = async () => {
+    try {
+      const response = await requestCallGet(
+        apiEndpoints.FIND_OLDEST_EFFECTIVE_DATE
+      );
+      if (response.status) {
+        dispatch(setDataEffectiveDate(response?.data?.data));
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    return [];
+  };
+
   const fetchCityList = async () => {
     try {
       const response = await requestCallGet(apiEndpoints.GET_CITY_LIST_DATA);
@@ -162,6 +178,7 @@ const useDashboard = () => {
     downloadStoreReport,
     fetchTenderWiseStoresMissedInMapping,
     getDashboard3POData,
+    fetchOldEffectiveDate,
   };
 };
 

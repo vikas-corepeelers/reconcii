@@ -7,6 +7,7 @@ export async function requestCallPost(apiName, data, additionalHeaders = {}) {
     };
   }
   headers = { ...headers, ...additionalHeaders };
+  console.log("headers", headers);
   return await AxiosInstance.post(apiName, data, {
     headers: headers,
   })

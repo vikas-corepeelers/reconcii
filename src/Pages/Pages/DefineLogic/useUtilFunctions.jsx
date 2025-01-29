@@ -21,11 +21,15 @@ const convertToUpperCaseWithUnderscores = (input) => {
 const replaceFirstOccurrence = (inputString, target, replacement) => {
   const index = inputString.indexOf(target);
   if (index === -1) return inputString; // If the target is not found, return the original string
-  return (
-    inputString.substring(0, index) +
-    replacement +
-    inputString.substring(index + target.length)
-  );
+  try {
+    return (
+      inputString.substring(0, index) +
+      replacement +
+      inputString.substring(index + target.length)
+    );
+  } catch (e) {
+    return inputString;
+  }
 };
 
 const useUtilFunctions = (dataSetOptions) => {
@@ -33,14 +37,38 @@ const useUtilFunctions = (dataSetOptions) => {
   let { logicData, activeLogic } = useSelector((state) => state.LogicsService);
   const renderFormula = (activeFormula) => {
     let labelText = "";
+    let tableColumnFormula = "";
+
     activeFormula?.fields.map((field, index) => {
       if (field?.type === "data_field") {
         labelText += startBrackets(field, index, true);
+        tableColumnFormula += startBrackets(field, index, true);
         if (field?.dataset_type === "Formula") {
           labelText = labelText + " " + field?.selectedFieldValue;
+          tableColumnFormula =
+            tableColumnFormula + " " + field?.selectedFieldValue;
         } else if (field?.selectedDataSetValue) {
           if (Array.isArray(field?.selectedDataSetValue)) {
-            labelText = labelText + " " + field?.selectedDataSetValue[0];
+            if (field?.selectedDataSetValue?.length > 0) {
+              labelText =
+                labelText +
+                " " +
+                field?.selectedFieldValue +
+                "." +
+                field?.selectedDataSetValue[0];
+            }
+            try {
+              if (field?.selectedTableColumn?.length > 0) {
+                tableColumnFormula =
+                  tableColumnFormula +
+                  " " +
+                  field?.selectedTableName +
+                  "." +
+                  field?.selectedTableColumn[0];
+              }
+            } catch (e) {
+              console.log(e);
+            }
           } else {
             labelText =
               labelText +
@@ -48,14 +76,26 @@ const useUtilFunctions = (dataSetOptions) => {
               field?.selectedFieldValue +
               "." +
               field?.selectedDataSetValue;
+
+            tableColumnFormula =
+              tableColumnFormula +
+              " " +
+              field?.selectedTableName +
+              "." +
+              field?.selectedTableColumn;
           }
         } else if (field?.customFieldValue) {
           labelText = labelText + " " + field?.customFieldValue;
+          tableColumnFormula =
+            tableColumnFormula + " " + field?.customFieldValue;
         }
         labelText += endBrackets(field, index, true);
+        tableColumnFormula += endBrackets(field, index, true);
       } else if (field?.type === "operator") {
         if (field?.selectedFieldValue) {
           labelText = labelText + " " + field?.selectedFieldValue;
+          tableColumnFormula =
+            tableColumnFormula + " " + field?.selectedFieldValue;
         }
       }
     });
@@ -65,13 +105,17 @@ const useUtilFunctions = (dataSetOptions) => {
         activeFormula?.logicName
       );
     }
-    let formulaStatus = validateFormula(labelText);
+
+    let formulaStatus = validateFormula(tableColumnFormula);
 
     if (formulaStatus?.isValid && activeFormula?.multipleColumn) {
       let currentFormula = formulaStatus?.normalizedFormula;
-      let allFields =
-        activeFormula?.fields[0]?.selectedDataSetValue?.join(", ");
-      let firstField = activeFormula?.fields[0]?.selectedDataSetValue[0];
+      let allFields = activeFormula?.fields[0]?.selectedTableColumn
+        ?.map(
+          (column) => `${activeFormula?.fields[0]?.selectedTableName}.${column}`
+        )
+        .join(", ");
+      let firstField = `${activeFormula?.fields[0]?.selectedTableName}.${activeFormula?.fields[0]?.selectedTableColumn[0]}`;
       let updatedFormula = replaceFirstOccurrence(
         currentFormula,
         firstField,
@@ -79,12 +123,27 @@ const useUtilFunctions = (dataSetOptions) => {
       );
 
       formulaStatus = { ...formulaStatus, normalizedFormula: updatedFormula };
+
+      let currentFormulaExcel = labelText;
+      let allFieldsExcel = activeFormula?.fields[0]?.selectedDataSetValue
+        ?.map(
+          (column) =>
+            `${activeFormula?.fields[0]?.selectedFieldValue}.${column}`
+        )
+        .join(", ");
+      let firstFieldExcel = `${activeFormula?.fields[0]?.selectedFieldValue}.${activeFormula?.fields[0]?.selectedDataSetValue[0]}`;
+      labelText = replaceFirstOccurrence(
+        currentFormulaExcel,
+        firstFieldExcel,
+        allFieldsExcel
+      );
     }
 
     return {
       ...formulaStatus,
-      formulaText: labelText,
+      formulaText: tableColumnFormula,
       logicNameKey: logicNameKey,
+      excelFormulaText: labelText,
     };
   };
 
@@ -239,7 +298,7 @@ const useUtilFunctions = (dataSetOptions) => {
           <div className="flex">
             <div className="ddSelection">
               {startBrackets(fieldItem, index)}
-              <div style={{ width: "100%" }}>
+              <div style={{ width: "100%", maxWidth: "400px" }}>
                 <Select
                   value={getSelectedOption(
                     fieldItem?.selectedFieldValue,
@@ -254,7 +313,8 @@ const useUtilFunctions = (dataSetOptions) => {
                       logicItem,
                       index,
                       false,
-                      e
+                      e,
+                      e.tableName
                     );
                   }}
                   getOptionLabel={(option) => option.dataset_name}
@@ -271,11 +331,12 @@ const useUtilFunctions = (dataSetOptions) => {
                     <Select
                       styles={{
                         height: 30,
-                        menu: ({ width, ...css }) => ({ ...css }),
+                        maxWidth: "400px",
+                        // menu: ({ width, ...css }) => ({ ...css }),
                       }}
                       value={getSelectedOption(
                         fieldItem?.selectedDataSetValue,
-                        "columnName",
+                        "excelColumnName",
                         dataSetOptions
                           .filter((dataSet) => {
                             return (
@@ -289,14 +350,16 @@ const useUtilFunctions = (dataSetOptions) => {
                       )}
                       isMulti={activeLogic?.multipleColumn && index === 0}
                       menuPortalTarget={document.body}
-                      getOptionLabel={(option) => option.columnName}
-                      getOptionValue={(option) => option.columnName}
+                      getOptionLabel={(option) => option.excelColumnName}
+                      getOptionValue={(option) => option.excelColumnName}
                       onChange={(e) => {
                         onSelectFieldValue(
-                          e.columnName ? e.columnName : e,
+                          e.excelColumnName ? e.excelColumnName : e,
                           logicItem,
                           index,
-                          true
+                          true,
+                          e,
+                          e.dbcolumnName
                         );
                       }}
                       options={dataSetOptions
@@ -455,7 +518,9 @@ const useUtilFunctions = (dataSetOptions) => {
     return options;
   }
   function checkOpts(value) {
-    let result = dataSetOptions.some((e) => e.dataset_name === value);
+    let result = dataSetOptions.some(
+      (e) => e.dataset_name === value || e?.tableName === value
+    );
     return result;
   }
 
@@ -464,34 +529,9 @@ const useUtilFunctions = (dataSetOptions) => {
     logicItem,
     index,
     isDataSet = false,
-    option
+    option,
+    equivalentDbValue = ""
   ) => {
-    // if (logicItem.hasOwnProperty("parentId")) {
-    //   let dataItem = { ...activeLogic };
-    //   let modifiedData = dataItem;
-
-    //   if (logicItem?.parentId === dataItem?.id) {
-    //     let modifiedLogic = dataItem?.sub_logic.map((subLogicItem) => {
-    //       if (subLogicItem?.id === logicItem?.id) {
-    //         let modifiedFields = subLogicItem?.fields.map((field, i) => {
-    //           if (index === i) {
-    //             if (isDataSet) {
-    //               return { ...field, selectedDataSetValue: fieldValue };
-    //             }
-    //             return { ...field, selectedFieldValue: fieldValue };
-    //           }
-    //           return field;
-    //         });
-    //         return { ...subLogicItem, fields: modifiedFields };
-    //       } else {
-    //         return subLogicItem;
-    //       }
-    //     });
-    //     modifiedData = { ...dataItem, sub_logic: modifiedLogic };
-    //   }
-    //   dispatch(setActiveLogic(modifiedData));
-    // } else {
-    // main logic item
     let dataItem = { ...activeLogic };
     let modifiedData = dataItem;
 
@@ -503,46 +543,27 @@ const useUtilFunctions = (dataSetOptions) => {
               ...field,
               dataset_type: option?.dataset_type || "Dataset",
               selectedDataSetValue: Array.isArray(fieldValue)
-                ? fieldValue?.map((opt) => opt?.columnName)
+                ? fieldValue?.map((opt) => opt?.excelColumnName)
                 : fieldValue,
+              selectedTableColumn: Array.isArray(fieldValue)
+                ? fieldValue?.map((opt) => opt?.dbcolumnName)
+                : equivalentDbValue,
             };
           }
           return {
             ...field,
             dataset_type: option?.dataset_type || "Dataset",
             selectedFieldValue: fieldValue,
+            selectedTableName: equivalentDbValue,
           };
         } else return field;
       });
       modifiedData = { ...dataItem, fields: modifiedFields };
     }
     dispatch(setActiveLogic(modifiedData));
-    // }
   };
 
   const onChangeCustomInput = (fieldValue, logicItem, index) => {
-    // if (logicItem.hasOwnProperty("parentId")) {
-    //   let dataItem = { ...activeLogic };
-    //   let modifiedData = dataItem;
-
-    //   if (logicItem?.parentId === dataItem?.id) {
-    //     let modifiedLogic = dataItem?.sub_logic.map((subLogicItem) => {
-    //       if (subLogicItem?.id === logicItem?.id) {
-    //         let modifiedFields = subLogicItem?.fields.map((field, i) => {
-    //           if (index === i) {
-    //             return { ...field, customFieldValue: fieldValue };
-    //           }
-    //           return field;
-    //         });
-    //         return { ...subLogicItem, fields: modifiedFields };
-    //       } else {
-    //         return subLogicItem;
-    //       }
-    //     });
-    //     modifiedData = { ...dataItem, sub_logic: modifiedLogic };
-    //   }
-    //   dispatch(setActiveLogic(modifiedData));
-    // } else {
     let dataItem = { ...activeLogic };
     let modifiedData = dataItem;
     if (dataItem?.id === logicItem?.id) {
@@ -554,7 +575,6 @@ const useUtilFunctions = (dataSetOptions) => {
       modifiedData = { ...dataItem, fields: modifiedFields };
     }
     dispatch(setActiveLogic(modifiedData));
-    // }
   };
 
   const handleFieldValueChange = (name, value) => {

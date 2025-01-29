@@ -1,31 +1,24 @@
 import React, { useEffect, useRef, useState } from "react";
 import BlankCard from "../../../components/BlankCard";
 import PrimaryButton from "../../../components/PrimaryButton";
-import Alert from "../../../components/Alert";
 
 import { FileUploader } from "react-drag-drop-files";
 
-const fileTypes = ["JPG", "PNG", "GIF"];
+// const fileTypes = ["JPG", "PNG", "GIF"];
 import "./upload.style.css";
 import CustomSelect from "../../../components/CustomSelect";
-
-const TENDER_OPTIONS = [
-  { key: "key1", label: "Promo Master" },
-  { key: "key2", label: "Budget Master" },
-  { key: "key3", label: "Swiggy" },
-  { key: "key4", label: "Freebies Master" },
-  { key: "key5", label: "Zomato" },
-  { key: "key6", label: "MagicPin" },
-  { key: "key7", label: "DotPe" },
-];
+import useUploads from "./useUploads";
 
 export default function Uploads() {
-  const [file, setFile] = useState(null);
-  const handleChange = (file) => {
-    setFile(file);
-  };
-
-  const onSubmit = () => {};
+  const {
+    dataSource,
+    values,
+    handleChange,
+    paymentTypeList,
+    handleFileChange,
+    onSubmit,
+    files,
+  } = useUploads();
 
   return (
     <div className="">
@@ -33,21 +26,48 @@ export default function Uploads() {
         <div className="pt-3 w-full">
           <div className="md:w-1/3 mb-3">
             <CustomSelect
+              label="Type"
+              data={[{ category: "-Select Type-" }, ...dataSource]}
+              option_value={"category"}
+              option_label={"category"}
+              onChange={(e) => handleChange("type", e.target.value)}
+              value={values?.type}
+              required
+            />
+          </div>
+          <div className="md:w-1/3 mb-3">
+            <CustomSelect
               label="Tender"
-              data={TENDER_OPTIONS}
-              option_value={"key"}
-              option_label={"label"}
-              // onChange={(e) =>
-              //   handleFilterChange("salesLocation", e.target.value)
-              // }
-              // value={filterValues?.salesLocation}
+              required
+              data={[
+                { tender: "-Select Tender-", types: [] },
+                ...(dataSource?.filter(
+                  (type) => type.category === values?.type
+                )[0]?.tenders || []),
+              ]}
+              option_value={"tender"}
+              option_label={"tender"}
+              onChange={(e) => handleChange("tender", e.target.value)}
+              value={values?.tender}
+            />
+          </div>
+          <div className="md:w-1/3 mb-3">
+            <CustomSelect
+              label="Payment"
+              required
+              data={paymentTypeList}
+              option_value={"dataSource"}
+              option_label={"type"}
+              onChange={(e) => handleChange("payment", e.target.value)}
+              value={values?.payment}
             />
           </div>
           <div className="custom-file-picker">
             <FileUploader
-              handleChange={handleChange}
+              handleChange={handleFileChange}
               name="file"
-              types={fileTypes}
+              // types={fileTypes}
+              multiple
             >
               <div className="drag-drop-component">
                 <i
@@ -57,38 +77,16 @@ export default function Uploads() {
                 <p>Drag & Drop your files here</p>
               </div>
             </FileUploader>
+            <div className="flex gap-2">
+              {[...files]?.map((file, index) => {
+                return (
+                  <div key={index} className="added-file-list">
+                    <p>{file?.name}</p>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-          {/* {profileUpdateParams?.status && (
-            <Alert type="success" message={profileUpdateParams?.status} />
-          )} */}
-          {/* <CustomInput
-            placeholder="Name"
-            label="Name"
-            type="text"
-            name="name"
-            value={profileUpdateParams?.name}
-            onChange={(e) => handleProfileUpdate("name", e.target.value)}
-            error={profileUpdateParamsError?.name}
-          />
-          <CustomInput
-            placeholder="Email"
-            label="Email"
-            type="text"
-            name="email"
-            value={profileUpdateParams?.email}
-            onChange={(e) => handleProfileUpdate("email", e.target.value)}
-            error={profileUpdateParamsError?.email}
-            // disabled
-          />
-          <CustomInput
-            placeholder="Mobile"
-            label="Mobile"
-            type="text"
-            name="mobile"
-            value={profileUpdateParams?.mobile}
-            onChange={(e) => handleProfileUpdate("mobile", e.target.value)}
-            error={profileUpdateParamsError?.mobile}
-          /> */}
           <div className="md:w-1/3 mt-3">
             <PrimaryButton label="Upload" onClick={onSubmit} />
           </div>

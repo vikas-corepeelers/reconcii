@@ -1,0 +1,15 @@
+.icon-box-admin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  width: 50px;
+  border-radius: 50px;
+  background-color: #ffffff;
+  /* box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px; */
+}
+
+.icon-box-admin img {
+  height: 30px;
+  width: 30px;
+}

@@ -29,7 +29,8 @@
   align-items: center;
 }
 .ddSelection {
-  min-width: 600px;
+  min-width: 400px;
+  width: 100%;
   padding: 7px 7px;
   display: flex;
   gap: 10px;
@@ -41,7 +42,7 @@
   border-radius: 5px;
   border: 1px solid lightgray;
   height: 36px;
-  width: 108px;
+  width: 500px;
   font-size: 14px;
   padding: 0px 5px;
   background-color: transparent;

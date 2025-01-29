@@ -11,6 +11,8 @@ import GroupDescription from "./Pages/Groups/GroupDescription";
 import Users from "./Pages/Users";
 import UploadConfig from "./Pages/UploadConfig";
 import CreateGroup from "./Pages/Groups/CreateGroup";
+import Modules from "./Pages/Modules";
+import Dashboard from "./Pages/Dashboard";
 
 function Admin() {
   function WithSidebar(children, screen = "") {
@@ -44,6 +46,16 @@ function Admin() {
     <div className="after-login-view">
       <Routes>
         <Route path="/" exact element={<Login />} />
+        <Route
+          path="/dashboard"
+          exact
+          element={WithSidebar(<Dashboard />, "dashboard")}
+        />
+        <Route
+          path="/modules"
+          exact
+          element={WithSidebar(<Modules />, "modules")}
+        />
         <Route
           path="/groups"
           exact

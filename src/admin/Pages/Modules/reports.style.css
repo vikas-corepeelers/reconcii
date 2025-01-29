@@ -13,11 +13,3 @@
   align-items: center;
   justify-content: center;
 }
-
-.added-file-list {
-  border: 1px solid #ccc;
-  padding: 5px;
-  margin-top: 5px;
-  background-color: #ffffff;
-  border-radius: 4px;
-}

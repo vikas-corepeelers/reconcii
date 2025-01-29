@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { apiEndpoints } from "../../../ServiceRequest/APIEndPoints";
 import {
   requestCallGet,
@@ -9,37 +9,48 @@ import {
   setActiveTender,
   setDBLogicId,
   setLogicData,
+  setLogicGroups,
   setTableList,
   setTenderList,
 } from "../../../Redux/Slices/Logics";
 import { useLoader } from "../../../Utils/Loader";
 const useLogic = () => {
   const dispatch = useDispatch();
-  const { setLoading } = useLoader();
+  const { setLoading, setToastMessage } = useLoader();
   let { logicData, activeTender, dbLogicId } = useSelector(
     (state) => state.LogicsService
   );
+
   const saveFormulas = async (reqObj) => {
     try {
       let url = apiEndpoints.SAVE_ALL_RECO_LOGICS;
       let requestObj = {
-        tender: activeTender,
+        tenders: activeTender,
         recoData: reqObj?.response,
+        effectiveFrom: reqObj?.effectiveFrom,
+        effectiveTo: reqObj?.effectiveTo,
+        effectiveType: reqObj?.effectiveType,
+        id: reqObj?.id || undefined,
       };
-      if (dbLogicId !== null) {
+
+      if (reqObj?.id) {
         url = apiEndpoints.UPDATE_ALL_RECO_LOGICS;
-        requestObj = {
-          ...requestObj,
-          id: dbLogicId,
-        };
       }
 
       const response = await requestCallPost(url, requestObj);
       if (response.status) {
-        dispatch(setLogicData([]));
-        dispatch(setTableList([]));
-        dispatch(setTenderName(""));
-        dispatch(setDBLogicId(null));
+        if (response?.data?.code === 500) {
+          setToastMessage({
+            message: response?.data?.message,
+            type: "error",
+          });
+        } else {
+          setToastMessage({
+            message: "Formula successfully added/updated",
+            type: "success",
+          });
+          getSavedFormulas(activeTender);
+        }
       }
     } catch (error) {
       console.error(error);
@@ -48,17 +59,33 @@ const useLogic = () => {
     }
   };
 
-  const getSavedFormulas = async (tender) => {
+  const getSavedFormulas = async (tenderList) => {
     try {
       let params = {
-        tender: tender,
+        tenders: tenderList,
       };
-      const response = await requestCallGet(
+      const response = await requestCallPost(
         apiEndpoints.GET_RECO_LOGICS_BY_TOPIC,
         params
       );
       if (response.status && response.data?.data?.length > 0) {
         try {
+          let logicGroupList = [];
+          response.data?.data?.forEach((group) => {
+            let logicJson = [];
+            try {
+              logicJson = JSON.parse(group?.recologic);
+            } catch (e) {
+              console.error(e);
+            }
+            let ele = {
+              ...group,
+              recologic: logicJson,
+            };
+            logicGroupList?.push(ele);
+          });
+          dispatch(setLogicGroups(logicGroupList));
+
           let savedLogic = JSON.parse(response.data?.data[0]?.recologic);
           dispatch(setLogicData(savedLogic));
           dispatch(setDBLogicId(response.data?.data[0]?.id));
@@ -89,10 +116,13 @@ const useLogic = () => {
   };
 
   const getTableList = async (tenders) => {
-    // console.log("tender", tender);
-    // return;
-    getSavedFormulas(tenders);
+    if (tenders.length === 0) {
+      dispatch(setTableList([]));
+      return;
+    }
     let tenderList = tenders?.map((tender) => tender?.value);
+    getSavedFormulas(tenderList);
+
     try {
       let params = {
         tenders: tenderList,
@@ -105,17 +135,16 @@ const useLogic = () => {
       );
 
       if (response.status && response?.data?.data?.length > 0) {
-        // let tables = response?.data?.data[0]?.tableWiseColumns?.map((table) => {
-        //   return { ...table, dataset_name: table.tableName };
-        // });
-
         let tables = [];
         response?.data?.data?.forEach((tender) => {
           tender?.dataSourceWiseColumns.forEach((dataSource) => {
-            tables.push({ ...dataSource, tender: tender.tender });
+            tables.push({
+              ...dataSource,
+              tender: tender.tender,
+              dataset_name: dataSource?.dataSourceName,
+            });
           });
         });
-        console.log("tables", tables);
         dispatch(setTableList(tables));
       }
     } catch (error) {
@@ -143,7 +172,7 @@ const useLogic = () => {
     return output;
   };
 
-  const validateFormula = (effectiveFrom, effectiveTo) => {
+  const validateFormula = (effectiveType, effectiveFrom, effectiveTo) => {
     setLoading(true);
     let allFormulas = [...logicData];
     let formulaNames = [];
@@ -173,18 +202,18 @@ const useLogic = () => {
       formula?.fields.forEach((formField) => {
         if (
           formField?.type === "data_field" &&
-          formField?.selectedDataSetValue
+          formField?.selectedTableColumn
         ) {
-          if (Array.isArray(formField?.selectedDataSetValue)) {
-            formField?.selectedDataSetValue?.forEach((singleField) => {
-              let field = formField?.selectedFieldValue + "." + singleField;
+          if (Array.isArray(formField?.selectedTableColumn)) {
+            formField?.selectedTableColumn?.forEach((singleField) => {
+              let field = formField?.selectedTableName + "." + singleField;
               dbFields?.push(field);
             });
           } else {
             let field =
-              formField?.selectedFieldValue +
+              formField?.selectedTableName +
               "." +
-              formField?.selectedDataSetValue;
+              formField?.selectedTableColumn;
             dbFields?.push(field);
           }
         }
@@ -195,6 +224,7 @@ const useLogic = () => {
         tender: activeTender,
         effectiveFrom: effectiveFrom,
         effectiveTo: effectiveTo,
+        effectiveType: effectiveType,
         recoLogic: {
           [formula.logicNameKey]: addBracketsOnVariables(formula?.formulaText),
         },
@@ -210,10 +240,12 @@ const useLogic = () => {
       setLoading(false);
     }
 
-    console.log("verifiedFormula", verifiedFormula);
     return {
       isValid: validationStatus,
       response: verifiedFormula,
+      effectiveFrom: effectiveFrom,
+      effectiveTo: effectiveTo,
+      effectiveType: effectiveType,
     };
   };
 

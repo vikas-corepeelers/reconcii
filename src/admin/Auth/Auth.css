@@ -1,12 +1,14 @@
 /* Full-screen background */
 
-.login-container {
+.login-container-admin {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: url("./login_bg.jpg") no-repeat center center;
   background-size: cover;
+
+  background: none;
+  background-color: #7393b3;
 }
 
 /* Login box styling */

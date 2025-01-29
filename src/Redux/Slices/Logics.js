@@ -5,6 +5,7 @@ const initialState = {
   activeTender: [],
   tableList: [],
   excelFiles: [],
+  logicGroups: [],
   logicData: [],
   activeLogic: null,
   activeLogicIndex: -1,
@@ -17,6 +18,9 @@ export const LogicsSlice = createSlice({
   reducers: {
     setExcelFiles: (state, action) => {
       state.excelFiles = action.payload;
+    },
+    setLogicGroups: (state, action) => {
+      state.logicGroups = action.payload;
     },
     setLogicData: (state, action) => {
       state.logicData = action.payload;
@@ -52,6 +56,7 @@ export const {
   setActiveLogicIndex,
   setActiveTender,
   setDBLogicId,
+  setLogicGroups,
 } = LogicsSlice.actions;
 
 export default LogicsSlice.reducer;

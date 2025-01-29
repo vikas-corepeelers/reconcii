@@ -36,6 +36,7 @@ const DashboardFilter = () => {
     getDashboard,
     downloadStoreReport,
     fetchTenderWiseStoresMissedInMapping,
+    fetchOldEffectiveDate,
   } = useDashboard();
   let { cityList, storeList, loadingDashboard } = useSelector(
     (state) => state.CommonService
@@ -49,6 +50,7 @@ const DashboardFilter = () => {
   useEffect(() => {
     fetchCityListAndSet();
     fetchTenderWiseStoresMissedInMapping();
+    fetchOldEffectiveDate();
   }, []);
 
   const fetchCityListAndSet = async () => {

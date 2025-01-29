@@ -5,6 +5,18 @@ import ImgConst from "../../Utils/ImgConstants";
 
 const MANAGER_SIDEBAR = [
   {
+    id: "dashboard",
+    label: "Dashboard",
+    route: "/admin/dashboard",
+    icon: "dashboard",
+  },
+  {
+    id: "modules",
+    label: "Modules",
+    route: "/admin/modules",
+    icon: "checklist",
+  },
+  {
     id: "groups",
     label: "Groups",
     route: "/admin/groups",
@@ -47,23 +59,26 @@ const Sidebar = () => {
   const selectedSidebar = (key) => {
     // console.log(")(", key);
     switch (key) {
+      case "/admin/dashboard":
+        setSelectedIndex(0);
+        break;
       case "/admin/groups":
-        setSelectedIndex(0);
-        break;
-      case "/admin/groups/description":
-        setSelectedIndex(0);
-        break;
-      case "/admin/groups/create":
-        setSelectedIndex(0);
-        break;
-      case "/admin/users":
         setSelectedIndex(1);
         break;
-      case "/admin/upload-config":
+      case "/admin/groups/description":
+        setSelectedIndex(1);
+        break;
+      case "/admin/groups/create":
+        setSelectedIndex(1);
+        break;
+      case "/admin/users":
         setSelectedIndex(2);
         break;
-      case "/admin/user-data":
+      case "/admin/upload-config":
         setSelectedIndex(3);
+        break;
+      case "/admin/user-data":
+        setSelectedIndex(4);
         break;
       default:
         setSelectedIndex(50);
