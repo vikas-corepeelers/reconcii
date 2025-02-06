@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { apiEndpoints } from "../../ServiceRequest/APIEndPoints";
+import API_END_POINTS from "../../ServiceRequest/APIEndPoints";
 import {
   requestCallGet,
   requestCallPost,
@@ -62,26 +62,16 @@ const useAuth = () => {
         deviceId: deviceId,
       };
       const response = await requestCallPost(
-        apiEndpoints.ACCESS_TOKEN,
+        API_END_POINTS.login,
         loginParams,
         additionalHeaders
       );
       setLoading(false);
       if (response.status) {
-        localStorage.setItem(
-          "ReconciiToken",
-          response.data?.data?.access_token
-        );
-        localStorage.setItem(
-          "ReconciiRefreshToken",
-          response.data?.data?.refresh_token
-        );
-        localStorage.setItem(
-          "userProfile",
-          JSON.stringify(response.data?.data)
-        );
+        localStorage.setItem("ReconciiToken", response.data?.token);
+        localStorage.setItem("userProfile", JSON.stringify(response.data));
         dispatch(setUserProfile(response.data?.data));
-        fetchProfile();
+        // fetchProfile();
         navigate("/dashboard");
         return;
       }
@@ -94,7 +84,7 @@ const useAuth = () => {
 
   const fetchProfile = async () => {
     try {
-      const response = await requestCallGet(apiEndpoints.PROFILE);
+      const response = await requestCallGet(API_END_POINTS.PROFILE);
       if (response.status) {
         dispatch(setUserDetailedProfile(response?.data?.data));
         localStorage.setItem(
@@ -120,7 +110,7 @@ const useAuth = () => {
       }
       setLoading(true);
       const response = await requestCallPost(
-        apiEndpoints.FORGOT_PASSWORD,
+        API_END_POINTS.FORGOT_PASSWORD,
         forgotPasswordParams
       );
       setLoading(false);

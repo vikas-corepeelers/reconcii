@@ -269,3 +269,16 @@ p {
   color: #ffffff;
   font-weight: 500;
 }
+
+.after-login-view {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.border-color-black {
+  border-color: #000000;
+}
+
+.text-color-black {
+  border-color: #000000;
+}

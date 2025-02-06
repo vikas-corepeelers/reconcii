@@ -6,7 +6,7 @@ const PrimaryButton = (props) => {
       type="button"
       onClick={props.onClick}
       disabled={props?.disabled}
-      className={`w-full items-center justify-center flex gap-1 text-white py-2 px-2 rounded-md ${
+      className={`w-full items-center justify-center flex gap-1 border-1 border-color-black text-white py-2 px-2 rounded-md ${
         props?.disabled ? "bg-Button-bgHiddenColor" : "bg-Button-bgColor"
       }`}
     >

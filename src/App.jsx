@@ -5,13 +5,9 @@ import "./Utils/Theme.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import Pages from "./Pages";
-import Login from "./Pages/Auth/Login";
-import ForgotPassword from "./Pages/Auth/ForgotPassword";
-import ResetPassword from "./Pages/Auth/ResetPassword";
 import { useDispatch } from "react-redux";
 import { setUserDetailedProfile, setUserProfile } from "./Redux/Slices/Common";
 import { LoaderProvider } from "./Utils/Loader";
-import Admin from "./admin";
 function MainNavigator() {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -40,10 +36,6 @@ function MainNavigator() {
     <Router>
       <LoaderProvider>
         <Routes>
-          <Route exact path="/" element={<Login />} />
-          <Route exact path="/forgot-password" element={<ForgotPassword />} />
-          <Route exact path="/reset-password" element={<ResetPassword />} />
-          <Route exact path="/admin/*" element={<Admin />} />
           <Route exact path="/*" element={<Pages />} />
         </Routes>
       </LoaderProvider>

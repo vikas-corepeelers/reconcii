@@ -1,0 +1,10 @@
+.manage-btn {
+  border: 1px solid #4caf50;
+  background-color: #4caf5050;
+  padding: 5px;
+  border-radius: 2px;
+  color: #4caf50;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

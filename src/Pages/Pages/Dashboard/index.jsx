@@ -1,32 +1,47 @@
 import React, { useEffect, useState } from "react";
-import DashboardFilter from "./components/DashboardFilter";
-import DashboardNumbers from "./components/DashboardNumbers";
-import InStoreDashboardGraphs from "./InStoreDashboardGraphs";
-import BlankDashboard from "./components/BlankDashboard";
-import { useSelector } from "react-redux";
-import { DASHBOARD_ITEMS } from "./DashboardConstants";
-import ThreePODashboardGraphs from "./3PODashboardGraphs";
+import IMAGES from "../../../Constants/Images";
+import CardComponent from "../../Components/CardComponent";
 
 const Dashboard = () => {
-  let { dashboardData, dashboardFilters } = useSelector(
-    (state) => state.CommonService
-  );
   return (
-    <div>
-      <DashboardFilter />
-      <DashboardNumbers />
-      {dashboardFilters?.salesLocation === DASHBOARD_ITEMS[0]?.key &&
-        (dashboardData?.sales !== undefined ? (
-          <InStoreDashboardGraphs />
-        ) : (
-          <BlankDashboard />
-        ))}
-      {dashboardFilters?.salesLocation === DASHBOARD_ITEMS[1]?.key &&
-        (dashboardData?.sales !== undefined ? (
-          <ThreePODashboardGraphs />
-        ) : (
-          <BlankDashboard />
-        ))}
+    <div className="flex-1">
+      <div class="flex gap-3">
+        <div class="flex-1 col-span-12">
+          <CardComponent
+            label={"TOTAL USERS"}
+            number={"17"}
+            icon={IMAGES.User}
+          />
+        </div>
+        <div class="flex-1 col-span-12">
+          <CardComponent
+            label={"Active User"}
+            number={12}
+            icon={IMAGES.ActiveUser}
+          />
+        </div>
+        <div class="flex-1 col-span-12">
+          <CardComponent
+            label={"Inactive User"}
+            number={5}
+            icon={IMAGES.InactiveUser}
+          />
+        </div>
+        <div class="flex-1 col-span-12">
+          <CardComponent
+            label={"Total Groups"}
+            number={5}
+            icon={IMAGES.Groups}
+          />
+        </div>
+        <div class="flex-1 col-span-12">
+          <CardComponent
+            label={"Total Modules"}
+            number={5}
+            icon={IMAGES.Modules}
+          />
+        </div>
+      </div>
     </div>
   );
 };

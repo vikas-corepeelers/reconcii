@@ -3,29 +3,15 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 import Login from "./Auth/Login";
 import Sidebar from "./Components/Sidebar";
 import Navbar from "./Components/Navbar";
-import Dashboard from "./Pages/Dashboard/index";
-import Reconciliations from "./Pages/Reconciliations/index";
-import DefineLogic from "./Pages/DefineLogic";
-import Uploads from "./Pages/Uploads";
 import { ToastContainer } from "react-toastify";
-import Settings from "./Pages/Settings";
-import Reports from "./Pages/Reports";
-import ChangePassword from "./Pages/Profile/ChangePassword";
-import UpdateProfile from "./Pages/Profile/UpdateProfile";
-import MainDashboard from "./Pages/MainDashboard";
-import Vouchers from "./Pages/Vouchers";
-import ExcelDBMapping from "./Pages/ExcelDBMapping";
+import Groups from "./Pages/Groups";
+import Users from "./Pages/Users";
+import UploadConfig from "./Pages/UploadConfig";
+import Modules from "./Pages/Modules";
+import Dashboard from "./Pages/Dashboard";
+import Permissions from "./Pages/Permissions";
 
-function AdminNavigator() {
-  function WithFooterOnly(children) {
-    return (
-      <div className="body-background">
-        {children}
-        {/* <Footer /> */}
-      </div>
-    );
-  }
-
+function Admin() {
   function WithSidebar(children, screen = "") {
     return (
       <div>
@@ -56,65 +42,41 @@ function AdminNavigator() {
   return (
     <div className="after-login-view">
       <Routes>
+        <Route path="/" exact element={<Login />} />
         <Route
           path="/dashboard"
           exact
           element={WithSidebar(<Dashboard />, "dashboard")}
         />
-        {/* <Route
-          path="/detailed_dashboard"
-          exact
-          element={WithSidebar(<Dashboard />, "detailed_dashboard")}
-        /> */}
         <Route
-          path="/reconciliations"
+          path="/modules"
+          exact
+          element={WithSidebar(<Modules />, "modules")}
+        />
+        <Route
+          path="/groups"
+          exact
+          element={WithSidebar(<Groups />, "groups")}
+        />
+        <Route
+          path="/modules/permissions/:id"
+          exact
+          element={WithSidebar(<Permissions />, "permissions")}
+        />
+        <Route path="/users" exact element={WithSidebar(<Users />, "users")} />
+        <Route
+          path="/upload-config"
+          exact
+          element={WithSidebar(<UploadConfig />, "upload-config")}
+        />
+        {/*<Route
+          path="/user-data"
           exact
           element={WithSidebar(<Reconciliations />, "reconciliations")}
-        />
-        <Route
-          path="/vouchers"
-          exact
-          element={WithSidebar(<Vouchers />, "vouchers")}
-        />
-        <Route
-          path="/excel-db-mapping"
-          exact
-          element={WithSidebar(<ExcelDBMapping />, "excel-db-mapping")}
-        />
-        <Route
-          path="/definelogic"
-          exact
-          element={WithSidebar(<DefineLogic />, "definelogic")}
-        />
-        <Route
-          path="/uploads"
-          exact
-          element={WithSidebar(<Uploads />, "uploads")}
-        />
-        <Route
-          path="/settings"
-          exact
-          element={WithSidebar(<Settings />, "settings")}
-        />
-        <Route
-          path="/reports"
-          exact
-          element={WithSidebar(<Reports />, "reports")}
-        />
-        <Route
-          path="/change-password"
-          exact
-          element={WithSidebar(<ChangePassword />, "changepassword")}
-        />
-        <Route
-          path="/update-profile"
-          exact
-          element={WithSidebar(<UpdateProfile />, "update-profile")}
-        />
+        /> */}
       </Routes>
     </div>
   );
 }
 
-export default AdminNavigator;
-// export default App;
+export default Admin;

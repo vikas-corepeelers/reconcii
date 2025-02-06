@@ -12,9 +12,11 @@ const Login = () => {
 
   return (
     <div>
-      <div className="login-container">
+      <div className="login-container-admin">
         <div className="login-box">
-          <p className="text-xl text-black mb-2">WELCOME BACK</p>
+          <div className="admin-login-label">
+            <p className="text-xl">ADMIN LOGIN</p>
+          </div>
           <p className="text-sm text-black mb-4">
             Please log in to your account
           </p>
@@ -25,7 +27,9 @@ const Login = () => {
             type="email"
             placeholder="Username"
             value={loginParams?.username}
-            onChange={(e) => handleLoginParamsChanges("username", e.target.value)}
+            onChange={(e) =>
+              handleLoginParamsChanges("username", e.target.value)
+            }
             error={loginErrors?.username}
           />
           <CustomInput
