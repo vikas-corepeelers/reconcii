@@ -3,6 +3,7 @@ import { requestCallPost } from "../../../../ServiceRequest/APIFunctions";
 import { isValidPassword } from "../../../../Utils/UtilityFunctions";
 import { apiEndpoints } from "../../../../ServiceRequest/APIEndPoints";
 import { useLoader } from "../../../../Utils/Loader";
+import useMakeLogs from "../../../../Hooks/useMakeLogs";
 
 const BLANK_CHANGE_PASSWORD = {
   confirmPassword: "",
@@ -11,6 +12,7 @@ const BLANK_CHANGE_PASSWORD = {
 };
 
 const useChangePassword = () => {
+  const { makeLog } = useMakeLogs();
   const { setLoading, setToastMessage } = useLoader();
   const [changePasswordParams, setChangePasswordParams] = useState(
     BLANK_CHANGE_PASSWORD
@@ -47,21 +49,25 @@ const useChangePassword = () => {
         });
         return;
       }
-      setLoading(true)
+      setLoading(true);
       const response = await requestCallPost(
         apiEndpoints.CHANGE_PASSWORD,
         changePasswordParams
       );
-      setLoading(false)
+      setLoading(false);
       if (response.status) {
-        setToastMessage({message: "Password reset successfully.", type:"success"})
+        makeLog("change_password", apiEndpoints.CHANGE_PASSWORD, "java");
+        setToastMessage({
+          message: "Password reset successfully.",
+          type: "success",
+        });
         return;
       }
       setChangePasswordParamsError({
         currentPassword: "Incorrect old password.",
       });
     } catch (error) {
-      setToastMessage({message: "Something went wrong.", type:"error"})
+      setToastMessage({ message: "Something went wrong.", type: "error" });
     }
   };
 

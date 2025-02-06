@@ -4,6 +4,7 @@ import {
   requestCallGet,
   requestCallPost,
 } from "../../../ServiceRequest/APIFunctions";
+import useMakeLogs from "../../../Hooks/useMakeLogs";
 
 const BLANK_CUSTOM_REPORT_PARAMS = {
   startDate: new Date(),
@@ -13,6 +14,7 @@ const BLANK_CUSTOM_REPORT_PARAMS = {
 };
 
 const useReports = () => {
+  const { makeLog } = useMakeLogs();
   const [generatedReports, setGeneratedReports] = useState([]);
   const [reportTenders, setReportTenders] = useState([]);
   const [reportColumns, setReportColumns] = useState([]);
@@ -66,6 +68,12 @@ const useReports = () => {
         { responseType: "blob" }
       );
       let res = response?.response;
+      makeLog(
+        "downloaded_generated_reported_data",
+        apiEndpoints.DOWNLOAD_ASYNC_GENERATE_REPORT_DATA,
+        "java",
+        params
+      );
       const { data = "" } = res || {};
       const fileName = record?.fileName;
       downloadReportsFun(data, fileName);
@@ -85,7 +93,12 @@ const useReports = () => {
       {},
       { responseType: "blob" }
     );
-
+    makeLog(
+      "downloaded_missing_mapped_stores",
+      apiEndpoints.DOWNLOAD_MISSING_STORE_MAPPING,
+      "java",
+      params
+    );
     const fileName = "downloaded_file.xlsx";
     const data = response.data;
     downloadReportsFun(data, fileName);

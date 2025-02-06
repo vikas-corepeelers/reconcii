@@ -16,10 +16,12 @@ import {
 } from "../../../Redux/Slices/Common";
 import { useLoader } from "../../../Utils/Loader";
 import { setReconciliation3POData } from "../../../Redux/Slices/Reconciliation";
+import useMakeLogs from "../../../Hooks/useMakeLogs";
 
 const useDashboard = () => {
   const dispatch = useDispatch();
   const { setToastMessage, setLoading } = useLoader();
+  const { makeLog } = useMakeLogs();
   let { currentDashboardRequest } = useSelector((state) => state.CommonService);
 
   const fetchOldEffectiveDate = async () => {
@@ -86,6 +88,7 @@ const useDashboard = () => {
         params
       );
       if (response.status) {
+        makeLog("fetch_dashboard", apiEndpoints.DASHBOARD_DATA, "java", params);
         dispatch(setDashboardData(response?.data?.data));
         dispatch(setLoadingDashboard(false));
         setTimeout(() => {
@@ -108,12 +111,24 @@ const useDashboard = () => {
       }
       if (response.status) {
         if (reconciliation) {
+          makeLog(
+            "fetch_reconciliation_dashboard",
+            apiEndpoints._3PO_DATA,
+            "java",
+            params
+          );
           dispatch(setReconciliation3POData(response?.data?.data));
           setTimeout(() => {
             setLoading(false);
             dispatch(setLoadingDashboard(false));
           }, 1000);
         } else {
+          makeLog(
+            "fetch_3po_dashboard",
+            apiEndpoints._3PO_DATA,
+            "java",
+            params
+          );
           dispatch(setDashboard3POData(response?.data?.data));
         }
       }
@@ -134,6 +149,12 @@ const useDashboard = () => {
       );
       dispatch(setLoadingDashboard(false));
       if (response.status) {
+        makeLog(
+          "generate_dashboard_report",
+          apiEndpoints.DOWNLOAD_ASYNC_DASHBOARD_REPORT,
+          "java",
+          req
+        );
         setToastMessage({
           message: "Request submitted for generating report.",
           type: "success",
@@ -160,6 +181,12 @@ const useDashboard = () => {
       );
       dispatch(setLoadingDashboard(false));
       if (response.status) {
+        makeLog(
+          "generate_store_report",
+          apiEndpoints.DOWNLOAD_STORE_TEMPLATE_DATA,
+          "java",
+          req
+        );
         setToastMessage({
           message: "Request submitted for generating report.",
           type: "success",

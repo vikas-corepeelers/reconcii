@@ -103,6 +103,11 @@ const useUploads = () => {
         customConfig
       );
       if (response.status) {
+        makeLog(
+          "upload_file",
+          `${apiEndpoints.UPLOAD_FILE}?datasource=${values?.payment}`,
+          "python"
+        );
         setFiles([]);
         setToastMessage({
           message: "File uploaded successfully.",

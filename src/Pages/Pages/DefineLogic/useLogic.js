@@ -14,8 +14,11 @@ import {
   setTenderList,
 } from "../../../Redux/Slices/Logics";
 import { useLoader } from "../../../Utils/Loader";
+import useMakeLogs from "../../../Hooks/useMakeLogs";
+import moment from "moment";
 const useLogic = () => {
   const dispatch = useDispatch();
+  const { makeLog } = useMakeLogs();
   const { setLoading, setToastMessage } = useLoader();
   let { logicData, activeTender, dbLogicId } = useSelector(
     (state) => state.LogicsService
@@ -45,6 +48,7 @@ const useLogic = () => {
             type: "error",
           });
         } else {
+          makeLog("save_defined_logics", url, "java", requestObj);
           setToastMessage({
             message: "Formula successfully added/updated",
             type: "success",
@@ -94,6 +98,16 @@ const useLogic = () => {
           dispatch(setDBLogicId(null));
         }
       } else {
+        dispatch(
+          setLogicGroups([
+            {
+              tender: tenderList?.join(","),
+              createdBy: "ADMIN",
+              effectiveFrom: moment().format("YYYY-MM-DD"),
+              effectiveType: "business_date",
+            },
+          ])
+        );
         dispatch(setDBLogicId(null));
       }
     } catch (error) {

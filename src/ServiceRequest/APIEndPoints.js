@@ -124,14 +124,16 @@ const apiEndpoints = {
   // New URLs
   GET_TENDER_LIST: `${RECONCILIATION_SERVICE}/api/v1/tenderList`,
   GET_TENDER_WISE_TABLES_LIST: `${RECONCILIATION_SERVICE}/api/v1/tenderWisetables`,
-  SAVE_ALL_RECO_LOGICS: `${RECONCILIATION_SERVICE}/public/recologics/save`,
-  UPDATE_ALL_RECO_LOGICS: `${RECONCILIATION_SERVICE}/public/recologics/update`,
-  GET_ALL_RECO_LOGICS: `${RECONCILIATION_SERVICE}/public/recologics/getAll`,
-  GET_RECO_LOGICS_BY_TOPIC: `${RECONCILIATION_SERVICE}/public/recologics/get`,
+  SAVE_ALL_RECO_LOGICS: `${RECONCILIATION_SERVICE}/api/v1/recologics/save`,
+  UPDATE_ALL_RECO_LOGICS: `${RECONCILIATION_SERVICE}/api/v1/recologics/update`,
+  GET_ALL_RECO_LOGICS: `${RECONCILIATION_SERVICE}/api/v1/recologics/getAll`,
+  GET_RECO_LOGICS_BY_TOPIC: `${RECONCILIATION_SERVICE}/api/v1/recologics/get`,
   GET_ALL_DATA_SOURCE_FOR_MAPPING: `${RECONCILIATION_SERVICE}/api/v1/datasource`,
   EXCEL_DB_COLUMN_MAPPING_BY_DATASOURCE: `${RECONCILIATION_SERVICE}/api/ve1/customisedfields/getExcelDbColumMappingByDataSource/`,
   UPDATE_EXCEL_DB_COLUMN_MAPPING_BY_DATASOURCE: `${RECONCILIATION_SERVICE}/api/ve1/customisedfields/updateExcelDbColumMapping`,
-  FIND_OLDEST_EFFECTIVE_DATE: `${RECONCILIATION_SERVICE}/public/recologics/findOldestEffectiveDate`,
+  FIND_OLDEST_EFFECTIVE_DATE: `${RECONCILIATION_SERVICE}/api/v1/recologics/findOldestEffectiveDate`,
+
+  SAVE_AUDIT_LOG: `${RECONCILIATION_SERVICE}/api/v2/auditlog/save`,
 
   // Upload URLs
   NEW_DATA_SOURCE_FIELDS: `${reconcii}/datasource`,

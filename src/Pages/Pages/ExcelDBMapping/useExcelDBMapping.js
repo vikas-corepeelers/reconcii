@@ -6,6 +6,7 @@ import {
 } from "../../../ServiceRequest/APIFunctions";
 import { useDispatch } from "react-redux";
 import { useLoader } from "../../../Utils/Loader";
+import useMakeLogs from "../../../Hooks/useMakeLogs";
 
 const BLANK_FILTER = {
   category: "",
@@ -14,8 +15,7 @@ const BLANK_FILTER = {
 };
 
 const useExcelDBMapping = () => {
-  const dispatch = useDispatch();
-
+  const { makeLog } = useMakeLogs();
   const { setLoading, setToastMessage } = useLoader();
   const [dataCategoryList, setDataCategoryList] = useState([]);
   const [filterParams, setFilterParams] = useState(BLANK_FILTER);
@@ -100,6 +100,12 @@ const useExcelDBMapping = () => {
         reqParams
       );
       if (response.status) {
+        makeLog(
+          "update_excel_db_mapping",
+          apiEndpoints.UPDATE_EXCEL_DB_COLUMN_MAPPING_BY_DATASOURCE,
+          "java",
+          reqParams
+        );
         setLoading(false);
         setFilterParams(BLANK_FILTER);
         setToastMessage({

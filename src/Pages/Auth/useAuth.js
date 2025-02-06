@@ -12,6 +12,7 @@ import {
 } from "../../Redux/Slices/Common";
 import { useNavigate } from "react-router-dom";
 import { useLoader } from "../../Utils/Loader";
+import useMakeLogs from "../../Hooks/useMakeLogs";
 const BLANK_LOGIN = {
   username: "",
   password: "",
@@ -28,7 +29,7 @@ const useAuth = () => {
   const { setLoading, setToastMessage } = useLoader();
   const [loginParams, setLoginParams] = useState(BLANK_LOGIN);
   const [loginErrors, setLoginErrors] = useState(null);
-
+  const { makeLog } = useMakeLogs();
   const [forgotPasswordParams, setForgotPasswordParams] =
     useState(FORGOT_PASSWORD);
   const [forgotPasswordErrors, setForgotPasswordErrors] = useState(null);
@@ -81,6 +82,9 @@ const useAuth = () => {
           JSON.stringify(response.data?.data)
         );
         dispatch(setUserProfile(response.data?.data));
+        makeLog("login", apiEndpoints.ACCESS_TOKEN, "java", {
+          username: loginParams.username,
+        });
         fetchProfile();
         navigate("/dashboard");
         return;
@@ -129,6 +133,12 @@ const useAuth = () => {
           message: "New password shared on your registered email.",
           type: "success",
         });
+        makeLog(
+          "forgot_password",
+          apiEndpoints.FORGOT_PASSWORD,
+          "java",
+          forgotPasswordParams
+        );
         navigate("/");
         return;
       }

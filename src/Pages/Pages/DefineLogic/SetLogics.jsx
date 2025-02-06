@@ -48,6 +48,8 @@ const SetLogics = ({ group, index }) => {
   const [startDate, setStartDate] = useState(
     group?.effectiveFrom ? new Date(group?.effectiveFrom) : new Date()
   );
+
+  console.log("startDate", new Date(group?.effectiveFrom));
   const [endDate, setEndDate] = useState(
     group?.effectiveTo && group?.effectiveTo !== "2099-12-31"
       ? new Date(group?.effectiveTo)
