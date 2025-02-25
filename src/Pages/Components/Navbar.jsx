@@ -16,8 +16,6 @@ const Navbar = () => {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
-  console.log("userDetailedProfile", userDetailedProfile);
-
   useEffect(() => {
     // Function to handle clicks outside the dropdown
     const handleClickOutside = (event) => {

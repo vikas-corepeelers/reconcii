@@ -5,6 +5,8 @@ import {
   sso,
   reconcii,
   reconciiBaseURL,
+  reconciiAdminBaseURL,
+  activityURL,
 } from "../ServiceRequest/APIEndPoints";
 const instance = axios.create({
   baseURL: baseURL,
@@ -28,6 +30,9 @@ instance.interceptors.request.use((config) => {
   }
   if (config?.url?.includes(reconcii)) {
     config.baseURL = reconciiBaseURL;
+  }
+  if (config?.url?.includes(activityURL)) {
+    config.baseURL = reconciiAdminBaseURL;
   }
   return config;
 });

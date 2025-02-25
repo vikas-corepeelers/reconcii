@@ -12,9 +12,12 @@ let env = setEnv();
 
 const baseURL = `${env}`;
 const ssoBaseURL = "https://api.corepeelers.com";
+
 const sso = "/sso-service/api/v1";
 const reconcii = "/reconcii-service/api";
+const activityURL = "/api/audit_log";
 const reconciiBaseURL = "https://reconciiapi.corepeelers.com";
+const reconciiAdminBaseURL = "http://localhost:8086";
 const AUTH = "/auth";
 const USER = "/user";
 const ROLE = "/role";
@@ -138,6 +141,19 @@ const apiEndpoints = {
   // Upload URLs
   NEW_DATA_SOURCE_FIELDS: `${reconcii}/datasource`,
   UPLOAD_FILE: `${reconcii}/upload`,
+
+  ACTIVITY_CREATE: `${activityURL}/create`,
+  ACTIVITY_SEARCH: `${activityURL}/list`,
+  ACTIVITY_USER_LIST: `${activityURL}/user/list`,
 };
 
-export { baseURL, ssoBaseURL, apiEndpoints, sso, reconcii, reconciiBaseURL };
+export {
+  baseURL,
+  ssoBaseURL,
+  apiEndpoints,
+  sso,
+  reconcii,
+  reconciiBaseURL,
+  reconciiAdminBaseURL,
+  activityURL,
+};

@@ -146,30 +146,6 @@ export default function Reports() {
                 </tr>
               </thead>
               <tbody>
-                {STATIC_REPORTS?.map((report) => {
-                  return (
-                    <tr key={report?.id}>
-                      <td>{report?.reportType}</td>
-                      <td>{report?.startDate}</td>
-                      <td>{report?.endDate}</td>
-                      <td>{report?.fileSize} mb</td>
-                      <td>{report?.status}</td>
-                      <td>{report?.createdAt}</td>
-                      <td>{report?.fileName}</td>
-                      <td className="px-6 py-4 flex justify-center items-center">
-                        {/* <button
-                          download
-                          onClick={() => downloadGeneratedReports(report)}
-                        >
-                          <i className="fa-solid fa-download"></i>
-                        </button> */}
-                        <a href={`${report.file}`} download="myFile">
-                          <i className="fa-solid fa-download"></i>
-                        </a>
-                      </td>
-                    </tr>
-                  );
-                })}
                 {generatedReports?.map((report) => {
                   return (
                     <tr key={report?.id}>

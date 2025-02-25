@@ -16,6 +16,7 @@ import {
 import { useLoader } from "../../../Utils/Loader";
 import useMakeLogs from "../../../Hooks/useMakeLogs";
 import moment from "moment";
+import LOG_ACTIONS from "../../../Constants/LogAction";
 const useLogic = () => {
   const dispatch = useDispatch();
   const { makeLog } = useMakeLogs();
@@ -48,7 +49,10 @@ const useLogic = () => {
             type: "error",
           });
         } else {
-          makeLog("save_defined_logics", url, "java", requestObj);
+          makeLog(LOG_ACTIONS.UPDATE, url, {
+            ...requestObj,
+            update_type: "save_defined_logics",
+          });
           setToastMessage({
             message: "Formula successfully added/updated",
             type: "success",

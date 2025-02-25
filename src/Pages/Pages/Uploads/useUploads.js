@@ -5,6 +5,7 @@ import {
   requestCallPost,
 } from "../../../ServiceRequest/APIFunctions";
 import { useLoader } from "../../../Utils/Loader";
+import LOG_ACTIONS from "../../../Constants/LogAction";
 
 const BLANK_FILTERS = {
   type: "",
@@ -104,9 +105,9 @@ const useUploads = () => {
       );
       if (response.status) {
         makeLog(
-          "upload_file",
+          LOG_ACTIONS.UPLOAD,
           `${apiEndpoints.UPLOAD_FILE}?datasource=${values?.payment}`,
-          "python"
+          values
         );
         setFiles([]);
         setToastMessage({

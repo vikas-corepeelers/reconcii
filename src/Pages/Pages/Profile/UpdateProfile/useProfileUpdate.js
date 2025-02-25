@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import useAuth from "../../../Auth/useAuth";
 import { useLoader } from "../../../../Utils/Loader";
 import useMakeLogs from "../../../../Hooks/useMakeLogs";
+import LOG_ACTIONS from "../../../../Constants/LogAction";
 
 const useProfileUpdate = () => {
   const { setLoading, setToastMessage } = useLoader();
@@ -57,9 +58,8 @@ const useProfileUpdate = () => {
       setLoading(false);
       if (response.status) {
         makeLog(
-          "update_profile",
+          LOG_ACTIONS.PROFILE_UPDATE,
           apiEndpoints.PROFILE,
-          "java",
           profileUpdateParams
         );
         setToastMessage({

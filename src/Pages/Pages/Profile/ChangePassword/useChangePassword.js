@@ -4,6 +4,7 @@ import { isValidPassword } from "../../../../Utils/UtilityFunctions";
 import { apiEndpoints } from "../../../../ServiceRequest/APIEndPoints";
 import { useLoader } from "../../../../Utils/Loader";
 import useMakeLogs from "../../../../Hooks/useMakeLogs";
+import LOG_ACTIONS from "../../../../Constants/LogAction";
 
 const BLANK_CHANGE_PASSWORD = {
   confirmPassword: "",
@@ -56,7 +57,7 @@ const useChangePassword = () => {
       );
       setLoading(false);
       if (response.status) {
-        makeLog("change_password", apiEndpoints.CHANGE_PASSWORD, "java");
+        makeLog(LOG_ACTIONS.CHANGE_PASSWORD, apiEndpoints.CHANGE_PASSWORD);
         setToastMessage({
           message: "Password reset successfully.",
           type: "success",

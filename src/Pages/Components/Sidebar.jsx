@@ -9,50 +9,68 @@ const MANAGER_SIDEBAR = [
     label: "Dashboard",
     route: "/dashboard",
     icon: "dashboard",
+    db_id: 3,
   },
-  // {
-  //   id: "detailed_dashboard",
-  //   label: "Detailed Dashboard",
-  //   route: "/detailed_dashboard",
-  //   icon: "dashboard",
-  // },
   {
     id: "reconciliations",
     label: "Reconciliations",
     route: "/reconciliations",
     icon: "currency_exchange",
+    db_id: 4,
   },
   {
     id: "vouchers",
     label: "Vouchers",
     route: "/vouchers",
     icon: "confirmation_number",
+    db_id: 5,
   },
-  { id: "reports", label: "Reports", route: "/reports", icon: "report" },
-  { id: "uploads", label: "Uploads", route: "/uploads", icon: "upload_file" },
+  {
+    id: "reports",
+    label: "Reports",
+    route: "/reports",
+    icon: "report",
+    db_id: 10,
+  },
+  {
+    id: "uploads",
+    label: "Uploads",
+    route: "/uploads",
+    icon: "upload_file",
+    db_id: 9,
+  },
   {
     id: "excel-db-mapping",
     label: "Excel-DB Mapping",
     route: "/excel-db-mapping",
     icon: "handshake",
+    db_id: 2,
   },
   {
     id: "definelogic",
     label: "Define Logic",
     route: "/definelogic",
     icon: "input",
+    db_id: 1,
+  },
+  {
+    id: "update-profile",
+    label: "Audit Log",
+    route: "/audit-log",
+    icon: "mouse",
+    db_id: 8,
   },
   {
     id: "update-profile",
     label: "Settings",
     route: "/update-profile",
     icon: "settings",
+    db_id: 11,
   },
 ];
 
 const Sidebar = () => {
-  const menuArray = MANAGER_SIDEBAR;
-
+  const [menuArray, setMenuArray] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const parm = useLocation();
@@ -64,39 +82,28 @@ const Sidebar = () => {
     }
   }, [path]);
 
+  useEffect(() => {
+    let allowedModules = [];
+    try {
+      let allowedModuleStr = localStorage.getItem("allowedModules");
+      allowedModules = JSON.parse(allowedModuleStr);
+      let allowedModulesArray = MANAGER_SIDEBAR?.filter((sideItem) =>
+        allowedModules?.includes(sideItem?.db_id)
+      );
+      setMenuArray(allowedModulesArray);
+    } catch (e) {
+      localStorage.getItem("allowedModules");
+    }
+  }, []);
+
   const selectedSidebar = (key) => {
     // console.log(")(", key);
-    switch (key) {
-      case "/dashboard":
-        setSelectedIndex(0);
-        break;
-      // case "/detailed_dashboard":
-      //   setSelectedIndex(1);
-      //   break;
-      case "/reconciliations":
-        setSelectedIndex(1);
-        break;
-      case "/vouchers":
-        setSelectedIndex(2);
-        break;
-      case "/reports":
-        setSelectedIndex(3);
-        break;
-      case "/uploads":
-        setSelectedIndex(4);
-        break;
-      case "/excel-db-mapping":
-        setSelectedIndex(5);
-        break;
-      case "/definelogic":
-        setSelectedIndex(6);
-        break;
-      case "/update-profile":
-        setSelectedIndex(7);
-        break;
-      default:
-        setSelectedIndex(50);
-        break;
+
+    const activeMenuIndex = menuArray?.findIndex((menu) =>
+      menu?.route?.includes(key)
+    );
+    if (activeMenuIndex !== -1) {
+      setSelectedIndex(activeMenuIndex);
     }
   };
 

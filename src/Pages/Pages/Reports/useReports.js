@@ -5,6 +5,7 @@ import {
   requestCallPost,
 } from "../../../ServiceRequest/APIFunctions";
 import useMakeLogs from "../../../Hooks/useMakeLogs";
+import LOG_ACTIONS from "../../../Constants/LogAction";
 
 const BLANK_CUSTOM_REPORT_PARAMS = {
   startDate: new Date(),
@@ -69,10 +70,9 @@ const useReports = () => {
       );
       let res = response?.response;
       makeLog(
-        "downloaded_generated_reported_data",
+        LOG_ACTIONS.DOWNLOAD_REPORT,
         apiEndpoints.DOWNLOAD_ASYNC_GENERATE_REPORT_DATA,
-        "java",
-        params
+        { ...params, report_type: "downloaded_generated_reported_data" }
       );
       const { data = "" } = res || {};
       const fileName = record?.fileName;
@@ -94,10 +94,9 @@ const useReports = () => {
       { responseType: "blob" }
     );
     makeLog(
-      "downloaded_missing_mapped_stores",
+      LOG_ACTIONS.DOWNLOAD_REPORT,
       apiEndpoints.DOWNLOAD_MISSING_STORE_MAPPING,
-      "java",
-      params
+      { ...params, report_type: "downloaded_missing_mapped_stores" }
     );
     const fileName = "downloaded_file.xlsx";
     const data = response.data;

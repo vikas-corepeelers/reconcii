@@ -584,11 +584,11 @@ const useUtilFunctions = (dataSetOptions) => {
     if (name === "multipleColumn") {
       updatedLogic = {
         ...BLANK_FORMULA,
+        active_group_index: updatedLogic?.active_group_index,
         logicName: currentLogic?.logicName,
         [name]: value,
       };
     }
-
     dispatch(setActiveLogic(updatedLogic));
   };
 

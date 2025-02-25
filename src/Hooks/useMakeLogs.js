@@ -3,26 +3,32 @@ import { apiEndpoints } from "../ServiceRequest/APIEndPoints";
 import { requestCallPost } from "../ServiceRequest/APIFunctions";
 
 const useMakeLogs = () => {
-  let userDetailedProfile = useSelector(
-    (state) => state.CommonService.userDetailedProfile
-  );
-  const makeLog = async (action, url, serviceName = "java", reqData = {}) => {
-    let reqParams = {
-      serviceName: serviceName,
-      userName: userDetailedProfile?.username,
-      systemIp: "",
-      url: url,
-      action: action,
-      reqData: JSON.stringify(reqData),
-    };
-
+  const makeLog = async (
+    action,
+    url,
+    reqData = {},
+    resData = {},
+    profileData = {}
+  ) => {
+    let profileDetail = {};
     try {
-      const response = await requestCallPost(
-        apiEndpoints.SAVE_AUDIT_LOG,
-        reqParams
-      );
-      if (response.status) {
-      }
+      let profileStr = localStorage.getItem("userDetailedProfile");
+      profileDetail = JSON.parse(profileStr);
+    } catch (e) {
+      console.error(e);
+    }
+
+    let reqParams = {
+      username: profileData?.username || profileDetail?.username,
+      user_email: profileData?.email || profileDetail?.email,
+      role: "User",
+      action: action,
+      request: JSON.stringify(reqData),
+      response: JSON.stringify(resData),
+      remarks: url,
+    };
+    try {
+      await requestCallPost(apiEndpoints.ACTIVITY_CREATE, reqParams);
     } catch (error) {
       console.error(error);
     }

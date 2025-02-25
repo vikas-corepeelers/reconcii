@@ -7,6 +7,7 @@ import {
 import { useDispatch } from "react-redux";
 import { useLoader } from "../../../Utils/Loader";
 import useMakeLogs from "../../../Hooks/useMakeLogs";
+import LOG_ACTIONS from "../../../Constants/LogAction";
 
 const BLANK_FILTER = {
   category: "",
@@ -101,10 +102,9 @@ const useExcelDBMapping = () => {
       );
       if (response.status) {
         makeLog(
-          "update_excel_db_mapping",
+          LOG_ACTIONS.UPDATE,
           apiEndpoints.UPDATE_EXCEL_DB_COLUMN_MAPPING_BY_DATASOURCE,
-          "java",
-          reqParams
+          { ...reqParams, type: "update_excel_db_mapping" }
         );
         setLoading(false);
         setFilterParams(BLANK_FILTER);

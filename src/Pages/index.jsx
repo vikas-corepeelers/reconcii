@@ -15,6 +15,7 @@ import UpdateProfile from "./Pages/Profile/UpdateProfile";
 import MainDashboard from "./Pages/MainDashboard";
 import Vouchers from "./Pages/Vouchers";
 import ExcelDBMapping from "./Pages/ExcelDBMapping";
+import AuditLog from "./Pages/AuditLog";
 
 function AdminNavigator() {
   function WithFooterOnly(children) {
@@ -104,12 +105,17 @@ function AdminNavigator() {
         <Route
           path="/change-password"
           exact
-          element={WithSidebar(<ChangePassword />, "changepassword")}
+          element={WithSidebar(<ChangePassword />, "change-password")}
         />
         <Route
           path="/update-profile"
           exact
           element={WithSidebar(<UpdateProfile />, "update-profile")}
+        />
+        <Route
+          path="/audit-log"
+          exact
+          element={WithSidebar(<AuditLog />, "audit-log")}
         />
       </Routes>
     </div>
