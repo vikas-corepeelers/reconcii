@@ -86,3 +86,21 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+.status-box {
+  background-color: #ff6666;
+  color: #ffffff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.status-box.active {
+  background-color: #4caf50;
+  text-align: center;
+}
+
+.override-permission-box {
+  border: 1px solid #ccc;
+  background-color: #f5f5f5;
+}

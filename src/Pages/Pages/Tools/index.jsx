@@ -5,100 +5,112 @@ import OutlineButton from "../../../components/OutlineButton";
 import AddUpdateModal from "./AddUpdateModal";
 import { useLoader } from "../../../Utils/Loader";
 import EditButton from "../../../components/EditButton";
-import usePermissions from "./usePermissions";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import DeleteButton from "../../../components/DeleteButton";
+import ManageButton from "../../../components/ManageButton";
+import { useNavigate } from "react-router-dom";
 import ConfirmationPopup from "../../../components/ConfirmationPopup";
+import useTools from "./useTools";
+import StatusBox from "../../Components/StatusBox";
 
-export default function Permissions() {
-  const params = useParams();
-  const [searchParams] = useSearchParams();
+export default function Tools() {
   const navigate = useNavigate();
   const { setToastMessage } = useLoader();
   const [isOpen, setIsOpen] = useState(false);
   const [removeRecordId, setRemoveRecordId] = useState(0);
-  const { fetchPermissionList, permissionList, deletePermission } =
-    usePermissions();
+  const { fetchToolList, toolList, deleteTool } = useTools();
 
   useEffect(() => {
-    if (params?.id) {
-      fetchPermissionList({ module_id: params?.id });
-    } else {
-      navigate("/dashboard");
-    }
+    fetchToolList();
   }, []);
 
   const onSuccess = () => {
     setIsOpen(false);
-    fetchPermissionList({ module_id: params?.id });
+    fetchToolList();
     setToastMessage({
-      message: "Permission details successfully added/updated.",
+      message: "Tool details successfully added/updated.",
       type: "success",
     });
   };
 
   const confirmRemove = async () => {
-    let status = await deletePermission({ id: removeRecordId });
+    let status = await deleteTool({ id: removeRecordId });
     if (status) {
       setRemoveRecordId(0);
       setToastMessage({
-        message: "Permission successfully removed.",
+        message: "Tool successfully removed.",
         type: "success",
       });
-      fetchPermissionList({ module_id: params?.id });
+      fetchToolList();
     }
   };
 
   return (
     <div className="">
       <BlankCard
-        withBackButton
-        onBackClick={() => navigate(-1)}
-        header={<h4 className="box-title font-bold text-base">PERMISSIONS</h4>}
+        header={<h4 className="box-title font-bold text-base">TOOLS</h4>}
         rightAction={
           <div className="fixed-right-action-div">
             <OutlineButton
-              label={"CREATE PERMISSION"}
+              label={"CREATE TOOL"}
               onClick={() => setIsOpen(true)}
             />
           </div>
         }
       >
         <div className="pt-3 w-full">
-          <p className="text-base">
-            Module Name: <b>{searchParams.get("module_name")}</b>
-          </p>
           <div className="relative overflow-x-auto mt-2 mb-2 custom-table-style">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                  <th scope="col">Permission Name</th>
-                  <th scope="col">Permission Code</th>
+                  <th scope="col">Tool Name</th>
+                  <th scope="col">Image</th>
+                  <th scope="col">Introduction URL</th>
+                  <th scope="col" style={{ textAlign: "center" }}>
+                    Status
+                  </th>
                   <th scope="col" style={{ textAlign: "center" }}>
                     Action
                   </th>
                 </tr>
               </thead>
               <tbody>
-                {permissionList?.map((permission) => {
+                {toolList?.map((tool) => {
                   return (
-                    <tr key={permission?.id}>
-                      <td>{permission?.permission_name}</td>
-                      <td>{permission?.permission_code}</td>
+                    <tr key={tool?.id}>
+                      <td>{tool?.tool_name}</td>
+                      <td></td>
+                      <td>{tool?.tool_url}</td>
+                      <td>
+                        <div className="flex justify-center">
+                          <StatusBox
+                            statusList={{
+                              false: {
+                                label: "In-active",
+                                bgColor: "#ff8080",
+                              },
+                              true: {
+                                label: "Active",
+                                bgColor: "#4caf50",
+                              },
+                            }}
+                            statusValue={tool?.tool_status}
+                          />
+                        </div>
+                      </td>
                       <td style={{ width: "150px" }}>
                         <div className="flex gap-2 justify-center">
-                          <EditButton onClick={() => setIsOpen(permission)} />
+                          <EditButton onClick={() => setIsOpen(tool)} />
                           <DeleteButton
-                            onClick={() => setRemoveRecordId(permission?.id)}
+                            onClick={() => setRemoveRecordId(tool?.id)}
                           />
                         </div>
                       </td>
                     </tr>
                   );
                 })}
-                {permissionList?.length === 0 && (
+                {toolList?.length === 0 && (
                   <tr>
-                    <td colSpan={3}>
+                    <td colSpan={5}>
                       <p className="text-center">No record found</p>
                     </td>
                   </tr>
@@ -112,11 +124,10 @@ export default function Permissions() {
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         onSuccess={onSuccess}
-        moduleId={params?.id}
       />
       <ConfirmationPopup
-        title="Remove Permission?"
-        message="Are you sure to remove this permission?"
+        title="Remove Tool?"
+        message="Are you sure to remove this tool?"
         onConfirm={confirmRemove}
         onCancel={() => setRemoveRecordId(0)}
         visible={removeRecordId > 0 ? true : false}

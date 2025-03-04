@@ -70,12 +70,20 @@ const useAuth = () => {
       if (response.status) {
         localStorage.setItem("ReconciiToken", response.data?.token);
         localStorage.setItem("userProfile", JSON.stringify(response.data));
-        dispatch(setUserProfile(response.data?.data));
-        // fetchProfile();
-        navigate("/dashboard");
+        localStorage.setItem("Organization", response.data?.organization);
+        localStorage.setItem("Role", response.data?.role);
+        dispatch(setUserProfile(response.data));
+        if (response.data?.role === 0) {
+          navigate("/dashboard");
+          return;
+        }
+        fetchOrganizationTools(response.data?.organization);
         return;
       }
-      setToastMessage({ message: "Invalid credentials!", type: "error" });
+      setToastMessage({
+        message: response?.message?.data?.message || "Invalid credentials!",
+        type: "error",
+      });
     } catch (error) {
       console.log(error);
       setToastMessage({ message: "Something went wrong!", type: "error" });
@@ -91,6 +99,24 @@ const useAuth = () => {
           "userDetailedProfile",
           JSON.stringify(response.data?.data)
         );
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const fetchOrganizationTools = async (organizationId) => {
+    try {
+      const response = await requestCallGet(
+        `${API_END_POINTS.GET_ORGANIZATION_TOOLS}${organizationId}`
+      );
+      if (response.status) {
+        dispatch(setUserDetailedProfile(response?.data?.data));
+        localStorage.setItem(
+          "organizationTools",
+          JSON.stringify(response.data?.data)
+        );
+        navigate("/organization/tools");
       }
     } catch (error) {
       console.error(error);

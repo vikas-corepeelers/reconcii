@@ -6,16 +6,18 @@ import {
 } from "../../../ServiceRequest/APIFunctions";
 import { useLoader } from "../../../Utils/Loader";
 
-const BLANK_GROUP = {
-  group_name: "",
-  tool_id: 1,
+const BLANK_MODULE = {
+  tool_name: "",
+  tool_logo: "",
+  tool_url: "",
+  tool_status: 1,
 };
 
-const useGroup = () => {
-  const { setLoading } = useLoader();
-  const [params, setParams] = useState(BLANK_GROUP);
+const useTools = () => {
+  const { setLoading, setToastMessage } = useLoader();
+  const [params, setParams] = useState(BLANK_MODULE);
   const [formError, setFormError] = useState(null);
-  const [groupList, setGroupList] = useState([]);
+  const [toolList, setToolList] = useState([]);
 
   const handleChange = (name, val) => {
     if (formError !== null) {
@@ -24,62 +26,60 @@ const useGroup = () => {
     setParams({ ...params, [name]: val });
   };
 
-  const fetchGroupList = async (params) => {
+  const fetchToolList = async () => {
     try {
-      let req = {
-        ...params,
-        organization_id: localStorage.getItem("Organization") || 1,
-      };
-      const response = await requestCallPost(
-        API_END_POINTS.GET_GROUP_LIST,
-        req
-      );
+      const response = await requestCallGet(API_END_POINTS.GET_TOOLS);
       if (response.status) {
-        setGroupList(response.data?.Data);
+        setToolList(response.data?.Data);
       }
     } catch (error) {
       console.error(error);
     }
   };
 
-  const addGroup = async () => {
+  const addTool = async () => {
     try {
-      if (params?.group_name?.trim() === "") {
-        setFormError({ group_name: "Please enter Group Name" });
+      if (params?.tool_name?.trim() === "") {
+        setFormError({ tool_name: "Please enter Module Name" });
         return;
       }
       setLoading(true);
       let req = {
         ...params,
-        tool_id: localStorage.getItem("activeTool") || 1,
-        organization_id: localStorage.getItem("Organization") || 1,
       };
-      const response = await requestCallPost(API_END_POINTS.CREATE_GROUP, req);
+      const response = await requestCallPost(
+        params?.id ? API_END_POINTS.UPDATE_TOOL : API_END_POINTS.CREATE_TOOL,
+        req
+      );
       setLoading(false);
       if (response.status) {
         return true;
       } else {
         setFormError({
-          group_name:
+          module_name:
             response?.message?.data?.message || "Something went wrong.",
         });
-        return;
       }
     } catch (error) {
-      console.log("error", error);
+      console.error(error);
     } finally {
       setLoading(false);
     }
   };
 
-  const deleteGroup = async (params) => {
+  const deleteTool = async (params) => {
     try {
       const response = await requestCallPost(
-        API_END_POINTS.DELETE_GROUP,
+        API_END_POINTS.DELETE_TOOL,
         params
       );
       if (response.status) {
         return true;
+      } else {
+        setToastMessage({
+          message: response?.message?.data?.message || "Something went wrong.",
+          type: "error",
+        });
       }
     } catch (error) {
       console.error(error);
@@ -88,16 +88,17 @@ const useGroup = () => {
   };
 
   return {
-    fetchGroupList,
-    groupList,
+    fetchToolList,
+    toolList,
     handleChange,
     params,
     setParams,
-    addGroup,
+    addTool,
     formError,
     setFormError,
-    deleteGroup,
+    deleteTool,
+    BLANK_MODULE,
   };
 };
 
-export default useGroup;
+export default useTools;

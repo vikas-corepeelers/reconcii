@@ -2,59 +2,59 @@ import React, { useEffect, useState } from "react";
 import BlankCard from "../../../components/BlankCard";
 
 import OutlineButton from "../../../components/OutlineButton";
-import useModule from "./useModule";
 import AddUpdateModal from "./AddUpdateModal";
 import { useLoader } from "../../../Utils/Loader";
 import EditButton from "../../../components/EditButton";
 import DeleteButton from "../../../components/DeleteButton";
-import SecondaryButton from "../../../components/SecondaryButton";
-import ManageButton from "../../../components/ManageButton";
 import { useNavigate } from "react-router-dom";
 import ConfirmationPopup from "../../../components/ConfirmationPopup";
+import StatusBox from "../../Components/StatusBox";
+import useOrganization from "./useOrganization";
+import ManageButton from "../../../components/ManageButton";
 
-export default function Modules() {
+export default function Organization() {
   const navigate = useNavigate();
   const { setToastMessage } = useLoader();
   const [isOpen, setIsOpen] = useState(false);
+  const [toolsVisible, setToolsVisible] = useState(false);
   const [removeRecordId, setRemoveRecordId] = useState(0);
-  const { fetchModuleList, moduleList, deleteModule } = useModule();
+  const { fetchOrganizationList, organizationList, deleteOrganization } =
+    useOrganization();
 
   useEffect(() => {
-    let tool_id = localStorage.getItem("activeTool") || 1;
-    fetchModuleList({ tool_id: tool_id });
+    fetchOrganizationList();
   }, []);
 
   const onSuccess = () => {
-    let tool_id = localStorage.getItem("activeTool") || 1;
     setIsOpen(false);
-    fetchModuleList({ tool_id: tool_id });
+    setToolsVisible(false);
+    fetchOrganizationList();
     setToastMessage({
-      message: "Module details successfully added/updated.",
+      message: "Organization details successfully added/updated.",
       type: "success",
     });
   };
 
   const confirmRemove = async () => {
-    let status = await deleteModule({ id: removeRecordId });
+    let status = await deleteOrganization({ id: removeRecordId });
     if (status) {
       setRemoveRecordId(0);
       setToastMessage({
-        message: "Module successfully removed.",
+        message: "Organization successfully removed.",
         type: "success",
       });
-      let tool_id = localStorage.getItem("activeTool") || 1;
-      fetchModuleList({ tool_id: tool_id });
+      fetchOrganizationList();
     }
   };
 
   return (
     <div className="">
       <BlankCard
-        header={<h4 className="box-title font-bold text-base">MODULES</h4>}
+        header={<h4 className="box-title font-bold text-base">ORGANIZATION</h4>}
         rightAction={
           <div className="fixed-right-action-div">
             <OutlineButton
-              label={"CREATE MODULE"}
+              label={"ADD ORGANIZATION"}
               onClick={() => setIsOpen(true)}
             />
           </div>
@@ -65,9 +65,16 @@ export default function Modules() {
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                  <th scope="col">Module Name</th>
+                  <th scope="col">Unit Name</th>
+                  <th scope="col">Full Name</th>
                   <th scope="col" style={{ textAlign: "center" }}>
-                    Total Permissions
+                    Logo
+                  </th>
+                  <th scope="col" style={{ textAlign: "center" }}>
+                    Tools
+                  </th>
+                  <th scope="col" style={{ textAlign: "center" }}>
+                    Status
                   </th>
                   <th scope="col" style={{ textAlign: "center" }}>
                     Action
@@ -75,40 +82,59 @@ export default function Modules() {
                 </tr>
               </thead>
               <tbody>
-                {moduleList?.map((module) => {
+                {organizationList?.map((organization) => {
                   return (
-                    <tr key={module?.id}>
-                      <td>{module?.module_name}</td>
+                    <tr key={organization?.id}>
+                      <td>{organization?.organization_unit_name}</td>
+                      <td>{organization?.organization_full_name}</td>
+                      <td></td>
                       <td>
                         <div className="flex gap-2 justify-center items-center">
-                          {module?.permissions?.length} No(s).
+                          {/* {organization?.organization_tool?.length} No(s). */}
                           <ManageButton
                             label={"Manage"}
                             onClick={() =>
                               navigate(
-                                "/modules/permissions/" +
-                                  module?.id +
-                                  "?module_name=" +
-                                  module?.module_name
+                                "/organization/tools/" +
+                                  organization?.id +
+                                  "?organization_name=" +
+                                  organization?.organization_full_name
                               )
                             }
                           />
                         </div>
                       </td>
+                      <td>
+                        <div className="flex justify-center">
+                          <StatusBox
+                            statusList={{
+                              false: {
+                                label: "In-active",
+                                bgColor: "#ff8080",
+                              },
+                              true: {
+                                label: "Active",
+                                bgColor: "#4caf50",
+                              },
+                            }}
+                            statusValue={organization?.status}
+                          />
+                        </div>
+                      </td>
                       <td style={{ width: "150px" }}>
                         <div className="flex gap-2 justify-center">
-                          <EditButton onClick={() => setIsOpen(module)} />
-                          <DeleteButton
-                            onClick={() => setRemoveRecordId(module?.id)}
-                          />
+                          <EditButton onClick={() => setIsOpen(organization)} />
+                          {/* <DeleteButton
+                            onClick={() => setRemoveRecordId(organization?.id)}
+                          /> */}
                         </div>
                       </td>
                     </tr>
                   );
                 })}
-                {moduleList?.length === 0 && (
+                {organizationList?.length === 0 && (
                   <tr>
-                    <td colSpan={3}>
+                    <td colSpan={6}>
                       <p className="text-center">No record found</p>
                     </td>
                   </tr>
@@ -124,8 +150,8 @@ export default function Modules() {
         onSuccess={onSuccess}
       />
       <ConfirmationPopup
-        title="Remove Module?"
-        message="Are you sure to remove this module?"
+        title="Remove Tool?"
+        message="Are you sure to remove this tool?"
         onConfirm={confirmRemove}
         onCancel={() => setRemoveRecordId(0)}
         visible={removeRecordId > 0 ? true : false}

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import API_END_POINTS from "../../../ServiceRequest/APIEndPoints";
 import {
+  requestCallDelete,
   requestCallGet,
   requestCallPost,
 } from "../../../ServiceRequest/APIFunctions";
@@ -40,6 +41,21 @@ const usePermissions = () => {
     }
   };
 
+  const deletePermission = async (params) => {
+    try {
+      const response = await requestCallPost(
+        API_END_POINTS.DELETE_PERMISSION,
+        params
+      );
+      if (response.status) {
+        return true;
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    return false;
+  };
+
   const addPermission = async () => {
     try {
       if (params?.permission_name?.trim() === "") {
@@ -64,7 +80,7 @@ const usePermissions = () => {
         return true;
       } else {
         setFormError({
-          module_name:
+          permission_code:
             response?.message?.data?.message || "Something went wrong.",
         });
       }
@@ -84,6 +100,7 @@ const usePermissions = () => {
     addPermission,
     formError,
     setFormError,
+    deletePermission,
   };
 };
 

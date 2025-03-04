@@ -11,10 +11,16 @@ const MANAGER_SIDEBAR = [
     icon: "dashboard",
   },
   {
-    id: "groups",
-    label: "Groups",
-    route: "/groups",
-    icon: "diversity_3",
+    id: "tools",
+    label: "Tools",
+    route: "/tools",
+    icon: "construction",
+  },
+  {
+    id: "organization",
+    label: "Organization",
+    route: "/organization",
+    icon: "corporate_fare",
   },
   {
     id: "modules",
@@ -23,23 +29,30 @@ const MANAGER_SIDEBAR = [
     icon: "checklist",
   },
   {
+    id: "groups",
+    label: "Groups",
+    route: "/groups",
+    icon: "diversity_3",
+  },
+
+  {
     id: "users",
     label: "Users",
     route: "/users",
     icon: "badge",
   },
-  {
-    id: "upload-config",
-    label: "Upload Config",
-    route: "/upload-config",
-    icon: "cloud_upload",
-  },
-  {
-    id: "user-data",
-    label: "User Data",
-    route: "/user-data",
-    icon: "manage_accounts",
-  },
+  // {
+  //   id: "upload-config",
+  //   label: "Upload Config",
+  //   route: "/upload-config",
+  //   icon: "cloud_upload",
+  // },
+  // {
+  //   id: "user-data",
+  //   label: "User Data",
+  //   route: "/user-data",
+  //   icon: "manage_accounts",
+  // },
 ];
 
 const Sidebar = () => {
@@ -58,7 +71,11 @@ const Sidebar = () => {
 
   const selectedSidebar = (key) => {
     if (key?.includes("modules/permissions")) {
-      setSelectedIndex(2);
+      setSelectedIndex(3);
+      return;
+    }
+    if (key?.includes("users/edit")) {
+      setSelectedIndex(3);
       return;
     }
 
@@ -66,26 +83,38 @@ const Sidebar = () => {
       case "/dashboard":
         setSelectedIndex(0);
         break;
-      case "/groups":
+      case "/tools":
         setSelectedIndex(1);
         break;
-      case "/groups/description":
-        setSelectedIndex(1);
-        break;
-      case "/groups/create":
-        setSelectedIndex(1);
+      case "/organization":
+        setSelectedIndex(2);
         break;
       case "/modules":
-        setSelectedIndex(2);
-        break;
-      case "/users":
-        setSelectedIndex(2);
-        break;
-      case "/upload-config":
         setSelectedIndex(3);
         break;
-      case "/user-data":
+      case "/groups":
         setSelectedIndex(4);
+        break;
+      case "/groups/description":
+        setSelectedIndex(4);
+        break;
+      case "/groups/create":
+        setSelectedIndex(4);
+        break;
+      case "/groups/users/list":
+        setSelectedIndex(4);
+        break;
+      case "/users":
+        setSelectedIndex(5);
+        break;
+      case "/users/add":
+        setSelectedIndex(5);
+        break;
+      case "/upload-config":
+        setSelectedIndex(6);
+        break;
+      case "/user-data":
+        setSelectedIndex(7);
         break;
       default:
         setSelectedIndex(50);
@@ -109,7 +138,7 @@ const Sidebar = () => {
                 key={item?.id}
                 menuArray={item}
                 selectedIndex={selectedIndex}
-                onSelect={() => setSelectedIndex(index)}
+                onSelect={() => setSelectedIndex(i)}
                 index={i}
               />
             );
@@ -122,9 +151,18 @@ const Sidebar = () => {
 
 export default Sidebar;
 
-const MenuItem = ({ menuArray, selectedIndex, setSelectedIndex, index }) => {
+const MenuItem = ({ menuArray, selectedIndex, onSelect, index }) => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const roleId = localStorage.getItem("Role");
+
+  if (roleId === "0" && index > 3) {
+    return null;
+  }
+
+  if (roleId !== "0" && index > 0 && index < 4) {
+    return null;
+  }
 
   const onClick = (e) => {
     e.preventDefault();
@@ -132,7 +170,7 @@ const MenuItem = ({ menuArray, selectedIndex, setSelectedIndex, index }) => {
       navigate(menuArray?.route);
     }
     setOpen(!open);
-    setSelectedIndex(index);
+    onSelect(index);
   };
 
   return (

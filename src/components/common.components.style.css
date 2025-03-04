@@ -8,3 +8,9 @@
   justify-content: center;
   align-items: center;
 }
+
+.manage-btn.disabled {
+  border: 1px solid #ccc;
+  background-color: #f5f5f5;
+  color: #ccc;
+}

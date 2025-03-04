@@ -12,7 +12,7 @@ const BLANK_MODULE = {
 };
 
 const useModule = () => {
-  const { setLoading } = useLoader();
+  const { setLoading, setToastMessage } = useLoader();
   const [params, setParams] = useState(BLANK_MODULE);
   const [formError, setFormError] = useState(null);
   const [moduleList, setModuleList] = useState([]);
@@ -26,9 +26,13 @@ const useModule = () => {
 
   const fetchModuleList = async (params) => {
     try {
+      let req = {
+        ...params,
+        organization_id: localStorage.getItem("Organization"),
+      };
       const response = await requestCallPost(
         API_END_POINTS.GET_MODULE_LIST,
-        params
+        req
       );
       if (response.status) {
         setModuleList(response.data?.Data);
@@ -66,6 +70,26 @@ const useModule = () => {
     }
   };
 
+  const deleteModule = async (params) => {
+    try {
+      const response = await requestCallPost(
+        API_END_POINTS.DELETE_MODULE,
+        params
+      );
+      if (response.status) {
+        return true;
+      } else {
+        setToastMessage({
+          message: response?.message?.data?.message || "Something went wrong.",
+          type: "error",
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    return false;
+  };
+
   return {
     fetchModuleList,
     moduleList,
@@ -75,6 +99,7 @@ const useModule = () => {
     addModule,
     formError,
     setFormError,
+    deleteModule,
   };
 };
 

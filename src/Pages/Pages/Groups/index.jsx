@@ -7,23 +7,44 @@ import { useLoader } from "../../../Utils/Loader";
 import EditButton from "../../../components/EditButton";
 import DeleteButton from "../../../components/DeleteButton";
 import useGroup from "./useGroup";
+import ConfirmationPopup from "../../../components/ConfirmationPopup";
+import ManageButton from "../../../components/ManageButton";
+import { useNavigate } from "react-router-dom";
 
 export default function Groups() {
+  const navigate = useNavigate();
   const { setToastMessage } = useLoader();
   const [isOpen, setIsOpen] = useState(false);
-  const { fetchGroupList, groupList } = useGroup();
+  const [removeRecordId, setRemoveRecordId] = useState(0);
+  const { fetchGroupList, groupList, deleteGroup } = useGroup();
 
   useEffect(() => {
-    fetchGroupList();
+    let tool_id = localStorage.getItem("activeTool") || 1;
+    fetchGroupList({ tool_id: tool_id });
   }, []);
 
   const onSuccess = () => {
+    let tool_id = localStorage.getItem("activeTool") || 1;
+    fetchGroupList({ tool_id: tool_id });
+
     setIsOpen(false);
-    fetchGroupList();
     setToastMessage({
       message: "Group details successfully added/updated.",
       type: "success",
     });
+  };
+
+  const confirmRemove = async () => {
+    let status = await deleteGroup({ id: removeRecordId });
+    if (status) {
+      setRemoveRecordId(0);
+      setToastMessage({
+        message: "Group successfully removed.",
+        type: "success",
+      });
+      let tool_id = localStorage.getItem("activeTool") || 1;
+      fetchGroupList({ tool_id: tool_id });
+    }
   };
 
   return (
@@ -45,22 +66,58 @@ export default function Groups() {
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                   <th scope="col">Group Name</th>
-                  <th scope="col">Total Users</th>
+                  <th scope="col" style={{ textAlign: "center" }}>
+                    Total Users
+                  </th>
+                  <th scope="col" style={{ textAlign: "center" }}>
+                    Total Modules
+                  </th>
                   <th scope="col" style={{ textAlign: "center" }}>
                     Action
                   </th>
                 </tr>
               </thead>
               <tbody>
-                {groupList?.map((module) => {
+                {groupList?.map((group) => {
                   return (
-                    <tr key={module?.id}>
-                      <td>{module?.group_name}</td>
-                      <td>{module?.permissions?.length}</td>
+                    <tr key={group?.id}>
+                      <td>{group?.group_name}</td>
+                      <td>
+                        <div className="flex gap-2 justify-center items-center">
+                          {group?.users?.length} No(s).
+                          <ManageButton
+                            label={"List"}
+                            disabled={group?.users?.length === 0}
+                            onClick={() =>
+                              navigate("/groups/users/list", {
+                                state: { users: group?.users },
+                              })
+                            }
+                          />
+                        </div>
+                      </td>
+                      <td>
+                        <div className="flex gap-2 justify-center items-center">
+                          {group?.group_module_mapping?.length} No(s).
+                          <ManageButton
+                            label={"Manage"}
+                            onClick={() =>
+                              navigate(
+                                "/groups/modules/" +
+                                  group?.id +
+                                  "?group_name=" +
+                                  group?.group_name
+                              )
+                            }
+                          />
+                        </div>
+                      </td>
                       <td style={{ width: "120px" }}>
                         <div className="flex gap-2 justify-center">
-                          <EditButton onClick={() => setIsOpen(module)} />
-                          {/* <DeleteButton /> */}
+                          <EditButton onClick={() => setIsOpen(group)} />
+                          <DeleteButton
+                            onClick={() => setRemoveRecordId(group?.id)}
+                          />
                         </div>
                       </td>
                     </tr>
@@ -82,6 +139,13 @@ export default function Groups() {
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         onSuccess={onSuccess}
+      />
+      <ConfirmationPopup
+        title="Remove Group?"
+        message="Are you sure to remove this group?"
+        onConfirm={confirmRemove}
+        onCancel={() => setRemoveRecordId(0)}
+        visible={removeRecordId > 0 ? true : false}
       />
     </div>
   );

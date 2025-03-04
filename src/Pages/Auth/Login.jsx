@@ -45,7 +45,7 @@ const Login = () => {
           <button type="submit" className="login-button mb-2" onClick={doLogin}>
             Login
           </button>
-          <a
+          {/* <a
             href="/"
             onClick={(e) => {
               e.preventDefault();
@@ -54,7 +54,7 @@ const Login = () => {
             className="forgot-password"
           >
             Forgot your password?
-          </a>
+          </a> */}
         </div>
       </div>
       <AuthLogo />

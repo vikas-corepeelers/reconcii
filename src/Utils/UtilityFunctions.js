@@ -14,6 +14,10 @@ const validateAge = (age) => {
   return /^[1-9]?[0-9]{1}$|^100$/.test(age);
 };
 
+const validPositiveNumber = (num) => {
+  return /^[1-9]\d*$/.test(num);
+};
+
 function isNumeric(value) {
   const regex = /^[0-9]+$/;
   return regex.test(value);
@@ -104,4 +108,5 @@ export {
   dateFormatChangerView,
   generateDeviceCode,
   formatNumberToLakhsAndCrores,
+  validPositiveNumber,
 };

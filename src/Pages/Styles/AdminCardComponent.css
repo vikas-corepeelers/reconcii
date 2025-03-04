@@ -2,8 +2,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 50px;
-  width: 50px;
+  height: 70px;
+  width: 70px;
   border-radius: 50px;
   background-color: #ffffff;
   /* box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px; */
@@ -12,4 +12,26 @@
 .icon-box-admin img {
   height: 30px;
   width: 30px;
+}
+
+.module-mapping {
+  border: 1px solid #ccc;
+  padding: 10px;
+  background-color: #ffffff;
+  margin: 5px 0px;
+  border-radius: 5px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+
+.module-tab {
+  background-color: #ffffff;
+  display: flex;
+  width: 100%;
+}
+
+.module-tab > div > p {
+  font-size: 16px;
+  color: #000000;
+  text-align: left;
 }
