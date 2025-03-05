@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import ImgConst from "../../Utils/ImgConstants";
-
+// import ImgConst from "../../Utils/ImgConstants";
+import MainLogo from "../../assets/Images/ReconcillLogo.png";
 const MANAGER_SIDEBAR = [
   {
     id: "dashboard",
@@ -128,7 +128,7 @@ const Sidebar = () => {
         className="flex items-center justify-center py-3"
         style={{ backgroundColor: "#f5f5f5" }}
       >
-        <img src={ImgConst.ReconciiLogo} alt="Logo" className="h-14" />
+        <img src={MainLogo} alt="Logo" className="h-14" />
       </div>
       <nav style={{ color: "#ffffff" }}>
         <ul>

@@ -23,8 +23,6 @@ const Navbar = ({ withSidebar = false }) => {
     }
   }, []);
 
-  console.log(localStorage.getItem("userProfile"));
-
   useEffect(() => {
     // Function to handle clicks outside the dropdown
     const handleClickOutside = (event) => {
