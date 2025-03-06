@@ -1,59 +1,85 @@
-import React, { useEffect, useState } from "react";
-import IMAGES from "../../../Constants/Images";
-import CardComponent from "../../Components/CardComponent";
+import React, { useEffect } from "react";
+import dayjs from "dayjs";
 import useOrganization from "../Organization/useOrganization";
+
+function isCurrentDateInRange(startDate, endDate) {
+  const currentDate = dayjs(); // Get today's date
+  return (
+    currentDate.isAfter(dayjs(startDate), "day") &&
+    currentDate.isBefore(dayjs(endDate), "day")
+  );
+}
 
 const Dashboard = () => {
   const { dashboard, fetchOrganizationDashboard } = useOrganization();
 
   useEffect(() => {
-    let tool_id = localStorage.getItem("activeTool") || 1;
-    let organization_id = localStorage.getItem("Organization") || 1;
-    fetchOrganizationDashboard({
-      tool_id: tool_id,
-      organization_id: organization_id,
-    });
+    fetchOrganizationDashboard({});
   }, []);
 
   return (
-    <div className="flex-1">
-      <div class="flex gap-3">
-        <div class="flex-1 col-span-12">
-          <CardComponent
-            label={"TOTAL USERS"}
-            number={dashboard?.total_users || 0}
-            icon={IMAGES.User}
-          />
-        </div>
-        <div class="flex-1 col-span-12">
-          <CardComponent
-            label={"ACTIVE USERS"}
-            number={dashboard?.active_users || 0}
-            icon={IMAGES.ActiveUser}
-          />
-        </div>
-        <div class="flex-1 col-span-12">
-          <CardComponent
-            label={"INACTIVE USERS"}
-            number={dashboard?.inactive_users || 0}
-            icon={IMAGES.InactiveUser}
-          />
-        </div>
-        <div class="flex-1 col-span-12">
-          <CardComponent
-            label={"TOTAL GROUPS"}
-            number={dashboard?.total_groups || 0}
-            icon={IMAGES.Groups}
-          />
-        </div>
-        <div class="flex-1 col-span-12">
-          <CardComponent
-            label={"TOTAL MODULES"}
-            number={dashboard?.total_modules || 0}
-            icon={IMAGES.Modules}
-          />
-        </div>
-      </div>
+    <div className="flex-1 dashboard-card">
+      <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead className="dashboard-head">
+          <tr>
+            <th scope="col">Organization</th>
+            <th scope="col">Tool</th>
+            <th scope="col">Subscription Start Date</th>
+            <th scope="col">Subscription End Date</th>
+            <th scope="col">Auto Renew</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody className="dashboard-body">
+          {dashboard?.map((subscription) => {
+            return (
+              <tr>
+                <td scope="col">
+                  {subscription?.organization?.organization_full_name}
+                </td>
+                <td scope="col">{subscription?.tools?.tool_name}</td>
+                <td scope="col">
+                  {dayjs(subscription?.start_date).format("DD MMM YYYY")}
+                </td>
+                <td scope="col">
+                  {dayjs(subscription?.end_date).format("DD MMM YYYY")}
+                </td>
+                <td scope="col">{subscription?.auto_renew ? "Yes" : "No"}</td>
+                <td scope="col">
+                  <div className="flex justify-start">
+                    {isCurrentDateInRange(
+                      subscription?.start_date,
+                      subscription?.end_date
+                    ) ? (
+                      <div
+                        style={{
+                          backgroundColor: "#4caf50",
+                          color: "#ffffff",
+                          padding: "5px 15px",
+                          borderRadius: "5px",
+                        }}
+                      >
+                        Yes
+                      </div>
+                    ) : (
+                      <div
+                        style={{
+                          backgroundColor: "#ff6666",
+                          color: "#ffffff",
+                          padding: "5px 15px",
+                          borderRadius: "5px",
+                        }}
+                      >
+                        No
+                      </div>
+                    )}
+                  </div>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 };

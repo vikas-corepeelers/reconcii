@@ -38,7 +38,7 @@ const useOrganization = () => {
   const [formError, setFormError] = useState(null);
   const [organizationList, setOrganizationList] = useState([]);
   const [organizationToolList, setOrganizationToolList] = useState([]);
-  const [dashboard, setDashboard] = useState(BLANK_DASHBOARD);
+  const [dashboard, setDashboard] = useState([]);
   const handleChange = (name, val) => {
     if (formError !== null) {
       setFormError(null);

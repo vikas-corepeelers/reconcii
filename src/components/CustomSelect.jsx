@@ -4,7 +4,7 @@ const CustomSelect = (props) => {
   return (
     <div style={props.additionalStyle}>
       {props.label && (
-        <label className="block text-gray-700 text-sm font-bold mb-2">
+        <label>
           {props.label} {props.required && <span className="required">*</span>}
         </label>
       )}

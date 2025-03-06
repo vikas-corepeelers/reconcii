@@ -203,16 +203,18 @@ p {
   color: white;
   text-align: center;
   border-radius: 4px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
   transition: right 0.5s ease-in-out; /* Animation for sliding in and out */
 }
 
 .alert-box.success {
   background-color: #4caf50;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .alert-box.error {
   background-color: #f44336;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .alert-box.slide-in {
@@ -366,4 +368,87 @@ p {
   font-size: 20px;
   font-weight: bold;
   color: #1b1b1b;
+}
+
+.licensing-details {
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  margin-top: 15px;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+.licensing-details p.title {
+  font-size: 16px;
+  color: #000000;
+}
+
+.dashboard-head {
+  background-color: #ccc;
+  padding: 5px 10px;
+}
+
+.dashboard-card {
+  border: 1px solid #ccc;
+  margin: 15px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: 5px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.dashboard-card thead.dashboard-head {
+  height: 40px;
+  background-color: #205ca9;
+  color: #ffffff;
+}
+
+.dashboard-card thead.dashboard-head > tr > th {
+  padding: 10px;
+}
+
+.dashboard-card tbody.dashboard-body > tr > td {
+  padding: 10px;
+  color: #000000;
+}
+
+.icon-box-admin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 70px;
+  width: 70px;
+  border-radius: 50px;
+  background-color: #ffffff;
+  /* box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px; */
+}
+
+.icon-box-admin img {
+  height: 30px;
+  width: 30px;
+}
+
+.module-mapping {
+  border: 1px solid #ccc;
+  padding: 10px;
+  background-color: #ffffff;
+  margin: 5px 0px;
+  border-radius: 5px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+
+.module-tab {
+  background-color: #ffffff;
+  display: flex;
+  width: 100%;
+}
+
+.module-tab > div > p {
+  font-size: 16px;
+  color: #000000;
+  text-align: left;
 }

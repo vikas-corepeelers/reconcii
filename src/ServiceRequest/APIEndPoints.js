@@ -1,5 +1,5 @@
 const API_END_POINTS = {
-  baseURL: "https://subwayapi1.corepeelers.com/api",
+  baseURL: "http://localhost:8080/api",
   login: "/auth/login",
   GET_MODULE_LIST: "/module/getAllModules",
   CREATE_MODULE: "/module/createModule",

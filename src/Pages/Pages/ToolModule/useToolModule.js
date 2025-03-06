@@ -18,6 +18,18 @@ const useToolModule = (organizationId) => {
     {}
   );
 
+  const handleFormChanges = (tool, name, value) => {
+    let localToolModule = { ...organizationModuleMapping };
+    localToolModule = {
+      ...localToolModule,
+      [parseInt(tool)]: {
+        ...localToolModule[parseInt(tool)],
+        [name]: value,
+      },
+    };
+    setOrganizationModuleMapping(localToolModule);
+  };
+
   const handleChange = (type, tool, module = 0) => {
     if (type === "tool") {
       // Get array of object Keys
@@ -33,7 +45,9 @@ const useToolModule = (organizationId) => {
       } else {
         localToolModule = {
           ...localToolModule,
-          [parseInt(tool)]: [0],
+          [parseInt(tool)]: {
+            modules: [0],
+          },
         };
       }
       setOrganizationModuleMapping(localToolModule);
@@ -47,7 +61,7 @@ const useToolModule = (organizationId) => {
         console.error(e);
       }
       if (selectedTools?.includes(tool?.toString())) {
-        let moduleArray = localToolModule[tool];
+        let moduleArray = localToolModule[tool]?.modules;
         let moduleIndex = moduleArray?.findIndex(
           (moduleIds) => moduleIds === module
         );
@@ -58,12 +72,18 @@ const useToolModule = (organizationId) => {
         }
         localToolModule = {
           ...localToolModule,
-          [parseInt(tool)]: moduleArray,
+          [parseInt(tool)]: {
+            ...localToolModule[parseInt(tool)],
+            modules: moduleArray,
+          },
         };
       } else {
         localToolModule = {
           ...localToolModule,
-          [parseInt(tool)]: [module],
+          [parseInt(tool)]: {
+            ...localToolModule[parseInt(tool)],
+            modules: [module],
+          },
         };
       }
       setOrganizationModuleMapping(localToolModule);
@@ -75,9 +95,9 @@ const useToolModule = (organizationId) => {
 
     data.forEach(({ tool_id, module_id }) => {
       if (!result[tool_id]) {
-        result[tool_id] = [];
+        result[tool_id] = { modules: [] };
       }
-      result[tool_id].push(parseInt(module_id));
+      result[tool_id].modules?.push(parseInt(module_id));
     });
 
     return result; // Wrapping in an array as per your request
@@ -90,8 +110,25 @@ const useToolModule = (organizationId) => {
         params
       );
       if (response.status) {
-        if (response.data?.Data?.length > 0) {
-          setOrganizationModuleMapping(transformData(response.data?.Data));
+        if (response.data?.Data?.tools?.length > 0) {
+          let tool = transformData(response.data?.Data?.tools);
+
+          response.data?.Data?.subscriber_details?.forEach(
+            (subscriber_detail) => {
+              tool[subscriber_detail?.tool_id] = {
+                ...tool[subscriber_detail?.tool_id],
+                organization_id: subscriber_detail?.organization_id,
+                tool_id: subscriber_detail?.tool_id,
+                start_date: subscriber_detail?.start_date,
+                end_date: subscriber_detail?.end_date,
+                secret_key: subscriber_detail?.secret_key,
+                auto_renew: subscriber_detail?.auto_renew ? 1 : 0,
+                renew_in_every: subscriber_detail?.renew_in_every,
+              };
+            }
+          );
+
+          setOrganizationModuleMapping(tool);
         }
       }
     } catch (error) {
@@ -99,8 +136,62 @@ const useToolModule = (organizationId) => {
     }
   };
 
+  const validateRequest = () => {
+    let requestObj = { ...organizationModuleMapping };
+    let toolIds = Object.keys(requestObj);
+    let status = true;
+
+    toolIds?.map((toolId) => {
+      let tool = requestObj[toolId];
+      if (
+        tool?.start_date &&
+        tool?.end_date &&
+        tool?.secret_key &&
+        tool?.auto_renew !== undefined &&
+        tool?.auto_renew !== ""
+      ) {
+        if (
+          parseInt(tool?.auto_renew) === 1 &&
+          (tool?.renew_in_every === undefined || tool?.renew_in_every === "")
+        ) {
+          status = false;
+          setToastMessage({
+            message: "Please select auto renewal time.",
+            type: "error",
+          });
+        } else if (tool?.start_date > tool?.end_date) {
+          status = false;
+          setToastMessage({
+            message: "Invalid subscription dates",
+            type: "error",
+          });
+        } else if (tool?.secret_key?.length < 16) {
+          status = false;
+          setToastMessage({
+            message: "Secret Key should be minimum 16 character long.",
+            type: "error",
+          });
+        }
+      } else {
+        status = false;
+        setToastMessage({
+          message: "Please fill all subscription details",
+          type: "error",
+        });
+      }
+    });
+
+    return status;
+  };
+
   const updateMapping = async () => {
     try {
+      let requestStatus = validateRequest();
+      console.log("requestStatus", requestStatus);
+      if (!requestStatus) {
+        return;
+      }
+
       setLoading(true);
       let req = {
         organization_id: organizationId,
@@ -140,6 +231,7 @@ const useToolModule = (organizationId) => {
     setFormError,
     organizationModuleMapping,
     setOrganizationModuleMapping,
+    handleFormChanges,
   };
 };
 
