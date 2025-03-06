@@ -15,7 +15,7 @@ const Login = () => {
       <div className="login-container-admin">
         <div className="login-box">
           <div className="admin-login-label">
-            <p className="text-xl">SUPERADMIN LOGIN</p>
+            <p className="text-xl">LICENSING</p>
           </div>
           <p className="text-sm text-black mb-4">
             Please log in to your account

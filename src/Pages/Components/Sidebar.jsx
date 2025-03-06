@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 // import ImgConst from "../../Utils/ImgConstants";
-import MainLogo from "../../assets/Images/ReconcillLogo.png";
+import MainLogo from "../../assets/Images/CpplLogo.png";
 const MANAGER_SIDEBAR = [
   {
     id: "dashboard",

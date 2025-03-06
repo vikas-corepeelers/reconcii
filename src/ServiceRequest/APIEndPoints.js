@@ -1,5 +1,6 @@
 const API_END_POINTS = {
-  baseURL: "http://localhost:8080/api",
+  // baseURL: "http://localhost:8080/api",
+  baseURL: "https://licenseapi.corepeelers.com/api",
   login: "/auth/login",
   GET_MODULE_LIST: "/module/getAllModules",
   CREATE_MODULE: "/module/createModule",

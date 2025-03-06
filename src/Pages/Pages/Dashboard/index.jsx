@@ -59,7 +59,7 @@ const Dashboard = () => {
                           borderRadius: "5px",
                         }}
                       >
-                        Yes
+                        Active
                       </div>
                     ) : (
                       <div
@@ -70,7 +70,7 @@ const Dashboard = () => {
                           borderRadius: "5px",
                         }}
                       >
-                        No
+                        Inactive
                       </div>
                     )}
                   </div>
