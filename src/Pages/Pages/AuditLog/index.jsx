@@ -35,7 +35,7 @@ export default function AuditLog() {
         header={<h4 className="box-title font-bold text-base">AUDIT LOG</h4>}
       >
         <div className="flex mt-3 gap-3">
-          <div className="flex-1">
+          {/* <div className="flex-1">
             <p>User</p>
             <CustomSelect
               data={[{ username: "", name: "All" }, ...userList]}
@@ -44,7 +44,7 @@ export default function AuditLog() {
               onChange={(e) => handleFilterChange("username", e.target.value)}
               value={filterValues?.username}
             />
-          </div>
+          </div> */}
           <div className="flex-1">
             <p>Action</p>
             <CustomSelect
@@ -111,10 +111,10 @@ export default function AuditLog() {
                   <th scope="col">Action</th>
                   <th scope="col">IP Address</th>
                   {/* <th scope="col">Role</th> */}
+                  <th scope="col">Date</th>
                   <th scope="col" style={{ maxWidth: "250px" }}>
                     Request
                   </th>
-                  <th scope="col">Date</th>
                 </tr>
               </thead>
               <tbody>
@@ -124,13 +124,12 @@ export default function AuditLog() {
                       <td>{`${report?.user_details?.name} (${report?.user_details?.name})`}</td>
                       <td>{report?.action}</td>
                       <td>{report?.system_ip}</td>
-                      {/* <td>{report?.role}</td> */}
-                      <td style={{ maxWidth: "250px" }}>{report?.request}</td>
                       <td>
                         {moment(report?.created_at).format(
                           "DD-MM-YYYY hh:mm A"
                         )}
                       </td>
+                      <td style={{ maxWidth: "250px" }}>{report?.request}</td>
                     </tr>
                   );
                 })}

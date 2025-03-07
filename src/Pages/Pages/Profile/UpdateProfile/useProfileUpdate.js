@@ -57,11 +57,11 @@ const useProfileUpdate = () => {
       );
       setLoading(false);
       if (response.status) {
-        makeLog(
-          LOG_ACTIONS.PROFILE_UPDATE,
-          apiEndpoints.PROFILE,
-          profileUpdateParams
-        );
+        makeLog(LOG_ACTIONS.PROFILE_UPDATE, apiEndpoints.PROFILE, {
+          name: profileUpdateParams.name,
+          email: profileUpdateParams.email,
+          mobile: profileUpdateParams.mobile,
+        });
         setToastMessage({
           message: "Profile details successfully updated!",
           type: "success",

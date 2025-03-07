@@ -3,6 +3,7 @@ const LOG_ACTIONS = {
   SEARCH: "Search",
   DOWNLOAD_REPORT: "Download Report",
   PROFILE_UPDATE: "Profile Update",
+  CHANGE_PASSWORD: "Change Password",
   LOGOUT: "Logout",
   UPLOAD: "Upload",
   LOGIC_CREATION: "Logic Creation",
