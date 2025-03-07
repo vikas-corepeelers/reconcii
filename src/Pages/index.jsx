@@ -18,6 +18,7 @@ import Tools from "./Pages/Tools";
 import Organization from "./Pages/Organization";
 import ToolList from "./ToolList";
 import ToolModule from "./Pages/ToolModule";
+import AuditLog from "./Pages/AuditLog";
 
 function Admin() {
   function WithSidebar(children, screen = "") {
@@ -125,6 +126,11 @@ function Admin() {
           path="/users/permissions/:id"
           exact
           element={WithSidebar(<UserLevelPermission />, "users")}
+        />
+        <Route
+          path="/audit-log"
+          exact
+          element={WithSidebar(<AuditLog />, "audit-log")}
         />
         {/* <Route path="/users" exact element={WithSidebar(<Users />, "users")} />
         <Route

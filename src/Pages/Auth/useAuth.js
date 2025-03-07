@@ -116,7 +116,9 @@ const useAuth = () => {
           "organizationTools",
           JSON.stringify(response.data?.data)
         );
-        navigate("/organization/tools");
+        localStorage.setItem("activeTool", response.data?.data[0]?.id);
+        navigate("/dashboard");
+        // navigate("/organization/tools");
       }
     } catch (error) {
       console.error(error);

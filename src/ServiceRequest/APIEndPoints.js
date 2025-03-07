@@ -1,5 +1,6 @@
 const API_END_POINTS = {
-  baseURL: "https://subwayapi1.corepeelers.com/api",
+  baseURL: "http://localhost:8080/api",
+  // baseURL: "https://subwayapi1.corepeelers.com/api",
   login: "/auth/login",
   GET_MODULE_LIST: "/module/getAllModules",
   CREATE_MODULE: "/module/createModule",
@@ -30,6 +31,8 @@ const API_END_POINTS = {
   GET_ORGANIZATION_DASHBOARD: "/organization/dashboard",
   GET_ORGANIZATION_MODULES: "/organization/getOrganizationModules",
   UPDATE_ORGANIZATION_MODULE_MAPPING: "/organization/updateOrganizationModules",
+  ACTIVITY_USER_LIST: `/audit_log/user/list`,
+  ACTIVITY_SEARCH: `/audit_log/list`,
 };
 
 export default API_END_POINTS;

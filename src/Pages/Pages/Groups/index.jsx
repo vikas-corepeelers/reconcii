@@ -125,7 +125,7 @@ export default function Groups() {
                 })}
                 {groupList?.length === 0 && (
                   <tr>
-                    <td colSpan={3}>
+                    <td colSpan={4}>
                       <p className="text-center">No record found</p>
                     </td>
                   </tr>

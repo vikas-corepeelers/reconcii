@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import ImgConst from "../../Utils/ImgConstants";
-
+// import ImgConst from "../../Utils/ImgConstants";
+import MainLogo from "../../assets/Images/ReconcillLogo.png";
 const MANAGER_SIDEBAR = [
   {
     id: "dashboard",
@@ -10,24 +10,24 @@ const MANAGER_SIDEBAR = [
     route: "/dashboard",
     icon: "dashboard",
   },
-  {
-    id: "tools",
-    label: "Tools",
-    route: "/tools",
-    icon: "construction",
-  },
-  {
-    id: "organization",
-    label: "Organization",
-    route: "/organization",
-    icon: "corporate_fare",
-  },
-  {
-    id: "modules",
-    label: "Modules",
-    route: "/modules",
-    icon: "checklist",
-  },
+  // {
+  //   id: "tools",
+  //   label: "Tools",
+  //   route: "/tools",
+  //   icon: "construction",
+  // },
+  // {
+  //   id: "organization",
+  //   label: "Organization",
+  //   route: "/organization",
+  //   icon: "corporate_fare",
+  // },
+  // {
+  //   id: "modules",
+  //   label: "Modules",
+  //   route: "/modules",
+  //   icon: "checklist",
+  // },
   {
     id: "groups",
     label: "Groups",
@@ -40,6 +40,12 @@ const MANAGER_SIDEBAR = [
     label: "Users",
     route: "/users",
     icon: "badge",
+  },
+  {
+    id: "users",
+    label: "Audit Log",
+    route: "/audit-log",
+    icon: "mouse",
   },
   // {
   //   id: "upload-config",
@@ -75,7 +81,7 @@ const Sidebar = () => {
       return;
     }
     if (key?.includes("users/edit")) {
-      setSelectedIndex(3);
+      setSelectedIndex(2);
       return;
     }
 
@@ -83,38 +89,23 @@ const Sidebar = () => {
       case "/dashboard":
         setSelectedIndex(0);
         break;
-      case "/tools":
+      case "/groups":
         setSelectedIndex(1);
         break;
-      case "/organization":
+      case "/users":
         setSelectedIndex(2);
         break;
-      case "/modules":
+      case "/audit-log":
         setSelectedIndex(3);
         break;
-      case "/groups":
-        setSelectedIndex(4);
-        break;
       case "/groups/description":
-        setSelectedIndex(4);
+        setSelectedIndex(1);
         break;
       case "/groups/create":
-        setSelectedIndex(4);
+        setSelectedIndex(1);
         break;
       case "/groups/users/list":
-        setSelectedIndex(4);
-        break;
-      case "/users":
-        setSelectedIndex(5);
-        break;
-      case "/users/add":
-        setSelectedIndex(5);
-        break;
-      case "/upload-config":
-        setSelectedIndex(6);
-        break;
-      case "/user-data":
-        setSelectedIndex(7);
+        setSelectedIndex(1);
         break;
       default:
         setSelectedIndex(50);
@@ -128,7 +119,7 @@ const Sidebar = () => {
         className="flex items-center justify-center py-3"
         style={{ backgroundColor: "#f5f5f5" }}
       >
-        <img src={ImgConst.ReconciiLogo} alt="Logo" className="h-14" />
+        <img src={MainLogo} alt="Logo" className="h-14" />
       </div>
       <nav style={{ color: "#ffffff" }}>
         <ul>
@@ -154,15 +145,6 @@ export default Sidebar;
 const MenuItem = ({ menuArray, selectedIndex, onSelect, index }) => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const roleId = localStorage.getItem("Role");
-
-  if (roleId === "0" && index > 3) {
-    return null;
-  }
-
-  if (roleId !== "0" && index > 0 && index < 4) {
-    return null;
-  }
 
   const onClick = (e) => {
     e.preventDefault();
