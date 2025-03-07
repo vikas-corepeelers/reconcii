@@ -5,6 +5,7 @@ import useAuth from "./useAuth";
 import Alert from "../../components/Alert";
 import { useNavigate } from "react-router-dom";
 import AuthLogo from "./AuthLogo";
+import bgImage from "../../assets/Images/login_bg.jpg";
 
 const ResetPassword = () => {
   const navigate = useNavigate();
@@ -13,7 +14,15 @@ const ResetPassword = () => {
 
   return (
     <div>
-      <div className="login-container">
+      <div
+        className="login-container"
+        style={{
+          backgroundImage: `url(${bgImage})`,
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+        }}
+      >
         <div className="login-box">
           <p className="text-xl text-black mb-2">RESET PASSWORD</p>
           <p className="text-sm text-black mb-4">

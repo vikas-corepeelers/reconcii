@@ -6,6 +6,7 @@ import {
 } from "../../../ServiceRequest/APIFunctions";
 import useMakeLogs from "../../../Hooks/useMakeLogs";
 import LOG_ACTIONS from "../../../Constants/LogAction";
+import { useLoader } from "../../../Utils/Loader";
 
 const BLANK_CUSTOM_REPORT_PARAMS = {
   startDate: new Date(),
@@ -16,6 +17,7 @@ const BLANK_CUSTOM_REPORT_PARAMS = {
 
 const useReports = () => {
   const { makeLog } = useMakeLogs();
+  const { setToastMessage } = useLoader();
   const [generatedReports, setGeneratedReports] = useState([]);
   const [reportTenders, setReportTenders] = useState([]);
   const [reportColumns, setReportColumns] = useState([]);
@@ -28,12 +30,13 @@ const useReports = () => {
     try {
       const response = await requestCallGet(apiEndpoints.REPORTING_TENDERS);
       if (response.status) {
-        // let ThreePOTenders = response?.data?.data?.filter(
-        //   (tenderType) => tenderType?.category === "3PO"
-        // );
-        // if (ThreePOTenders?.length > 0) {
-        //   dispatch(setReconciliationTenders(ThreePOTenders[0]?.tenders));
-        // }
+        let ThreePOTenders = response?.data?.data?.filter(
+          (tenderType) => tenderType?.category === "3PO"
+        );
+        if (ThreePOTenders?.length > 0) {
+          setReportTenders(ThreePOTenders[0]?.tenders);
+          // dispatch(setReconciliationTenders(ThreePOTenders[0]?.tenders));
+        }
       }
     } catch (error) {
       console.error(error);
@@ -62,6 +65,10 @@ const useReports = () => {
       let params = {
         id: record?.id,
       };
+      setToastMessage({
+        message: "File download started.",
+        type: "success",
+      });
       const response = await requestCallGet(
         apiEndpoints.DOWNLOAD_ASYNC_GENERATE_REPORT_DATA,
         params,
@@ -76,6 +83,7 @@ const useReports = () => {
       );
       const { data = "" } = res || {};
       const fileName = record?.fileName;
+
       downloadReportsFun(data, fileName);
     } catch (error) {
       console.error(error);
@@ -87,6 +95,10 @@ const useReports = () => {
     let params = {
       threepo: tender?.toLowerCase(),
     };
+    setToastMessage({
+      message: "File download started.",
+      type: "success",
+    });
     const response = await requestCallGet(
       `${apiEndpoints.DOWNLOAD_MISSING_STORE_MAPPING}/threepo`,
       params,

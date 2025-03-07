@@ -7,6 +7,7 @@ import {
   reconciiBaseURL,
   reconciiAdminBaseURL,
   activityURL,
+  reconciliationNodeURL,
 } from "../ServiceRequest/APIEndPoints";
 const instance = axios.create({
   baseURL: baseURL,
@@ -32,6 +33,9 @@ instance.interceptors.request.use((config) => {
     config.baseURL = reconciiBaseURL;
   }
   if (config?.url?.includes(activityURL)) {
+    config.baseURL = reconciiAdminBaseURL;
+  }
+  if (config?.url?.includes(reconciliationNodeURL)) {
     config.baseURL = reconciiAdminBaseURL;
   }
   return config;

@@ -189,6 +189,7 @@ const DashboardFilter = () => {
           />
         </div>
       </div>
+
       <div className="flex justify-between">
         <div className="selected-store-div">
           {lastReconciliationSync?.lastReconciled && (

@@ -86,8 +86,8 @@ export default function Reports() {
           <div className="flex-1">
             <CustomSelect
               data={reportTenders}
-              option_value={"key"}
-              option_label={"label"}
+              option_value={"technicalName"}
+              option_label={"displayName"}
               onChange={(e) =>
                 handleFilterChange("selectedTender", e.target.value)
               }
@@ -129,9 +129,12 @@ export default function Reports() {
       >
         <div className="pt-3 w-full">
           <p className="text-black-600">DOWNLOAD GENERATED REPORTS</p>
-          <div className="relative overflow-x-auto mt-2 mb-2 custom-table-style">
+          <div
+            className="relative overflow-x-auto mt-2 mb-2 custom-table-style"
+            style={{ maxHeight: "50vh", overflowY: "auto" }}
+          >
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 sticky top-0">
                 <tr>
                   <th scope="col">Report Type</th>
                   <th scope="col">Start Date</th>

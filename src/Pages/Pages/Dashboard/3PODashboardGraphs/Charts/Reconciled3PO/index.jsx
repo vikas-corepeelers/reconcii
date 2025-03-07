@@ -17,6 +17,8 @@ export default function Reconciled3PO() {
     }
   }, [dashboard3POData]);
 
+  console.log("storeSalesData", storeSalesData);
+
   return (
     <div className="chart-container">
       {selectedTenderIndex > -1 && (

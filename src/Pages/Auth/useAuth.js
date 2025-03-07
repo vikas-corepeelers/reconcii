@@ -62,7 +62,9 @@ const useAuth = () => {
       let deviceId = generateDeviceCode();
       let additionalHeaders = {
         deviceId: deviceId,
+        Authorization: "",
       };
+      // const response = await requestCallGet(apiEndpoints.ACCESS_CORS);
       const response = await requestCallPost(
         apiEndpoints.ACCESS_TOKEN,
         loginParams,

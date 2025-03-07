@@ -1,23 +1,30 @@
-const setEnv = () => {
-  if (import.meta.env.VITE_REACT_APP_ENV == "prod") {
-    return import.meta.env.VITE_REACT_APP_API_URL;
-  } else if (import.meta.env.VITE_REACT_APP_ENV == "stag") {
-    return import.meta.env.VITE_REACT_APP_API_URL;
-  } else {
-    return import.meta.env.VITE_REACT_APP_API_URL;
-  }
-};
+// const setEnv = () => {
+//   if (import.meta.env.VITE_REACT_APP_ENV == "prod") {
+//     return import.meta.env.VITE_REACT_APP_API_URL;
+//   } else if (import.meta.env.VITE_REACT_APP_ENV == "stag") {
+//     return import.meta.env.VITE_REACT_APP_API_URL;
+//   } else {
+//     return import.meta.env.VITE_REACT_APP_API_URL;
+//   }
+// };
 
-let env = setEnv();
+// let env = setEnv();
 
-const baseURL = `${env}`;
+const baseURL = "https://subwayapi.corepeelers.com";
 const ssoBaseURL = "https://api.corepeelers.com";
+const reconciiBaseURL = "https://reconciiapi.corepeelers.com";
+const reconciiAdminBaseURL = "http://localhost:8086"; //"https://reconciapi.corepeelers.com"; //"";
+
+// const baseURL = "https://subwayapij2.corepeelers.com";
+// const ssoBaseURL = "https://subwayapij.corepeelers.com";
+// const reconciiBaseURL = "https://subwayapip.corepeelers.com";
+// const reconciiAdminBaseURL = "https://subwayapi1.corepeelers.com/";
 
 const sso = "/sso-service/api/v1";
 const reconcii = "/reconcii-service/api";
 const activityURL = "/api/audit_log";
-const reconciiBaseURL = "https://reconciiapi.corepeelers.com";
-const reconciiAdminBaseURL = "http://localhost:8086";
+const reconciliationNodeURL = "/api/node/reconciliation";
+
 const AUTH = "/auth";
 const USER = "/user";
 const ROLE = "/role";
@@ -32,6 +39,8 @@ const CUSTOM = "/custom";
 const apiEndpoints = {
   // !AUTH --- DO NOT TOUCH
   ACCESS_TOKEN: `${sso}${AUTH}/access/token`,
+  ACCESS_CORS: `${sso}${AUTH}/access/cors`,
+
   REFRESH_TOKEN: `${sso}${AUTH}/refresh/token`,
   USER_LOGOUT: `${sso}${AUTH}/logout`,
   RESET_PASSWORD: `${sso}${USER}/reset/password`,
@@ -145,6 +154,9 @@ const apiEndpoints = {
   ACTIVITY_CREATE: `${activityURL}/create`,
   ACTIVITY_SEARCH: `${activityURL}/list`,
   ACTIVITY_USER_LIST: `${activityURL}/user/list`,
+
+  // Reconciliation URL
+  FILE_UPLOAD_NODE: `${reconciliationNodeURL}/fileUpload`,
 };
 
 export {
@@ -156,4 +168,5 @@ export {
   reconciiBaseURL,
   reconciiAdminBaseURL,
   activityURL,
+  reconciliationNodeURL,
 };

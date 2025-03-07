@@ -13,15 +13,19 @@ export default function PercentageChart({
   amountInRupee = false,
 }) {
   const chartRef = useRef(null);
+  const hasNonZeroValue = data.some((value) => value !== 0);
+  console.log("hasNonZeroValue", hasNonZeroValue);
   const dataset = {
     labels: labels,
     datasets: [
       {
-        data: data,
-        backgroundColor:
-          colors.length > 0 ? colors : [backgroundColor, "#cecece"],
+        data: hasNonZeroValue ? data : [1],
+        backgroundColor: hasNonZeroValue
+          ? colors.length > 0
+            ? colors
+            : [backgroundColor, "#cecece"]
+          : ["#ccc"],
         borderWidth: 0,
-        // borderColor: "#000000",
       },
     ],
   };

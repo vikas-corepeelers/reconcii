@@ -5,6 +5,7 @@ import useAuth from "./useAuth";
 import Alert from "../../components/Alert";
 import { useNavigate } from "react-router-dom";
 import AuthLogo from "./AuthLogo";
+import bgImage from "../../assets/Images/login_bg.jpg";
 const Login = () => {
   const navigate = useNavigate();
   const { loginParams, loginErrors, handleLoginParamsChanges, doLogin } =
@@ -12,7 +13,15 @@ const Login = () => {
 
   return (
     <div>
-      <div className="login-container">
+      <div
+        className="login-container"
+        style={{
+          backgroundImage: `url(${bgImage})`,
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+        }}
+      >
         <div className="login-box">
           <p className="text-xl text-black mb-2">WELCOME BACK</p>
           <p className="text-sm text-black mb-4">
@@ -25,7 +34,9 @@ const Login = () => {
             type="email"
             placeholder="Username"
             value={loginParams?.username}
-            onChange={(e) => handleLoginParamsChanges("username", e.target.value)}
+            onChange={(e) =>
+              handleLoginParamsChanges("username", e.target.value)
+            }
             error={loginErrors?.username}
           />
           <CustomInput

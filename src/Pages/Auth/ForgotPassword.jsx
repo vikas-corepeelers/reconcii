@@ -5,19 +5,28 @@ import useAuth from "./useAuth";
 import Alert from "../../components/Alert";
 import AuthLogo from "./AuthLogo";
 import { useNavigate } from "react-router-dom";
+import bgImage from "../../assets/Images/login_bg.jpg";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
-  const {     
+  const {
     forgotPasswordParams,
     forgotPasswordErrors,
-    handleForgotPasswordParamsChanges, 
-    doForgotPassword 
+    handleForgotPasswordParamsChanges,
+    doForgotPassword,
   } = useAuth();
 
   return (
     <div>
-      <div className="login-container">
+      <div
+        className="login-container"
+        style={{
+          backgroundImage: `url(${bgImage})`,
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+        }}
+      >
         <div className="login-box">
           <p className="text-xl text-black mb-2">FORGOT PASSWORD</p>
           <p className="text-sm text-black mb-4">
@@ -30,17 +39,25 @@ const ForgotPassword = () => {
             type="email"
             placeholder="User Id"
             value={forgotPasswordParams?.username}
-            onChange={(e) => handleForgotPasswordParamsChanges("username", e.target.value)}
+            onChange={(e) =>
+              handleForgotPasswordParamsChanges("username", e.target.value)
+            }
             error={forgotPasswordErrors?.username}
           />
           <CustomInput
             type="email"
             placeholder="Email"
             value={forgotPasswordParams?.emailId}
-            onChange={(e) => handleForgotPasswordParamsChanges("emailId", e.target.value)}
+            onChange={(e) =>
+              handleForgotPasswordParamsChanges("emailId", e.target.value)
+            }
             error={forgotPasswordErrors?.emailId}
           />
-          <button type="submit" className="login-button mb-2" onClick={doForgotPassword}>
+          <button
+            type="submit"
+            className="login-button mb-2"
+            onClick={doForgotPassword}
+          >
             SUBMIT
           </button>
           <a

@@ -181,16 +181,18 @@ p {
   color: white;
   text-align: center;
   border-radius: 4px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
   transition: right 0.5s ease-in-out; /* Animation for sliding in and out */
 }
 
 .alert-box.success {
   background-color: #4caf50;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .alert-box.error {
   background-color: #f44336;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .alert-box.slide-in {

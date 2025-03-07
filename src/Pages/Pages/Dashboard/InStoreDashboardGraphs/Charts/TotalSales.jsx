@@ -48,7 +48,14 @@ export default function TotalSales() {
   useEffect(() => {
     if (dashboardData?.tenderWiseDataList !== undefined) {
       let fields = tenderAndBankData(dashboardFilters?.salesType);
-      console.log(fields);
+      if (fields?.length > 0) {
+        try {
+          fields = [...fields].sort((a, b) => b?.sales - a?.sales);
+        } catch (e) {
+          console.log("e", e);
+        }
+      }
+
       if (dashboardFilters?.salesType === "TRM Sales") {
         let dataList = [];
         let labelList = [];
@@ -138,9 +145,19 @@ export default function TotalSales() {
   };
 
   const options = {
+    responsive: true,
     plugins: {
       legend: {
         display: false, // Hides the legend completely
+      },
+    },
+    scales: {
+      x: {
+        ticks: {
+          autoSkip: false, // Ensures all labels are shown
+          maxRotation: 90, // Rotates labels to 90 degrees
+          minRotation: 90,
+        },
       },
     },
   };

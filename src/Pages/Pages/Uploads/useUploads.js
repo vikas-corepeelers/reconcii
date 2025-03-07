@@ -6,6 +6,7 @@ import {
 } from "../../../ServiceRequest/APIFunctions";
 import { useLoader } from "../../../Utils/Loader";
 import LOG_ACTIONS from "../../../Constants/LogAction";
+import useMakeLogs from "../../../Hooks/useMakeLogs";
 
 const BLANK_FILTERS = {
   type: "",
@@ -17,6 +18,7 @@ const BLANK_PAYMENT_TYPE = [{ type: "-Select Payment Type-", dataSource: "" }];
 
 const useUploads = () => {
   const { setToastMessage, setLoading } = useLoader();
+  const { makeLog } = useMakeLogs();
   const [dataSource, setDataSource] = useState([]);
   const [values, setValues] = useState(BLANK_FILTERS);
   const [paymentTypeList, setPaymentTypeList] = useState(BLANK_PAYMENT_TYPE);
@@ -109,6 +111,48 @@ const useUploads = () => {
           `${apiEndpoints.UPLOAD_FILE}?datasource=${values?.payment}`,
           values
         );
+        setValues(BLANK_FILTERS);
+        setFiles([]);
+        setToastMessage({
+          message: "File uploaded successfully.",
+          type: "success",
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onSubmit11 = async () => {
+    try {
+      if (files?.length === 0) {
+        setToastMessage({
+          message: "Please select file.",
+          type: "error",
+        });
+        return;
+      }
+      setLoading(true);
+      const formData = new FormData();
+      for (let i = 0; i < files?.length; i++) {
+        formData.append("files", files[i]);
+      }
+      formData.append("targetTable", "bill_wise_sales");
+      const customConfig = {
+        langId: 1,
+        Accept: "application/json",
+        "Content-Type": "multipart/form-data",
+        timeout: 300000,
+      };
+
+      const response = await requestCallPost(
+        `${apiEndpoints.FILE_UPLOAD_NODE}`,
+        formData,
+        customConfig
+      );
+      if (response.status) {
         setFiles([]);
         setToastMessage({
           message: "File uploaded successfully.",
