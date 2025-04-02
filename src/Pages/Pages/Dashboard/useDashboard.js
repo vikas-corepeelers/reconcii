@@ -89,10 +89,15 @@ const useDashboard = () => {
         params
       );
       if (response.status) {
-        makeLog(LOG_ACTIONS.SEARCH, apiEndpoints.DASHBOARD_DATA, {
-          ...params,
-          dashboard_type: "fetch_dashboard",
-        });
+        makeLog(
+          LOG_ACTIONS.SEARCH,
+          "Dashboard Data",
+          apiEndpoints.DASHBOARD_DATA,
+          {
+            ...params,
+            dashboard_type: "fetch_dashboard",
+          }
+        );
         dispatch(setDashboardData(response?.data?.data));
         dispatch(setLoadingDashboard(false));
         setTimeout(() => {
@@ -115,20 +120,30 @@ const useDashboard = () => {
       }
       if (response.status) {
         if (reconciliation) {
-          makeLog(LOG_ACTIONS.SEARCH, apiEndpoints._3PO_DATA, {
-            ...params,
-            dashboard_type: "fetch_reconciliation_dashboard",
-          });
+          makeLog(
+            LOG_ACTIONS.SEARCH,
+            "Reconciliation Dashboard Data",
+            apiEndpoints._3PO_DATA,
+            {
+              ...params,
+              dashboard_type: "fetch_reconciliation_dashboard",
+            }
+          );
           dispatch(setReconciliation3POData(response?.data?.data));
           setTimeout(() => {
             setLoading(false);
             dispatch(setLoadingDashboard(false));
           }, 1000);
         } else {
-          makeLog(LOG_ACTIONS.SEARCH, apiEndpoints._3PO_DATA, {
-            ...params,
-            dashboard_type: "fetch_3po_dashboard",
-          });
+          makeLog(
+            LOG_ACTIONS.SEARCH,
+            "3PO Dashboard Data",
+            apiEndpoints._3PO_DATA,
+            {
+              ...params,
+              dashboard_type: "fetch_3po_dashboard",
+            }
+          );
           dispatch(setDashboard3POData(response?.data?.data));
         }
       }
@@ -143,14 +158,17 @@ const useDashboard = () => {
         ...params,
         ...currentDashboardRequest,
       };
+      setLoading(true);
       const response = await requestCallPost(
         apiEndpoints.DOWNLOAD_ASYNC_DASHBOARD_REPORT,
         req
       );
+      setLoading(false);
       dispatch(setLoadingDashboard(false));
       if (response.status) {
         makeLog(
           LOG_ACTIONS.DOWNLOAD_REPORT,
+          `${params?.reportType} (${params?.tender})`,
           apiEndpoints.DOWNLOAD_ASYNC_DASHBOARD_REPORT,
           { ...req, report_type: "generate_dashboard_report" }
         );
@@ -170,18 +188,21 @@ const useDashboard = () => {
         ...params,
         ...currentDashboardRequest,
       };
-      setToastMessage({
-        message: "Request submitted for generating report.",
-        type: "success",
-      });
+      setLoading(true);
+      // setToastMessage({
+      //   message: "Request submitted for generating report.",
+      //   type: "success",
+      // });
       const response = await requestCallPost(
         apiEndpoints.DOWNLOAD_STORE_TEMPLATE_DATA,
         req
       );
+      setLoading(false);
       dispatch(setLoadingDashboard(false));
       if (response.status) {
         makeLog(
           LOG_ACTIONS.DOWNLOAD_REPORT,
+          "Download Store Sync Report",
           apiEndpoints.DOWNLOAD_STORE_TEMPLATE_DATA,
           { ...req, report_type: "generate_store_report" }
         );

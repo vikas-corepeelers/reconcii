@@ -8,12 +8,15 @@ const REPORT_TYPES = {
   posVsTrm: "POSVsTRM",
   trmVsMpr: "TRMVsMPR",
   mprVsBank: "MPRVsBank",
+  salesVsPickup: "SalesVsPickup",
+  pickupVsReceipts: "PickupVsReceipts",
 };
 
 export default function SalesComparisonItem({
   chartIndex,
   item,
   selectedDelta,
+  cashKeys = [],
 }) {
   const [graphData, setGraphData] = useState({
     labels: [],
@@ -28,11 +31,13 @@ export default function SalesComparisonItem({
   });
 
   let { dashboardFilters } = useSelector((state) => state.CommonService);
-
   useEffect(() => {
     let sales = 0;
     let totalSales = 0;
-    if (dashboardFilters?.salesType === "POS Sales") {
+    if (cashKeys?.includes(selectedDelta)) {
+      sales = Number(item?.[selectedDelta]);
+      totalSales = Number(item?.sales);
+    } else if (dashboardFilters?.salesType === "POS Sales") {
       sales = Number(item?.[selectedDelta]);
       totalSales = Number(item?.sales);
     } else {
@@ -52,7 +57,12 @@ export default function SalesComparisonItem({
       data: [sales],
       colors: ["#4caf50"],
     });
-  }, [chartIndex, selectedDelta, dashboardFilters?.salesType]);
+  }, [
+    chartIndex,
+    selectedDelta,
+    dashboardFilters?.salesType,
+    item?.tenderName,
+  ]);
 
   return (
     <div className="chart-container">

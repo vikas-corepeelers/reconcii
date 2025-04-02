@@ -14,7 +14,38 @@ const ForgotPassword = () => {
     forgotPasswordErrors,
     handleForgotPasswordParamsChanges,
     doForgotPassword,
+    activeStep,
   } = useAuth();
+
+  const pageTitle = () => {
+    if (activeStep === 1) {
+      return "FORGOT PASSWORD";
+    } else if (activeStep === 2) {
+      return "VERIFY OTP";
+    } else if (activeStep === 3) {
+      return "RESET PASSWORD";
+    }
+  };
+
+  const pageSubTitle = () => {
+    if (activeStep === 1) {
+      return "Please enter your registered username & email";
+    } else if (activeStep === 2) {
+      return "Please enter OTP";
+    } else if (activeStep === 3) {
+      return "Please enter new password";
+    }
+  };
+
+  const actionButtonText = () => {
+    if (activeStep === 1) {
+      return "SUBMIT";
+    } else if (activeStep === 2) {
+      return "VERIFY";
+    } else if (activeStep === 3) {
+      return "SUBMIT";
+    }
+  };
 
   return (
     <div>
@@ -28,38 +59,107 @@ const ForgotPassword = () => {
         }}
       >
         <div className="login-box">
-          <p className="text-xl text-black mb-2">FORGOT PASSWORD</p>
-          <p className="text-sm text-black mb-4">
-            Please enter your registered email
-          </p>
-          {forgotPasswordErrors?.status && (
-            <Alert type="error" message={forgotPasswordErrors?.status} />
+          <p className="text-xl text-black mb-2">{pageTitle()}</p>
+          <p className="text-sm text-black mb-4">{pageSubTitle()}</p>
+          {forgotPasswordErrors?.status?.type && (
+            <Alert
+              type={forgotPasswordErrors?.status?.type}
+              message={forgotPasswordErrors?.status?.message}
+            />
           )}
-          <CustomInput
-            type="email"
-            placeholder="User Id"
-            value={forgotPasswordParams?.username}
-            onChange={(e) =>
-              handleForgotPasswordParamsChanges("username", e.target.value)
-            }
-            error={forgotPasswordErrors?.username}
-          />
-          <CustomInput
-            type="email"
-            placeholder="Email"
-            value={forgotPasswordParams?.emailId}
-            onChange={(e) =>
-              handleForgotPasswordParamsChanges("emailId", e.target.value)
-            }
-            error={forgotPasswordErrors?.emailId}
-          />
+          {activeStep === 1 && (
+            <>
+              <CustomInput
+                type="email"
+                placeholder="Username"
+                value={forgotPasswordParams?.username}
+                onChange={(e) =>
+                  handleForgotPasswordParamsChanges("username", e.target.value)
+                }
+                error={forgotPasswordErrors?.username}
+              />
+              <CustomInput
+                type="email"
+                placeholder="Email"
+                value={forgotPasswordParams?.email}
+                onChange={(e) =>
+                  handleForgotPasswordParamsChanges("email", e.target.value)
+                }
+                error={forgotPasswordErrors?.email}
+              />
+            </>
+          )}
+          {activeStep === 2 && (
+            <>
+              <CustomInput
+                type="email"
+                placeholder="OTP"
+                value={forgotPasswordParams?.otp}
+                onChange={(e) =>
+                  handleForgotPasswordParamsChanges("otp", e.target.value)
+                }
+                error={forgotPasswordErrors?.otp}
+                maxLength={6}
+                additionalInputStyle={{
+                  letterSpacing: "5px",
+                  textAlign: "center",
+                }}
+              />
+            </>
+          )}
+          {activeStep === 3 && (
+            <>
+              <CustomInput
+                type="email"
+                placeholder="New Password"
+                value={forgotPasswordParams?.newPassword}
+                onChange={(e) =>
+                  handleForgotPasswordParamsChanges(
+                    "newPassword",
+                    e.target.value
+                  )
+                }
+                error={forgotPasswordErrors?.newPassword}
+              />
+              <CustomInput
+                type="email"
+                placeholder="Confirm Password"
+                value={forgotPasswordParams?.confirmPassword}
+                onChange={(e) =>
+                  handleForgotPasswordParamsChanges(
+                    "confirmPassword",
+                    e.target.value
+                  )
+                }
+                error={forgotPasswordErrors?.confirmPassword}
+              />
+            </>
+          )}
           <button
-            type="submit"
+            type="button"
             className="login-button mb-2"
             onClick={doForgotPassword}
           >
-            SUBMIT
+            {actionButtonText()}
           </button>
+          {activeStep === 2 && (
+            <div className="flex justify-center mb-2 mt-2">
+              <p style={{ fontSize: "14px" }}>
+                No OTP received?{" "}
+                <a
+                  style={{ color: "#0000ff" }}
+                  href="/"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    doForgotPassword(true);
+                  }}
+                >
+                  Resend
+                </a>
+              </p>
+            </div>
+          )}
+
           <a
             href="/"
             onClick={(e) => {

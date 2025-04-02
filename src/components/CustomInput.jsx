@@ -12,6 +12,7 @@ const CustomInput = ({
   required = false,
   accept = "",
   maxLength,
+  additionalInputStyle = {},
 }) => {
   const [currentType, setCurrentType] = useState(type);
 
@@ -44,7 +45,8 @@ const CustomInput = ({
               border: error ? "1px solid red" : "1px solid #ccc",
               padding: "8px",
               borderRadius: "4px",
-              color:"#000000"
+              color: "#000000",
+              ...additionalInputStyle,
             }}
             disabled={disabled}
             maxLength={maxLength}
@@ -67,9 +69,12 @@ const CustomInput = ({
               }}
             >
               {currentType === "password" ? (
-                <i className="fa-solid fa-eye" style={{color:"#000000"}}></i>
+                <i className="fa-solid fa-eye" style={{ color: "#000000" }}></i>
               ) : (
-                <i className="fa-solid fa-eye-slash" style={{color:"#000000"}}></i>
+                <i
+                  className="fa-solid fa-eye-slash"
+                  style={{ color: "#000000" }}
+                ></i>
               )}
             </button>
           )}

@@ -12,7 +12,7 @@ const UserDropdown = () => {
     (state) => state.CommonService.userDetailedProfile
   );
   const logoutMeOut = async () => {
-    await makeLog(LOG_ACTIONS.LOGOUT, "logout");
+    await makeLog(LOG_ACTIONS.LOGOUT, "Logout", "logout");
     localStorage.clear();
     navigate("/");
   };

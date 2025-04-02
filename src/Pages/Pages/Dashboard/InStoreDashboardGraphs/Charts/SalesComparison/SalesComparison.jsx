@@ -3,6 +3,8 @@ import "../../graph.style.css";
 import { useSelector } from "react-redux";
 import SalesComparisonItem from "./SalesComparisonItem";
 
+const CASH_KEYS = ["salesVsPickup", "pickupVsReceipts"];
+
 export default function SalesComparison({ selectedDelta }) {
   const [storeSalesData, setStoreSalesData] = useState([]);
   const [selectedTenderIndex, setSelectedTenderIndex] = useState(-1);
@@ -10,12 +12,29 @@ export default function SalesComparison({ selectedDelta }) {
 
   useEffect(() => {
     if (dashboardData?.tenderWiseDataList) {
-      let data = dashboardData?.tenderWiseDataList?.map((item) => {
-        let bankList = item.bankWiseDataList.map((bank, index) => {
-          return { ...bank, isSelected: index === 0 ? true : false };
+      let data = [];
+      if (CASH_KEYS?.includes(selectedDelta)) {
+        dashboardData?.tenderWiseDataList?.forEach((item) => {
+          if (item?.tenderName === "CASH") {
+            let bankList = item.bankWiseDataList.map((bank, index) => {
+              return { ...bank, isSelected: index === 0 ? true : false };
+            });
+            // return { ...item, bankWiseDataList: bankList };
+            data.push({ ...item, bankWiseDataList: bankList });
+          }
         });
-        return { ...item, bankWiseDataList: bankList };
-      });
+      } else {
+        dashboardData?.tenderWiseDataList?.forEach((item) => {
+          if (item?.tenderName !== "CASH") {
+            let bankList = item.bankWiseDataList.map((bank, index) => {
+              return { ...bank, isSelected: index === 0 ? true : false };
+            });
+            // return { ...item, bankWiseDataList: bankList };
+            data.push({ ...item, bankWiseDataList: bankList });
+          }
+        });
+      }
+
       setSelectedTenderIndex(data?.length > 0 ? 0 : -1);
       setStoreSalesData(data);
     }
@@ -44,6 +63,7 @@ export default function SalesComparison({ selectedDelta }) {
             item={storeSalesData[selectedTenderIndex]}
             selectedDelta={selectedDelta}
             chartIndex={selectedTenderIndex}
+            cashKeys={CASH_KEYS}
           />
         </div>
       )}

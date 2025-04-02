@@ -18,13 +18,13 @@ const MANAGER_SIDEBAR = [
     icon: "currency_exchange",
     db_id: 4,
   },
-  {
-    id: "vouchers",
-    label: "Vouchers",
-    route: "/vouchers",
-    icon: "confirmation_number",
-    db_id: 5,
-  },
+  // {
+  //   id: "vouchers",
+  //   label: "Vouchers",
+  //   route: "/vouchers",
+  //   icon: "confirmation_number",
+  //   db_id: 5,
+  // },
   {
     id: "reports",
     label: "Reports",

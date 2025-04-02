@@ -113,7 +113,7 @@ export default function AuditLog() {
                   {/* <th scope="col">Role</th> */}
                   <th scope="col">Date</th>
                   <th scope="col" style={{ maxWidth: "250px" }}>
-                    Request
+                    Details
                   </th>
                 </tr>
               </thead>
@@ -129,7 +129,9 @@ export default function AuditLog() {
                           "DD-MM-YYYY hh:mm A"
                         )}
                       </td>
-                      <td style={{ maxWidth: "250px" }}>{report?.request}</td>
+                      <td style={{ maxWidth: "250px" }}>
+                        {report?.action_details}
+                      </td>
                     </tr>
                   );
                 })}

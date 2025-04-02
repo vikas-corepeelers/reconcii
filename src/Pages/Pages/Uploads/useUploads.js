@@ -108,6 +108,7 @@ const useUploads = () => {
       if (response.status) {
         makeLog(
           LOG_ACTIONS.UPLOAD,
+          `Uploaded - ${values?.payment}`,
           `${apiEndpoints.UPLOAD_FILE}?datasource=${values?.payment}`,
           values
         );

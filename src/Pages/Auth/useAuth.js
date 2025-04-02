@@ -4,7 +4,11 @@ import {
   requestCallGet,
   requestCallPost,
 } from "../../ServiceRequest/APIFunctions";
-import { generateDeviceCode } from "../../Utils/UtilityFunctions";
+import {
+  generateDeviceCode,
+  isValidPassword,
+  validateOnlyDigits,
+} from "../../Utils/UtilityFunctions";
 import { useDispatch } from "react-redux";
 import {
   setUserDetailedProfile,
@@ -20,8 +24,12 @@ const BLANK_LOGIN = {
 };
 
 const FORGOT_PASSWORD = {
-  emailId: "",
+  email: "",
   username: "",
+  resend: false,
+  otp: "",
+  newPassword: "",
+  confirmPassword: "",
 };
 
 const useAuth = () => {
@@ -31,6 +39,7 @@ const useAuth = () => {
   const [loginParams, setLoginParams] = useState(BLANK_LOGIN);
   const [loginErrors, setLoginErrors] = useState(null);
   const { makeLog } = useMakeLogs();
+  const [activeStep, setActiveStep] = useState(1);
   const [forgotPasswordParams, setForgotPasswordParams] =
     useState(FORGOT_PASSWORD);
   const [forgotPasswordErrors, setForgotPasswordErrors] = useState(null);
@@ -43,6 +52,11 @@ const useAuth = () => {
   };
 
   const handleForgotPasswordParamsChanges = (name, value) => {
+    if (name === "otp" && value !== "") {
+      if (!validateOnlyDigits(value)) {
+        return;
+      }
+    }
     if (forgotPasswordErrors !== null) {
       setForgotPasswordErrors(null);
     }
@@ -112,6 +126,7 @@ const useAuth = () => {
         dispatch(setUserProfile(response.data?.data));
         makeLog(
           LOG_ACTIONS.LOGIN,
+          "Login",
           apiEndpoints.ACCESS_TOKEN,
           {
             username: loginParams.username,
@@ -151,41 +166,138 @@ const useAuth = () => {
     return JSON.parse(atob(base64)); // Decode base64 and parse JSON
   };
 
-  const doForgotPassword = async () => {
+  const doForgotPassword = async (resend) => {
     try {
-      if (forgotPasswordParams.emailId?.trim() === "") {
-        setLoginErrors({
-          emailId: "Please enter your registered email address.",
-        });
-        return;
-      } else if (forgotPasswordParams.username?.trim() === "") {
-        setLoginErrors({ username: "Please enter your username." });
-        return;
+      let url = "";
+      let requestBody = {};
+
+      if (activeStep === 1) {
+        if (forgotPasswordParams.email?.trim() === "") {
+          setForgotPasswordErrors({
+            email: "Please enter your registered email address.",
+          });
+          return;
+        } else if (forgotPasswordParams.username?.trim() === "") {
+          setForgotPasswordErrors({ username: "Please enter your username." });
+          return;
+        }
+
+        url = apiEndpoints.FORGOT_PASSWORD;
+        requestBody = {
+          email: forgotPasswordParams.email,
+          username: forgotPasswordParams.username,
+        };
+      } else if (activeStep === 2) {
+        if (forgotPasswordParams.otp?.length < 6) {
+          setForgotPasswordErrors({
+            otp: "Please enter valid OTP.",
+          });
+          return;
+        }
+
+        url = apiEndpoints.VERIFY_OTP;
+        if (resend === true) {
+          console.log("resend", resend);
+          url = apiEndpoints.FORGOT_PASSWORD;
+          requestBody = {
+            email: forgotPasswordParams.email,
+            username: forgotPasswordParams.username,
+            resend: true,
+          };
+        } else {
+          requestBody = {
+            email: forgotPasswordParams.email,
+            username: forgotPasswordParams.username,
+            otp: forgotPasswordParams.otp,
+          };
+        }
+      } else if (activeStep === 3) {
+        if (!isValidPassword(forgotPasswordParams?.newPassword)) {
+          setForgotPasswordErrors({
+            newPassword:
+              "Your password must be 8 character, with at least 1 special character, 1 number and 1 capital letter.",
+          });
+          return;
+        } else if (
+          forgotPasswordParams?.newPassword !==
+          forgotPasswordParams?.confirmPassword
+        ) {
+          setForgotPasswordErrors({
+            confirmPassword: "Password not matched",
+          });
+          return;
+        }
+
+        url = apiEndpoints.RESET_PASSWORD;
+        requestBody = {
+          email: forgotPasswordParams.email,
+          username: forgotPasswordParams.username,
+          newPassword: forgotPasswordParams.newPassword,
+        };
       }
       setLoading(true);
-      const response = await requestCallPost(
-        apiEndpoints.FORGOT_PASSWORD,
-        forgotPasswordParams
-      );
+
+      const response = await requestCallPost(url, requestBody);
       setLoading(false);
       if (response.status) {
-        setToastMessage({
-          message: "New password shared on your registered email.",
-          type: "success",
-        });
-        makeLog(
-          "forgot_password",
-          apiEndpoints.FORGOT_PASSWORD,
-          "java",
-          forgotPasswordParams
-        );
+        if (activeStep === 1) {
+          setForgotPasswordErrors({
+            status: {
+              type: "success",
+              message: response?.data?.message,
+            },
+          });
+          setActiveStep(2);
+          setTimeout(() => {
+            setForgotPasswordErrors(null);
+          }, 3000);
+
+          return;
+        } else if (activeStep === 2) {
+          setForgotPasswordErrors({
+            status: {
+              type: "success",
+              message: response?.data?.message,
+            },
+          });
+          if (resend === true) {
+            setForgotPasswordParams({ ...forgotPasswordParams, otp: "" });
+          }
+          setActiveStep(resend === true ? 2 : 3);
+          setTimeout(() => {
+            setForgotPasswordErrors(null);
+          }, 5000);
+          return;
+        } else if (activeStep === 3) {
+          setToastMessage({
+            message: "Password reset successfully! Please login to continue.",
+            type: "success",
+          });
+          navigate("/");
+          return;
+        }
+
+        // makeLog(
+        //   "forgot_password",
+        //   "Forgot Password",
+        //   apiEndpoints.FORGOT_PASSWORD,
+        //   "java",
+        //   forgotPasswordParams
+        // );
         navigate("/");
         return;
       }
-      setToastMessage({
-        message: "Email or Username not mapped correctly.",
-        type: "error",
+
+      setForgotPasswordErrors({
+        status: {
+          type: "error",
+          message: response?.message?.data?.message,
+        },
       });
+
+      setTimeout(() => {
+        setForgotPasswordErrors(null);
+      }, 3000);
     } catch (error) {
       console.log(error);
       setToastMessage({ message: "Something went wrong!", type: "error" });
@@ -202,6 +314,7 @@ const useAuth = () => {
     forgotPasswordErrors,
     handleForgotPasswordParamsChanges,
     doForgotPassword,
+    activeStep,
   };
 };
 

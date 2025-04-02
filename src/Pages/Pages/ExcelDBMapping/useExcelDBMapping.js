@@ -103,6 +103,7 @@ const useExcelDBMapping = () => {
       if (response.status) {
         makeLog(
           LOG_ACTIONS.UPDATE,
+          "Updated Excel DB Mapping",
           apiEndpoints.UPDATE_EXCEL_DB_COLUMN_MAPPING_BY_DATASOURCE,
           { ...reqParams, type: "update_excel_db_mapping" }
         );

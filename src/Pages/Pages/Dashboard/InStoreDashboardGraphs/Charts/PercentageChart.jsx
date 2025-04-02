@@ -14,7 +14,6 @@ export default function PercentageChart({
 }) {
   const chartRef = useRef(null);
   const hasNonZeroValue = data.some((value) => value !== 0);
-  console.log("hasNonZeroValue", hasNonZeroValue);
   const dataset = {
     labels: labels,
     datasets: [

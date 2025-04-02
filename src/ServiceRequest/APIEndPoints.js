@@ -10,26 +10,50 @@
 
 // let env = setEnv();
 
-const baseURL = "https://subwayapi.corepeelers.com";
-const ssoBaseURL = "https://api.corepeelers.com";
-const reconciiBaseURL = "https://reconciiapi.corepeelers.com";
-const reconciiAdminBaseURL = "http://localhost:8080"; //"https://reconciapi.corepeelers.com"; //"";
+// Demo URLS
 
-// const baseURL = "https://subwayapij2.corepeelers.com";
-// const ssoBaseURL = "https://subwayapij.corepeelers.com";
-// const reconciiBaseURL = "https://subwayapip.corepeelers.com";
-// const reconciiAdminBaseURL = "https://subwayapi1.corepeelers.com/";
+// const baseURL = "https://reconciirecodemoapi.corepeelers.com";
+// const ssoBaseURL = "https://reconciissodemoapi.corepeelers.com";
+// const reconciiBaseURL = "https://reconciidatauploaddemoapi.corepeelers.com";
+// const reconciiAdminBaseURL = "https://reconciiadminapidemo.corepeelers.com";
 
-const sso = "/sso-service/api/v1";
+// const sso = "/demo-sso-service/api/v1";
+// const reconcii = "/reconcii-service/api";
+// const activityURL = "/api/audit_log";
+// const reconciliationNodeURL = "/api/node/reconciliation";
+// const RECONCILIATION_SERVICE = "/reconcii-demo-service";
+
+// Bercos URLS
+
+const baseURL = "https://bercosrecoapi.corepeelers.com";
+const ssoBaseURL = "https://bercosrecoapi1.corepeelers.com";
+const reconciiBaseURL = "https://bercosrecoapi2.corepeelers.com";
+const reconciiAdminBaseURL = "https://bercosadminapi.corepeelers.com";
+
+const sso = "/bercos-sso-service/api/v1";
 const reconcii = "/reconcii-service/api";
 const activityURL = "/api/audit_log";
 const reconciliationNodeURL = "/api/node/reconciliation";
+const RECONCILIATION_SERVICE = "/reconcii-bercos-service";
+
+// Subway URLS
+// const baseURL = "https://subwayapi.corepeelers.com";
+// const ssoBaseURL = "https://api.corepeelers.com";
+// const reconciiBaseURL = "https://reconciiapi.corepeelers.com";
+// const reconciiAdminBaseURL = "https://reconciapi.corepeelers.com/";
+
+// const sso = "/sso-service/api/v1";
+// const reconcii = "/reconcii-service/api";
+// const activityURL = "/api/audit_log";
+// const reconciliationNodeURL = "/api/node/reconciliation";
+// const RECONCILIATION_SERVICE = "/subway-service";
+
+const nodePasswordUrls = "/api/auth/end_user";
 
 const AUTH = "/auth";
 const USER = "/user";
 const ROLE = "/role";
 const GROUP = "/group";
-const RECONCILIATION_SERVICE = "/subway-service";
 const PUBLIC = "/public";
 const DASHBOARD = "/dashboard";
 const _3PO = "/threepo";
@@ -43,7 +67,7 @@ const apiEndpoints = {
 
   REFRESH_TOKEN: `${sso}${AUTH}/refresh/token`,
   USER_LOGOUT: `${sso}${AUTH}/logout`,
-  RESET_PASSWORD: `${sso}${USER}/reset/password`,
+  // RESET_PASSWORD: `${sso}${USER}/reset/password`,
   CHANGE_PASSWORD: `${sso}${USER}/change/password`,
   PROFILE: `${sso}${USER}/profile`,
   FORGOT_PASSWORD: `${sso}${USER}/forgot/password`,
@@ -157,6 +181,10 @@ const apiEndpoints = {
 
   // Reconciliation URL
   FILE_UPLOAD_NODE: `${reconciliationNodeURL}/fileUpload`,
+
+  FORGOT_PASSWORD: `${nodePasswordUrls}/forgot_password`,
+  VERIFY_OTP: `${nodePasswordUrls}/verify_otp`,
+  RESET_PASSWORD: `${nodePasswordUrls}/reset_password`,
 };
 
 export {
@@ -169,4 +197,5 @@ export {
   reconciiAdminBaseURL,
   activityURL,
   reconciliationNodeURL,
+  nodePasswordUrls,
 };

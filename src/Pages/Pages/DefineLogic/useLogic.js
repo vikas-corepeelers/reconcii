@@ -49,7 +49,7 @@ const useLogic = () => {
             type: "error",
           });
         } else {
-          makeLog(LOG_ACTIONS.UPDATE, url, {
+          makeLog(LOG_ACTIONS.UPDATE, "Update Logics", url, {
             ...requestObj,
             update_type: "save_defined_logics",
           });

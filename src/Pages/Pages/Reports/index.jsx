@@ -55,6 +55,7 @@ export default function Reports() {
     fetchReportingTenders,
     handleFilterChange,
     setFilterValues,
+    downloadCustomReports,
   } = useReports();
 
   useEffect(() => {
@@ -105,8 +106,8 @@ export default function Reports() {
             <DropdownWithCheckbox
               placeholder={"Select Columns"}
               data={reportColumns}
-              option_value={"key"}
-              option_label={"label"}
+              option_value={"technicalName"}
+              option_label={"name"}
               selectedLabel="Columns - "
               selectedOptions={filterValues?.selectedColumns}
               setSelectedOptions={(columns) =>
@@ -118,7 +119,7 @@ export default function Reports() {
             <PrimaryButton
               disabled={filterValues?.selectedColumns?.length === 0}
               label="Download"
-              // onClick={searchDashboardData}
+              onClick={downloadCustomReports}
               // loading={loadingDashboard}
             />
           </div>

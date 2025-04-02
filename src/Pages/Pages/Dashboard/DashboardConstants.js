@@ -46,6 +46,17 @@ export const posVsTrmVsMprItems = [
   },
 ];
 
+export const cashCompareItems = [
+  {
+    label: "Sales VS Pickup",
+    key: "Sales VS Pickup",
+  },
+  {
+    label: "Pickup VS Receipts",
+    key: "Pickup VS Receipts",
+  },
+];
+
 export const STORE_SALES_ITEM = [
   {
     label: "POS Sales",

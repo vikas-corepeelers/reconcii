@@ -57,7 +57,11 @@ const useChangePassword = () => {
       );
       setLoading(false);
       if (response.status) {
-        makeLog(LOG_ACTIONS.CHANGE_PASSWORD, apiEndpoints.CHANGE_PASSWORD);
+        makeLog(
+          LOG_ACTIONS.CHANGE_PASSWORD,
+          "Change Password",
+          apiEndpoints.CHANGE_PASSWORD
+        );
         setToastMessage({
           message: "Password reset successfully.",
           type: "success",

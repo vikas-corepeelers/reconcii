@@ -5,6 +5,7 @@ import { requestCallPost } from "../ServiceRequest/APIFunctions";
 const useMakeLogs = () => {
   const makeLog = async (
     action,
+    action_details,
     url,
     reqData = {},
     resData = {},
@@ -23,6 +24,7 @@ const useMakeLogs = () => {
       user_email: profileData?.email || profileDetail?.email,
       role: "User",
       action: action,
+      action_details: action_details,
       request: JSON.stringify(reqData),
       response: JSON.stringify(resData),
       remarks: url,
