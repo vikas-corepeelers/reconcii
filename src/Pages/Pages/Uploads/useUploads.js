@@ -126,47 +126,6 @@ const useUploads = () => {
     }
   };
 
-  const onSubmit11 = async () => {
-    try {
-      if (files?.length === 0) {
-        setToastMessage({
-          message: "Please select file.",
-          type: "error",
-        });
-        return;
-      }
-      setLoading(true);
-      const formData = new FormData();
-      for (let i = 0; i < files?.length; i++) {
-        formData.append("files", files[i]);
-      }
-      formData.append("targetTable", "bill_wise_sales");
-      const customConfig = {
-        langId: 1,
-        Accept: "application/json",
-        "Content-Type": "multipart/form-data",
-        timeout: 300000,
-      };
-
-      const response = await requestCallPost(
-        `${apiEndpoints.FILE_UPLOAD_NODE}`,
-        formData,
-        customConfig
-      );
-      if (response.status) {
-        setFiles([]);
-        setToastMessage({
-          message: "File uploaded successfully.",
-          type: "success",
-        });
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return {
     fetchDataSource,
     dataSource,

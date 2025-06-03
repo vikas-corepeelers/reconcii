@@ -13,7 +13,7 @@ export default defineConfig({
     },
   },
   server: {
-    port: 3000, // specify the port you want to use
+    port: 3012, // specify the port you want to use
   },
   css: {
     modules: {

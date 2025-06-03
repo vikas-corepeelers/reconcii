@@ -94,9 +94,15 @@ const SetLogics = ({ group, index }) => {
     );
   };
 
-  const deleteFormula = (index) => {
+  const deleteFormula = (logicIndex) => {
     let localLogicData = [...logicData];
-    localLogicData?.splice(index, 1);
+    localLogicData?.splice(logicIndex, 1);
+    let logicGroupList = [...logicGroups];
+    logicGroupList[index] = {
+      ...logicGroups[index],
+      recologic: localLogicData,
+    };
+    dispatch(setLogicGroups(logicGroupList));
     dispatch(setLogicData(localLogicData));
   };
 
@@ -106,9 +112,18 @@ const SetLogics = ({ group, index }) => {
       moment(startDate).format("YYYY-MM-DD"),
       endDate ? moment(endDate).format("YYYY-MM-DD") : ""
     );
-    console.log("group", group);
+
     if (requestObj.isValid) {
       saveFormulas({ ...requestObj, id: group?.id || undefined });
+    } else {
+      let localLogicData = [...requestObj?.response];
+      let logicGroupList = [...logicGroups];
+      logicGroupList[index] = {
+        ...logicGroups[index],
+        recologic: localLogicData,
+      };
+      dispatch(setLogicGroups(logicGroupList));
+      dispatch(setLogicData(localLogicData));
     }
   };
 

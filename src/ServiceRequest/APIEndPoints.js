@@ -10,6 +10,19 @@
 
 // let env = setEnv();
 
+// POC URls
+// const baseURL = "https://pocmodulereconciirecoapi.corepeelers.com";
+// const ssoBaseURL = "https://pocmodulereconciissoapi.corepeelers.com";
+// const reconciiBaseURL = "https://pocmodulereconciiuploadapi.corepeelers.com";
+// const reconciiAdminBaseURL =
+//   "https://pocmodulereconciiadminapi.corepeelers.com";
+
+// const sso = "/devyani-sso-service/api/v1";
+// const reconcii = "/poc_reconciliation-service/api";
+// const activityURL = "/api/audit_log";
+// const reconciliationNodeURL = "/api/node/reconciliation";
+// const RECONCILIATION_SERVICE = "/subway-service";
+
 // Demo URLS
 
 // const baseURL = "https://reconciirecodemoapi.corepeelers.com";
@@ -23,17 +36,30 @@
 // const reconciliationNodeURL = "/api/node/reconciliation";
 // const RECONCILIATION_SERVICE = "/reconcii-demo-service";
 
+// Devyani URLS
+
+// const baseURL = "https://devyanirecoapi.corepeelers.com";
+// const ssoBaseURL = "https://devyanissoapi.corepeelers.com";
+// const reconciiBaseURL = "https://devyaniuploadapi.corepeelers.com";
+// const reconciiAdminBaseURL = "https://devyaniadminapi.corepeelers.com";
+
+// const sso = "/devyani-sso-service/api/v1";
+// const reconcii = "/reconcii-service/api";
+// const activityURL = "/api/audit_log";
+// const reconciliationNodeURL = "/api/node/reconciliation";
+// const RECONCILIATION_SERVICE = "/reconcii-devyani-service";
+
 // Bercos URLS
 
 const baseURL = "https://bercosrecoapi.corepeelers.com";
 const ssoBaseURL = "https://bercosrecoapi1.corepeelers.com";
 const reconciiBaseURL = "https://bercosrecoapi2.corepeelers.com";
-const reconciiAdminBaseURL = "https://bercosadminapi.corepeelers.com";
+const reconciiAdminBaseURL = "http://localhost:8034"; //"https://bercosadminapi.corepeelers.com";
 
 const sso = "/bercos-sso-service/api/v1";
 const reconcii = "/reconcii-service/api";
 const activityURL = "/api/audit_log";
-const reconciliationNodeURL = "/api/node/reconciliation";
+const reconciliationNodeURL = "/api/reco";
 const RECONCILIATION_SERVICE = "/reconcii-bercos-service";
 
 // Subway URLS
@@ -114,7 +140,14 @@ const apiEndpoints = {
   DOWNLOAD_TID_MISSING_STORE_MAPPING: `${RECONCILIATION_SERVICE}${PUBLIC}${DASHBOARD}/missingTIDMappingReportDownload`,
 
   // 3PO-SERVICE
-  _3PO_DATA: `${RECONCILIATION_SERVICE}${PUBLIC}${_3PO}/threePODashboardData`,
+  // _3PO_DATA: `${RECONCILIATION_SERVICE}${PUBLIC}${_3PO}/threePODashboardData`,
+
+  // Python
+  // _3PO_DATA: `${reconcii}/threePODashboardData`,
+
+  // Node
+  _3PO_DATA: `${reconciliationNodeURL}/threePODashboardData`,
+
   //!DOWNLOAD API'S FOR TABLE
   UNRECONCILED: `${RECONCILIATION_SERVICE}${PUBLIC}${DASHBOARD}/unreconciled/download`,
   SALE: `${RECONCILIATION_SERVICE}${PUBLIC}${DASHBOARD}/sale/download`,
@@ -178,9 +211,6 @@ const apiEndpoints = {
   ACTIVITY_CREATE: `${activityURL}/create`,
   ACTIVITY_SEARCH: `${activityURL}/list`,
   ACTIVITY_USER_LIST: `${activityURL}/user/list`,
-
-  // Reconciliation URL
-  FILE_UPLOAD_NODE: `${reconciliationNodeURL}/fileUpload`,
 
   FORGOT_PASSWORD: `${nodePasswordUrls}/forgot_password`,
   VERIFY_OTP: `${nodePasswordUrls}/verify_otp`,
