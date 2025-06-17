@@ -38,29 +38,29 @@
 
 // Devyani URLS
 
-// const baseURL = "https://devyanirecoapi.corepeelers.com";
-// const ssoBaseURL = "https://devyanissoapi.corepeelers.com";
-// const reconciiBaseURL = "https://devyaniuploadapi.corepeelers.com";
-// const reconciiAdminBaseURL = "https://devyaniadminapi.corepeelers.com";
+const baseURL = "https://devyanirecoapi.corepeelers.com";
+const ssoBaseURL = "https://devyanissoapi.corepeelers.com";
+const reconciiBaseURL = "https://devyaniuploadapi.corepeelers.com";
+const reconciiAdminBaseURL = "https://devyaniadminapi.corepeelers.com";
 
-// const sso = "/devyani-sso-service/api/v1";
-// const reconcii = "/reconcii-service/api";
-// const activityURL = "/api/audit_log";
-// const reconciliationNodeURL = "/api/node/reconciliation";
-// const RECONCILIATION_SERVICE = "/reconcii-devyani-service";
+const sso = "/devyani-sso-service/api/v1";
+const reconcii = "/reconcii-service/api";
+const activityURL = "/api/audit_log";
+const reconciliationNodeURL = "/api/node/reconciliation";
+const RECONCILIATION_SERVICE = "/reconcii-devyani-service";
 
 // Bercos URLS
 
-const baseURL = "https://bercosrecoapi.corepeelers.com";
-const ssoBaseURL = "https://bercosrecoapi1.corepeelers.com";
-const reconciiBaseURL = "https://bercosrecoapi2.corepeelers.com";
-const reconciiAdminBaseURL = "https://bercosadminapi.corepeelers.com";
+// const baseURL = "https://bercosrecoapi.corepeelers.com";
+// const ssoBaseURL = "https://bercosrecoapi1.corepeelers.com";
+// const reconciiBaseURL = "https://bercosrecoapi2.corepeelers.com";
+// const reconciiAdminBaseURL = "https://bercosadminapi.corepeelers.com";
 
-const sso = "/bercos-sso-service/api/v1";
-const reconcii = "/reconcii-service/api";
-const activityURL = "/api/audit_log";
-const reconciliationNodeURL = "/api/reco";
-const RECONCILIATION_SERVICE = "/reconcii-bercos-service";
+// const sso = "/bercos-sso-service/api/v1";
+// const reconcii = "/reconcii-service/api";
+// const activityURL = "/api/audit_log";
+// const reconciliationNodeURL = "/api/reco";
+// const RECONCILIATION_SERVICE = "/reconcii-bercos-service";
 
 // Subway URLS
 // const baseURL = "https://subwayapi.corepeelers.com";
@@ -150,6 +150,9 @@ const apiEndpoints = {
   DASHBOARD_DATA: `${reconciliationNodeURL}/instore-data`,
 
   POS_VS_3PO_SUMMARY_DOWNLOAD: `${reconciliationNodeURL}/generate-excel`,
+  GET_CITY_LIST_DATA: `${reconciliationNodeURL}/cities`,
+  GET_STORE_LIST_DATA: `${reconciliationNodeURL}/stores`,
+  GET_ASYNC_GENERATE_REPORT_DATA: `${reconciliationNodeURL}/generation-status`,
 
   //!DOWNLOAD API'S FOR TABLE
   UNRECONCILED: `${RECONCILIATION_SERVICE}${PUBLIC}${DASHBOARD}/unreconciled/download`,
@@ -183,15 +186,16 @@ const apiEndpoints = {
 
   //!STORE API'S
   GET_STORE_DATA: `${RECONCILIATION_SERVICE}/api/ve1/store/list`,
-  GET_STORE_LIST_DATA: `${RECONCILIATION_SERVICE}/api/ve1/store/storeList`,
-  GET_CITY_LIST_DATA: `${RECONCILIATION_SERVICE}/api/ve1/store/cityList`,
+  // GET_STORE_LIST_DATA: `${RECONCILIATION_SERVICE}/api/ve1/store/storeList`,
+  // GET_CITY_LIST_DATA: `${RECONCILIATION_SERVICE}/api/ve1/store/cityList`,
+
   GET_STORE_UPLOAD: `${RECONCILIATION_SERVICE}/api/ve1/store/uploadStoreList?storeUpload=`,
   GET_UPLOAD_CONFIG_MAPPING: `${RECONCILIATION_SERVICE}/api/ve1/store/listUploadConfig`,
   UPLOAD_CONFIG_DATA: `${RECONCILIATION_SERVICE}/api/ve1/store/uploadConfig`,
   DOWNLOAD_TEMPLATE_DATA: `${RECONCILIATION_SERVICE}/api/ve1/store/downloadConfig`,
   DOWNLOAD_STORE_TEMPLATE_DATA: `${RECONCILIATION_SERVICE}/api/ve1/store/downloadStoreSync`,
   DOWNLOAD_ASYNC_GENERATE_REPORT_DATA: `${RECONCILIATION_SERVICE}/public/generated-reports/download`,
-  GET_ASYNC_GENERATE_REPORT_DATA: `${RECONCILIATION_SERVICE}/public/generated-reports/getAll`,
+  // GET_ASYNC_GENERATE_REPORT_DATA: `${RECONCILIATION_SERVICE}/public/generated-reports/getAll`,
 
   // New URLs
   GET_TENDER_LIST: `${RECONCILIATION_SERVICE}/api/v1/tenderList`,

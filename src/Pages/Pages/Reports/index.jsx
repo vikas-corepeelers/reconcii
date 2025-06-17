@@ -7,6 +7,8 @@ import PrimaryButton from "../../../components/PrimaryButton";
 import DropdownWithCheckbox from "../../../components/DropDownWithCheckbox";
 import DateRangeComponent from "../../../components/DateRange";
 import CustomSelect from "../../../components/CustomSelect";
+import moment from "moment";
+import { reconciiAdminBaseURL } from "../../../ServiceRequest/APIEndPoints";
 
 const STATIC_REPORTS = [
   {
@@ -72,11 +74,24 @@ export default function Reports() {
     setFile(file);
   };
 
-  const onSubmit = () => {};
+  const reportStatus = (status) => {
+    switch (status) {
+      case "completed":
+        return <span className="text-green-500">Success</span>;
+      case "failed":
+        return <span className="text-red-500">Failed</span>;
+      case "pending":
+        return <span className="text-yellow-500">In Progress</span>;
+      case "processing":
+        return <span className="text-orange-500">In Progress</span>;
+      default:
+        return <span className="text-gray-500">Unknown</span>;
+    }
+  };
 
   return (
     <div className="">
-      <BlankCard
+      {/* <BlankCard
         header={
           <h4 className="box-title font-bold text-base">
             DOWNLOAD CUSTOMIZE REPORTS
@@ -124,7 +139,7 @@ export default function Reports() {
             />
           </div>
         </div>
-      </BlankCard>
+      </BlankCard> */}
       <BlankCard
         header={<h4 className="box-title font-bold text-base">REPORTS</h4>}
       >
@@ -140,12 +155,12 @@ export default function Reports() {
                   <th scope="col">Report Type</th>
                   <th scope="col">Start Date</th>
                   <th scope="col">End Date</th>
-                  <th scope="col" style={{ minWidth: "120px" }}>
+                  {/* <th scope="col" style={{ minWidth: "120px" }}>
                     File Size (mb)
-                  </th>
+                  </th> */}
                   <th scope="col">Status</th>
-                  <th scope="col">Generation</th>
-                  <th scope="col">File Name</th>
+                  <th scope="col">Created At</th>
+                  {/* <th scope="col">File Name</th> */}
                   <th scope="col">Action</th>
                 </tr>
               </thead>
@@ -153,19 +168,32 @@ export default function Reports() {
                 {generatedReports?.map((report) => {
                   return (
                     <tr key={report?.id}>
-                      <td>{report?.reportType}</td>
-                      <td>{report?.startDate}</td>
-                      <td>{report?.endDate}</td>
-                      <td>{report?.fileSize} mb</td>
-                      <td>{report?.status}</td>
-                      <td>{report?.createdAt}</td>
-                      <td>{report?.fileName}</td>
+                      <td>Summary Report of {report?.store_code} store(s)</td>
+                      <td>
+                        {moment(report?.start_date).format("DD MMM YYYY")}
+                      </td>
+                      <td>{moment(report?.end_date).format("DD MMM YYYY")}</td>
+                      {/* <td>{report?.fileSize} mb</td> */}
+                      <td>{reportStatus(report?.status)}</td>
+                      <td>
+                        {moment(report?.created_at).format(
+                          "DD MMM YYYY hh:mm:ss A"
+                        )}
+                      </td>
+                      {/* <td>{report?.fileName}</td> */}
                       <td className="px-6 py-4 flex justify-center items-center">
-                        <button
-                          onClick={() => downloadGeneratedReports(report)}
-                        >
-                          <i className="fa-solid fa-download"></i>
-                        </button>
+                        {report?.status === "completed" ? (
+                          <button
+                            onClick={() =>
+                              window.open(
+                                reconciiAdminBaseURL + report?.downloadUrl,
+                                "_blank"
+                              )
+                            }
+                          >
+                            <i className="fa-solid fa-download"></i>
+                          </button>
+                        ) : null}
                       </td>
                     </tr>
                   );

@@ -175,8 +175,8 @@ const DashboardFilter = () => {
         <DropdownWithCheckbox
           placeholder={"Select City"}
           data={cityList}
-          option_value={"key"}
-          option_label={"label"}
+          option_value={"city_id"}
+          option_label={"city_name"}
           selectedLabel="Cities - "
           selectedOptions={filterValues.cities}
           setSelectedOptions={(cities) =>
@@ -187,7 +187,7 @@ const DashboardFilter = () => {
           data={storeList}
           placeholder={"Select Store"}
           option_value={"code"}
-          option_label={"name"}
+          option_label={"store_name"}
           selectedLabel="Stores - "
           selectedOptions={filterValues.stores}
           setSelectedOptions={onStoreChange}

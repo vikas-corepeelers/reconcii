@@ -159,36 +159,40 @@ const useDashboard = () => {
         setLoading(true);
         const response = await requestCallPost(
           apiEndpoints.POS_VS_3PO_SUMMARY_DOWNLOAD,
-          currentDashboardRequest,
-          {},
-          {
-            responseType: "blob",
-          }
+          currentDashboardRequest
+          // {},
+          // {
+          //   responseType: "blob",
+          // }
         );
         setLoading(false);
         dispatch(setLoadingDashboard(false));
         if (response.status) {
-          const blob = new Blob([response.data], {
-            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          setToastMessage({
+            message: "Request submitted for generating report.",
+            type: "success",
           });
+          // const blob = new Blob([response.data], {
+          //   type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          // });
 
-          const url = window.URL.createObjectURL(blob);
-          const link = document.createElement("a");
+          // const url = window.URL.createObjectURL(blob);
+          // const link = document.createElement("a");
 
-          link.href = url;
-          link.setAttribute(
-            "download",
-            `pos_vs_3po_${moment(currentDashboardRequest?.startDate).format(
-              "DD-MMM-YYYY"
-            )}_${moment(currentDashboardRequest.endDate).format(
-              "DD-MMM-YYYY"
-            )}.xlsx`
-          );
+          // link.href = url;
+          // link.setAttribute(
+          //   "download",
+          //   `pos_vs_3po_${moment(currentDashboardRequest?.startDate).format(
+          //     "DD-MMM-YYYY"
+          //   )}_${moment(currentDashboardRequest.endDate).format(
+          //     "DD-MMM-YYYY"
+          //   )}.xlsx`
+          // );
 
-          document.body.appendChild(link);
-          link.click();
-          link.remove();
-          window.URL.revokeObjectURL(url);
+          // document.body.appendChild(link);
+          // link.click();
+          // link.remove();
+          // window.URL.revokeObjectURL(url);
         }
       } catch (error) {
         console.error(error);
