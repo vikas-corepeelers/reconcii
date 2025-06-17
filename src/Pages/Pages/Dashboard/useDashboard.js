@@ -18,6 +18,7 @@ import { useLoader } from "../../../Utils/Loader";
 import { setReconciliation3POData } from "../../../Redux/Slices/Reconciliation";
 import useMakeLogs from "../../../Hooks/useMakeLogs";
 import LOG_ACTIONS from "../../../Constants/LogAction";
+import moment from "moment";
 
 const useDashboard = () => {
   const dispatch = useDispatch();
@@ -153,6 +154,58 @@ const useDashboard = () => {
   };
 
   const downloadAsyncReport = async (params) => {
+    if (params?.reportType === "POSVsThreePO") {
+      try {
+        setLoading(true);
+        const response = await requestCallPost(
+          apiEndpoints.POS_VS_3PO_SUMMARY_DOWNLOAD,
+          currentDashboardRequest,
+          {},
+          {
+            responseType: "blob",
+          }
+        );
+        setLoading(false);
+        dispatch(setLoadingDashboard(false));
+        if (response.status) {
+          const blob = new Blob([response.data], {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          });
+
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement("a");
+
+          link.href = url;
+          link.setAttribute(
+            "download",
+            `pos_vs_3po_${moment(currentDashboardRequest?.startDate).format(
+              "DD-MMM-YYYY"
+            )}_${moment(currentDashboardRequest.endDate).format(
+              "DD-MMM-YYYY"
+            )}.xlsx`
+          );
+
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+          window.URL.revokeObjectURL(url);
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+
+      return;
+    }
+
+    setToastMessage({
+      message: "Reports generation is disabled",
+      type: "error",
+    });
+
+    return;
+
     try {
       let req = {
         ...params,

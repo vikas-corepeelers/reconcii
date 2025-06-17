@@ -54,7 +54,7 @@
 const baseURL = "https://bercosrecoapi.corepeelers.com";
 const ssoBaseURL = "https://bercosrecoapi1.corepeelers.com";
 const reconciiBaseURL = "https://bercosrecoapi2.corepeelers.com";
-const reconciiAdminBaseURL = "http://localhost:8034"; //"https://bercosadminapi.corepeelers.com";
+const reconciiAdminBaseURL = "https://bercosadminapi.corepeelers.com";
 
 const sso = "/bercos-sso-service/api/v1";
 const reconcii = "/reconcii-service/api";
@@ -125,7 +125,7 @@ const apiEndpoints = {
   REPORTING_TENDERS: `${RECONCILIATION_SERVICE}${PUBLIC}${DASHBOARD}/reportingTenders`,
   REPORT_FIELD: `${RECONCILIATION_SERVICE}${PUBLIC}${CUSTOM}/reportFields`,
   DOWNLOAD_REPORT: `${RECONCILIATION_SERVICE}${PUBLIC}${CUSTOM}/download/report`,
-  DASHBOARD_DATA: `${RECONCILIATION_SERVICE}${PUBLIC}${DASHBOARD}/instore-data`,
+
   MPR_VS_BANK_DATA: `${RECONCILIATION_SERVICE}${PUBLIC}${DASHBOARD}/mpr/vs/bank`,
   MPR_VS_BANK_DOWNLOAD: `${RECONCILIATION_SERVICE}${PUBLIC}${DASHBOARD}/mpr/vs/bank/download`,
   ORDER_VS_TRM_DATA: `${RECONCILIATION_SERVICE}${PUBLIC}${DASHBOARD}/order/vs/trm`,
@@ -141,12 +141,15 @@ const apiEndpoints = {
 
   // 3PO-SERVICE
   // _3PO_DATA: `${RECONCILIATION_SERVICE}${PUBLIC}${_3PO}/threePODashboardData`,
-
+  // DASHBOARD_DATA: `${RECONCILIATION_SERVICE}${PUBLIC}${DASHBOARD}/instore-data`,
   // Python
   // _3PO_DATA: `${reconcii}/threePODashboardData`,
 
   // Node
   _3PO_DATA: `${reconciliationNodeURL}/threePODashboardData`,
+  DASHBOARD_DATA: `${reconciliationNodeURL}/instore-data`,
+
+  POS_VS_3PO_SUMMARY_DOWNLOAD: `${reconciliationNodeURL}/generate-excel`,
 
   //!DOWNLOAD API'S FOR TABLE
   UNRECONCILED: `${RECONCILIATION_SERVICE}${PUBLIC}${DASHBOARD}/unreconciled/download`,

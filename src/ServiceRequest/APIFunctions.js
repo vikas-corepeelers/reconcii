@@ -1,5 +1,10 @@
 import AxiosInstance from "../Utils/AxiosInstance";
-export async function requestCallPost(apiName, data, additionalHeaders = {}) {
+export async function requestCallPost(
+  apiName,
+  data,
+  additionalHeaders = {},
+  topLevelConfig = {}
+) {
   let headers = {};
   if (localStorage.getItem("ReconciiToken")) {
     headers = {
@@ -9,6 +14,7 @@ export async function requestCallPost(apiName, data, additionalHeaders = {}) {
   headers = { ...headers, ...additionalHeaders };
   return await AxiosInstance.post(apiName, data, {
     headers: headers,
+    ...topLevelConfig,
   })
     .then((response) => {
       return {

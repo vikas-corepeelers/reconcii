@@ -80,7 +80,7 @@ export default function TotalSales() {
         let labelList = [];
         let barColor = [];
         let mappingStatus = [];
-        dashboard3POData?.threePOData?.forEach((field) => {
+        dashboard3POData?.tenderWisePOSData?.forEach((field) => {
           dataList?.push(field?.posSales);
           labelList.push(field?.tenderName);
           barColor?.push(THREE_PO_COLORS[field?.tenderName]);
@@ -96,7 +96,6 @@ export default function TotalSales() {
           barColor: barColor,
         };
         setDataSet(graphData);
-        console.log("mappingStatus", mappingStatus);
         setLegendData({
           labels: labelList,
           data: dataList,

@@ -20,6 +20,7 @@ import {
 } from "../../../../Redux/Slices/Common";
 import { format } from "date-fns";
 import PrimaryButton from "../../../../components/PrimaryButton";
+import { useLoader } from "../../../../Utils/Loader";
 const BLANK_FILTERS = {
   startDate: new Date(),
   endDate: new Date(),
@@ -30,6 +31,7 @@ const BLANK_FILTERS = {
 };
 const DashboardFilter = () => {
   const dispatch = useDispatch();
+  const { setToastMessage } = useLoader();
   const {
     fetchCityList,
     fetchStoreList,
@@ -133,6 +135,12 @@ const DashboardFilter = () => {
     let req = {
       cities: filterValues.cities,
     };
+    setToastMessage({
+      message: "Reports generation is disabled",
+      type: "error",
+    });
+
+    return;
     await downloadStoreReport(req);
   };
 

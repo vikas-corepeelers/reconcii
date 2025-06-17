@@ -7,21 +7,49 @@ const useDashboardNumber = () => {
 
   const totalSalesData = () => {
     let totalS = 0;
-    if (dashboardData?.sales > 0 || dashboardData?.trmSalesData?.sales) {
-      totalS = dashboardData?.sales;
+
+    if (dashboardFilters.salesLocation === "Store Sales") {
       if (dashboardFilters?.salesType === "POS Sales") {
-        totalS = dashboardData?.sales;
+        totalS =
+          parseFloat(dashboardData?.aggregatorTotal || 0) +
+          parseFloat(dashboardData?.sales || 0);
       } else if (dashboardFilters?.salesType === "TRM Sales") {
-        totalS = dashboardData?.trmSalesData?.sales;
+        totalS =
+          parseFloat(dashboardData?.aggregatorTotal || 0) +
+          parseFloat(dashboardData?.trmSalesData?.sales || 0);
       }
-    }
-    if (dashboard3POData?.posSales > 0 || dashboard3POData?.threePOSales > 0) {
+    } else if (dashboardFilters.salesLocation === "Aggregator") {
       if (dashboardFilters?.salesType === "3PO Sales") {
-        totalS += dashboard3POData?.threePOSales;
+        // total as per all available tenders
+        let totalTenderWiseSales = 0;
+        dashboard3POData?.threePOData?.map((tender) => {
+          totalTenderWiseSales += tender?.threePOSales;
+        });
+        totalS =
+          parseFloat(dashboard3POData?.instoreTotal || 0) +
+          parseFloat(totalTenderWiseSales);
       } else if (dashboardFilters?.salesType === "POS Sales") {
-        totalS += dashboard3POData?.posSales;
+        totalS =
+          parseFloat(dashboard3POData?.instoreTotal || 0) +
+          parseFloat(dashboard3POData?.posSales || 0);
       }
     }
+
+    // if (dashboardData?.sales > 0 || dashboardData?.trmSalesData?.sales) {
+    //   totalS = dashboardData?.sales;
+    //   if (dashboardFilters?.salesType === "POS Sales") {
+    //     totalS = dashboardData?.sales;
+    //   } else if (dashboardFilters?.salesType === "TRM Sales") {
+    //     totalS = dashboardData?.trmSalesData?.sales;
+    //   }
+    // }
+    // if (dashboard3POData?.posSales > 0 || dashboard3POData?.threePOSales > 0) {
+    //   if (dashboardFilters?.salesType === "3PO Sales") {
+    //     totalS += dashboard3POData?.threePOSales;
+    //   } else if (dashboardFilters?.salesType === "POS Sales") {
+    //     totalS += dashboard3POData?.posSales;
+    //   }
+    // }
 
     return (
       {
@@ -36,18 +64,45 @@ const useDashboardNumber = () => {
     let totalS = 0;
 
     if (type === "Store Sales") {
-      if (dashboardFilters?.salesType === "POS Sales") {
-        totalS = dashboardData?.sales;
-      } else if (dashboardFilters?.salesType === "TRM Sales") {
-        totalS = dashboardData?.trmSalesData?.sales;
+      if (dashboardFilters.salesLocation === "Store Sales") {
+        if (dashboardFilters?.salesType === "POS Sales") {
+          totalS = parseFloat(dashboardData?.sales || 0);
+        } else if (dashboardFilters?.salesType === "TRM Sales") {
+          totalS = parseFloat(dashboardData?.trmSalesData?.sales || 0);
+        }
+      } else if (dashboardFilters.salesLocation === "Aggregator") {
+        totalS = parseFloat(dashboard3POData?.instoreTotal || 0);
       }
     } else {
-      if (dashboardFilters?.salesType === "3PO Sales") {
-        totalS += dashboard3POData?.threePOSales;
-      } else if (dashboardFilters?.salesType === "POS Sales") {
-        totalS += dashboard3POData?.posSales;
+      // Aggregator Value
+      if (dashboardFilters.salesLocation === "Store Sales") {
+        totalS = parseFloat(dashboardData?.aggregatorTotal || 0);
+      } else if (dashboardFilters.salesLocation === "Aggregator") {
+        if (dashboardFilters?.salesType === "3PO Sales") {
+          let totalTenderWiseSales = 0;
+          dashboard3POData?.threePOData?.map((tender) => {
+            totalTenderWiseSales += tender?.threePOSales;
+          });
+          totalS = parseFloat(totalTenderWiseSales);
+        } else if (dashboardFilters?.salesType === "POS Sales") {
+          totalS = parseFloat(dashboard3POData?.posSales || 0);
+        }
       }
     }
+
+    // if (type === "Store Sales") {
+    //   if (dashboardFilters?.salesType === "POS Sales") {
+    //     totalS = dashboardData?.sales;
+    //   } else if (dashboardFilters?.salesType === "TRM Sales") {
+    //     totalS = dashboardData?.trmSalesData?.sales;
+    //   }
+    // } else {
+    //   if (dashboardFilters?.salesType === "3PO Sales") {
+    //     totalS += dashboard3POData?.threePOSales;
+    //   } else if (dashboardFilters?.salesType === "POS Sales") {
+    //     totalS += dashboard3POData?.posSales;
+    //   }
+    // }
     return formatNumberToLakhsAndCrores(totalS || 0);
   };
 

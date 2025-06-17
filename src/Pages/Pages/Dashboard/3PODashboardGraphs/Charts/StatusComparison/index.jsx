@@ -6,16 +6,22 @@ import StatusComparisonItem from "./StatusComparisonItem";
 export default function StatusComparison({ selectedDelta }) {
   const [storeSalesData, setStoreSalesData] = useState([]);
   const [selectedTenderIndex, setSelectedTenderIndex] = useState(-1);
-  let { dashboard3POData } = useSelector((state) => state.CommonService);
+  let { dashboard3POData, dashboardFilters } = useSelector(
+    (state) => state.CommonService
+  );
 
   useEffect(() => {
     if (dashboard3POData?.threePOData) {
       setSelectedTenderIndex(
         dashboard3POData?.threePOData?.length > 0 ? 0 : -1
       );
-      setStoreSalesData(dashboard3POData?.threePOData);
+      setStoreSalesData(
+        dashboardFilters?.salesType === "3PO Sales"
+          ? dashboard3POData?.threePOData
+          : dashboard3POData?.tenderWisePOSData
+      );
     }
-  }, [selectedDelta, dashboard3POData]);
+  }, [selectedDelta, dashboard3POData, dashboardFilters?.salesType]);
 
   return (
     <div className="chart-container">
@@ -40,6 +46,7 @@ export default function StatusComparison({ selectedDelta }) {
             item={storeSalesData[selectedTenderIndex]}
             selectedDelta={selectedDelta}
             chartIndex={selectedTenderIndex}
+            salesType={dashboardFilters?.salesType}
           />
         </div>
       )}

@@ -3,6 +3,7 @@ import "../../../InStoreDashboardGraphs/graph.style.css";
 import PercentageChart from "../../../InStoreDashboardGraphs/Charts/PercentageChart";
 import { THREE_PO_COLORS } from "../../../../../../Utils/DataVariable";
 import LegendTable from "../../components/LegendTable";
+import { useSelector } from "react-redux";
 
 const REPORT_TYPES = {
   posVsThreePO: "POSVsThreePO",
@@ -14,7 +15,9 @@ export default function StatusComparisonItem({
   chartIndex,
   item,
   selectedDelta,
+  salesType,
 }) {
+  const [refreshCalc, setRefreshCalc] = useState(false);
   const [graphData, setGraphData] = useState({
     labels: [],
     data: [],
@@ -28,15 +31,19 @@ export default function StatusComparisonItem({
   });
 
   useEffect(() => {
+    const timer = setTimeout(() => {
+      setRefreshCalc((prev) => !prev);
+    }, 1000); // 1000ms = 1 second
+
+    // Cleanup in case component unmounts or `salesType` changes quickly
+    return () => clearTimeout(timer);
+  }, [salesType]);
+
+  useEffect(() => {
     let sales = 0;
     let totalSales = 0;
-    // if (dashboardFilters?.salesType === "POS Sales") {
     sales = Number(item?.[selectedDelta]);
     totalSales = Number(item?.threePOSales);
-    // } else {
-    //   sales = Number(item?.trmSalesData?.[selectedDelta]);
-    //   totalSales = Number(item?.trmSalesData?.sales);
-    // }
     const percentage = (sales / totalSales) * 100;
 
     setGraphData({
@@ -48,7 +55,7 @@ export default function StatusComparisonItem({
       data: [Number(item?.[selectedDelta])],
       colors: [THREE_PO_COLORS[item?.tenderName]],
     });
-  }, [chartIndex, selectedDelta]);
+  }, [chartIndex, selectedDelta, refreshCalc]);
 
   return (
     <div className="chart-container">
