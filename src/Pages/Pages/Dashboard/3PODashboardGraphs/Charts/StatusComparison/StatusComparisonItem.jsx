@@ -4,6 +4,7 @@ import PercentageChart from "../../../InStoreDashboardGraphs/Charts/PercentageCh
 import { THREE_PO_COLORS } from "../../../../../../Utils/DataVariable";
 import LegendTable from "../../components/LegendTable";
 import { useSelector } from "react-redux";
+import ReceivableVsReceiptsChart from "../../components/ReceivableVsReceiptsChart";
 
 const REPORT_TYPES = {
   posVsThreePO: "POSVsThreePO",
@@ -57,19 +58,27 @@ export default function StatusComparisonItem({
     });
   }, [chartIndex, selectedDelta, refreshCalc]);
 
-  return (
-    <div className="chart-container">
-      <PercentageChart
-        labels={graphData?.labels}
-        data={graphData.data}
-        backgroundColor={THREE_PO_COLORS[item?.tenderName]}
-      />
-      <div className="w-100">
-        <LegendTable
-          graphData={legendData}
-          reportType={REPORT_TYPES[selectedDelta]}
-        />
+  if (selectedDelta === "receivablesVsReceipts") {
+    return (
+      <div className="chart-container">
+        <ReceivableVsReceiptsChart item={item} />
       </div>
-    </div>
-  );
+    );
+  } else {
+    return (
+      <div className="chart-container">
+        <PercentageChart
+          labels={graphData?.labels}
+          data={graphData.data}
+          backgroundColor={THREE_PO_COLORS[item?.tenderName]}
+        />
+        <div className="w-100">
+          <LegendTable
+            graphData={legendData}
+            reportType={REPORT_TYPES[selectedDelta]}
+          />
+        </div>
+      </div>
+    );
+  }
 }

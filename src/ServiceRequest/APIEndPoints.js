@@ -41,7 +41,7 @@
 const baseURL = "https://devyanirecoapi.corepeelers.com";
 const ssoBaseURL = "https://devyanissoapi.corepeelers.com";
 const reconciiBaseURL = "https://devyaniuploadapi.corepeelers.com";
-const reconciiAdminBaseURL = "https://devyaniadminapi.corepeelers.com";
+const reconciiAdminBaseURL = "http://localhost:8034"; //"https://devyaniadminapi.corepeelers.com";
 
 const sso = "/devyani-sso-service/api/v1";
 const reconcii = "/reconcii-service/api";

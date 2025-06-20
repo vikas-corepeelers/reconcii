@@ -159,6 +159,7 @@ export default function Reports() {
                     File Size (mb)
                   </th> */}
                   <th scope="col">Status</th>
+                  <th scope="col">Progress</th>
                   <th scope="col">Created At</th>
                   {/* <th scope="col">File Name</th> */}
                   <th scope="col">Action</th>
@@ -175,6 +176,7 @@ export default function Reports() {
                       <td>{moment(report?.end_date).format("DD MMM YYYY")}</td>
                       {/* <td>{report?.fileSize} mb</td> */}
                       <td>{reportStatus(report?.status)}</td>
+                      <td>{report?.progress}%</td>
                       <td>
                         {moment(report?.created_at).format(
                           "DD MMM YYYY hh:mm:ss A"

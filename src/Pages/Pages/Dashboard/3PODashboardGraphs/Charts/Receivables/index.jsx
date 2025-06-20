@@ -6,16 +6,27 @@ import ReceivablesItem from "./ReceivablesItem";
 export default function Receivables() {
   const [storeSalesData, setStoreSalesData] = useState([]);
   const [selectedTenderIndex, setSelectedTenderIndex] = useState(-1);
-  let { dashboard3POData } = useSelector((state) => state.CommonService);
+  let { dashboard3POData, dashboardFilters } = useSelector(
+    (state) => state.CommonService
+  );
 
   useEffect(() => {
-    if (dashboard3POData?.threePOData) {
-      setSelectedTenderIndex(
-        dashboard3POData?.threePOData?.length > 0 ? 0 : -1
-      );
-      setStoreSalesData(dashboard3POData?.threePOData);
+    if (dashboardFilters?.salesType === "3PO Sales") {
+      if (dashboard3POData?.threePOData) {
+        setSelectedTenderIndex(
+          dashboard3POData?.threePOData?.length > 0 ? 0 : -1
+        );
+        setStoreSalesData(dashboard3POData?.threePOData);
+      }
+    } else {
+      if (dashboard3POData?.tenderWisePOSData) {
+        setSelectedTenderIndex(
+          dashboard3POData?.tenderWisePOSData?.length > 0 ? 0 : -1
+        );
+        setStoreSalesData(dashboard3POData?.tenderWisePOSData);
+      }
     }
-  }, [dashboard3POData]);
+  }, [dashboard3POData, dashboardFilters?.salesType]);
 
   return (
     <div className="chart-container">
