@@ -16,6 +16,7 @@ import Download from "../../../../assets/Images/download.png";
 import {
   setCurrentDashboardRequest,
   setDashboardFilters,
+  setDashboardFilterValues,
   setStoreList,
 } from "../../../../Redux/Slices/Common";
 import { format } from "date-fns";
@@ -40,20 +41,57 @@ const DashboardFilter = () => {
     fetchTenderWiseStoresMissedInMapping,
     fetchOldEffectiveDate,
   } = useDashboard();
-  let { cityList, storeList, loadingDashboard } = useSelector(
-    (state) => state.CommonService
-  );
-  const [filterValues, setFilterValues] = useState({
-    ...BLANK_FILTERS,
-    salesLocation: DASHBOARD_ITEMS[0]?.key,
-    salesType: STORE_SALES_ITEM[0]?.key,
-  });
+  let { cityList, storeList, loadingDashboard, dashboardFilterValues } =
+    useSelector((state) => state.CommonService);
+  const [filterValues, setFilterValues] = useState({});
 
   useEffect(() => {
     fetchCityListAndSet();
     fetchTenderWiseStoresMissedInMapping();
     fetchOldEffectiveDate();
+
+    const savedFilters = localStorage.getItem("dashboardFilters");
+    if (savedFilters) {
+      const parsed = JSON.parse(savedFilters);
+
+      setFilterValues({
+        ...parsed,
+        startDate: parsed.startDate ? new Date(parsed.startDate) : null,
+        endDate: parsed.endDate ? new Date(parsed.endDate) : null,
+      });
+    } else if (dashboardFilterValues) {
+      setFilterValues({
+        ...dashboardFilterValues,
+        startDate: dashboardFilterValues.startDate
+          ? new Date(dashboardFilterValues.startDate)
+          : null,
+        endDate: dashboardFilterValues.endDate
+          ? new Date(dashboardFilterValues.endDate)
+          : null,
+      });
+    } else {
+      setFilterValues({
+        ...BLANK_FILTERS,
+        salesLocation: DASHBOARD_ITEMS[0]?.key,
+        salesType: STORE_SALES_ITEM[0]?.key,
+      });
+    }
   }, []);
+
+  useEffect(() => {
+    // Convert date to string before saving to Redux
+    const serializedFilterValues = {
+      ...filterValues,
+      startDate: filterValues?.startDate?.toISOString?.() || null,
+      endDate: filterValues?.endDate?.toISOString?.() || null,
+    };
+
+    dispatch(setDashboardFilterValues(serializedFilterValues));
+    localStorage.setItem(
+      "dashboardFilters",
+      JSON.stringify(serializedFilterValues)
+    ); // <-- Save to localStorage
+  }, [filterValues]);
 
   const fetchCityListAndSet = async () => {
     let cityList = await fetchCityList();

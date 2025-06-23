@@ -169,7 +169,7 @@ export default function Reports() {
                 {generatedReports?.map((report) => {
                   return (
                     <tr key={report?.id}>
-                      <td>Summary Report of {report?.store_code} store(s)</td>
+                      <td>{report?.store_code}</td>
                       <td>
                         {moment(report?.start_date).format("DD MMM YYYY")}
                       </td>

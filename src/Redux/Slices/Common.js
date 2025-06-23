@@ -15,6 +15,7 @@ const initialState = {
   currentDashboardRequest: {},
   tenderWiseStoresMissedInMapping: [],
   dataEffectiveDate: "",
+  dashboardFilterValues: null,
 };
 
 export const CommonSlice = createSlice({
@@ -54,6 +55,9 @@ export const CommonSlice = createSlice({
     setDataEffectiveDate: (state, action) => {
       state.dataEffectiveDate = action.payload;
     },
+    setDashboardFilterValues: (state, action) => {
+      state.dashboardFilterValues = action.payload;
+    },
   },
 });
 
@@ -70,6 +74,7 @@ export const {
   setCurrentDashboardRequest,
   setTenderWiseStoresMissedInMapping,
   setDataEffectiveDate,
+  setDashboardFilterValues,
 } = CommonSlice.actions;
 
 export default CommonSlice.reducer;

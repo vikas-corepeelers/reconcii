@@ -41,7 +41,7 @@
 const baseURL = "https://devyanirecoapi.corepeelers.com";
 const ssoBaseURL = "https://devyanissoapi.corepeelers.com";
 const reconciiBaseURL = "https://devyaniuploadapi.corepeelers.com";
-const reconciiAdminBaseURL = "http://localhost:8034"; //"https://devyaniadminapi.corepeelers.com";
+const reconciiAdminBaseURL = "https://devyaniadminapi.corepeelers.com";
 
 const sso = "/devyani-sso-service/api/v1";
 const reconcii = "/reconcii-service/api";
@@ -150,6 +150,7 @@ const apiEndpoints = {
   DASHBOARD_DATA: `${reconciliationNodeURL}/instore-data`,
 
   POS_VS_3PO_SUMMARY_DOWNLOAD: `${reconciliationNodeURL}/generate-excel`,
+  RECEIVABLE_VS_RECEIPT_SUMMARY_DOWNLOAD: `${reconciliationNodeURL}/generate-receivable-receipt-excel`,
   GET_CITY_LIST_DATA: `${reconciliationNodeURL}/cities`,
   GET_STORE_LIST_DATA: `${reconciliationNodeURL}/stores`,
   GET_ASYNC_GENERATE_REPORT_DATA: `${reconciliationNodeURL}/generation-status`,

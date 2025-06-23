@@ -12,7 +12,8 @@ import {
 } from "chart.js";
 import "../../InStoreDashboardGraphs/graph.style.css";
 import { formatNumberToLakhsAndCrores } from "../../../../../Utils/UtilityFunctions";
-
+import Download from "../../../../../assets/Images/download.png";
+import useDashboard from "../../useDashboard";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -24,6 +25,8 @@ ChartJS.register(
 );
 
 export default function ReceivableVsReceiptsChart({ item }) {
+  const { downloadAsyncReport } = useDashboard();
+
   const dataset = {
     data: [
       parseInt(item?.totalReceivables),
@@ -77,6 +80,15 @@ export default function ReceivableVsReceiptsChart({ item }) {
     },
   };
 
+  const downloadReport = (item, index) => {
+    let params = {
+      tender: "",
+      bank: "",
+      reportType: "ReceivableVsReceipts",
+    };
+    downloadAsyncReport(params);
+  };
+
   return (
     <div className="chart-container">
       <div style={{ width: "70%" }}>
@@ -113,23 +125,25 @@ export default function ReceivableVsReceiptsChart({ item }) {
                     <p className="text-black text-[12px] whitespace-nowrap">{`₹${formatNumberToLakhsAndCrores(
                       dataset?.data[index]
                     )} lac`}</p>
-                    {/* <button
-                      style={{
-                        height: "20px",
-                        width: "20px",
-                        position: "absolute",
-                        right: "5px",
-                        top: "5px",
-                      }}
-                      className="ml-2 flex justify-center items-center"
-                      onClick={() => downloadReport(item, index)}
-                    >
-                      <img src={Download} alt="download" />
-                    </button> */}
                   </div>
                 </div>
               );
             })}
+            <div className="flex align-center justify-center p-1">
+              <button
+                style={{
+                  height: "20px",
+                  width: "20px",
+                  // position: "absolute",
+                  // right: "5px",
+                  // top: "5px",
+                }}
+                className="flex justify-center items-center"
+                onClick={() => downloadReport()}
+              >
+                <img src={Download} alt="download" />
+              </button>
+            </div>
           </div>
         </div>
       </div>

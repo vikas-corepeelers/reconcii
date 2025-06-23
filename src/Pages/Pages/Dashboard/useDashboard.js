@@ -160,10 +160,6 @@ const useDashboard = () => {
         const response = await requestCallPost(
           apiEndpoints.POS_VS_3PO_SUMMARY_DOWNLOAD,
           currentDashboardRequest
-          // {},
-          // {
-          //   responseType: "blob",
-          // }
         );
         setLoading(false);
         dispatch(setLoadingDashboard(false));
@@ -172,27 +168,28 @@ const useDashboard = () => {
             message: "Request submitted for generating report.",
             type: "success",
           });
-          // const blob = new Blob([response.data], {
-          //   type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-          // });
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
 
-          // const url = window.URL.createObjectURL(blob);
-          // const link = document.createElement("a");
-
-          // link.href = url;
-          // link.setAttribute(
-          //   "download",
-          //   `pos_vs_3po_${moment(currentDashboardRequest?.startDate).format(
-          //     "DD-MMM-YYYY"
-          //   )}_${moment(currentDashboardRequest.endDate).format(
-          //     "DD-MMM-YYYY"
-          //   )}.xlsx`
-          // );
-
-          // document.body.appendChild(link);
-          // link.click();
-          // link.remove();
-          // window.URL.revokeObjectURL(url);
+      return;
+    } else if (params?.reportType === "ReceivableVsReceipts") {
+      try {
+        setLoading(true);
+        const response = await requestCallPost(
+          apiEndpoints.RECEIVABLE_VS_RECEIPT_SUMMARY_DOWNLOAD,
+          currentDashboardRequest
+        );
+        setLoading(false);
+        dispatch(setLoadingDashboard(false));
+        if (response.status) {
+          setToastMessage({
+            message: "Request submitted for generating report.",
+            type: "success",
+          });
         }
       } catch (error) {
         console.error(error);
