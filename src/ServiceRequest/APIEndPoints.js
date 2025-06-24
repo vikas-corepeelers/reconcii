@@ -57,7 +57,7 @@ const reconciiBaseURL = "https://bercosrecoapi2.corepeelers.com";
 const reconciiAdminBaseURL = "https://bercosadminapi.corepeelers.com";
 
 const sso = "/bercos-sso-service/api/v1";
-const reconcii = "/reconcii-service/api";
+const reconcii = "/bercos-service/api";
 const activityURL = "/api/audit_log";
 const reconciliationNodeURL = "/api/reco";
 const RECONCILIATION_SERVICE = "/reconcii-bercos-service";
