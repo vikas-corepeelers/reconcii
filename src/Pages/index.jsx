@@ -16,6 +16,7 @@ import MainDashboard from "./Pages/MainDashboard";
 import Vouchers from "./Pages/Vouchers";
 import ExcelDBMapping from "./Pages/ExcelDBMapping";
 import AuditLog from "./Pages/AuditLog";
+import LowCodeNoCode from "./Pages/LowCodeNoCode";
 
 function AdminNavigator() {
   function WithFooterOnly(children) {
@@ -85,7 +86,7 @@ function AdminNavigator() {
         <Route
           path="/definelogic"
           exact
-          element={WithSidebar(<DefineLogic />, "definelogic")}
+          element={WithSidebar(<LowCodeNoCode />, "definelogic")}
         />
         <Route
           path="/uploads"

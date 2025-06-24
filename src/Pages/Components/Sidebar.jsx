@@ -80,7 +80,7 @@ const Sidebar = () => {
     if (path) {
       selectedSidebar(path);
     }
-  }, [path]);
+  }, [path, menuArray?.length]);
 
   useEffect(() => {
     let allowedModules = [];
@@ -98,8 +98,6 @@ const Sidebar = () => {
   }, []);
 
   const selectedSidebar = (key) => {
-    // console.log(")(", key);
-
     const activeMenuIndex = menuArray?.findIndex((menu) =>
       menu?.route?.includes(key)
     );
