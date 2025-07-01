@@ -55,128 +55,129 @@ export default function FormulaBuilder({ formula, onUpdate }) {
   const formulaString = formulaParts.map((p) => p.value).join(" ");
 
   return (
-    <div className="border border-gray-300 rounded p-4 mb-4 bg-white">
-      <div className="text-sm font-medium text-gray-800 mb-2">
-        {formula.name}
-      </div>
-
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="formula-parts" direction="horizontal">
-          {(provided) => (
-            <div
-              className="flex flex-wrap items-center gap-2"
-              ref={provided.innerRef}
-              {...provided.droppableProps}
+    <div className="">
+      <div className="flex text-sm font-medium text-gray-800 mb-2 bg-white border-b border-gray-200 p-2">
+        <div className="flex-1">{formula.name}</div>
+        <div>
+          <div className="flex gap-2">
+            <button
+              onClick={() => addPart("field")}
+              className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200"
             >
-              {formulaParts.map((part, index) => (
-                <Draggable
-                  key={index}
-                  draggableId={`part-${index}`}
-                  index={index}
-                >
-                  {(provided) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.dragHandleProps}
-                      {...provided.draggableProps}
-                      className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded text-sm shadow-sm"
-                    >
-                      {part.type === "field" && (
-                        <select
-                          value={part.value}
-                          onChange={(e) => updatePart(index, e.target.value)}
-                          className="bg-white border border-gray-300 rounded px-1 py-0.5 text-xs"
-                        >
-                          {fieldOptions.map((f) => (
-                            <option key={f.value} value={f.value}>
-                              {f.label}
-                            </option>
-                          ))}
-                        </select>
-                      )}
-
-                      {part.type === "operator" && (
-                        <select
-                          value={part.value}
-                          onChange={(e) => updatePart(index, e.target.value)}
-                          className="bg-white border border-gray-300 rounded px-1 py-0.5 text-xs"
-                        >
-                          {operatorOptions.map((op) => (
-                            <option key={op} value={op}>
-                              {op}
-                            </option>
-                          ))}
-                        </select>
-                      )}
-
-                      {part.type === "parenthesis" && (
-                        <select
-                          value={part.value}
-                          onChange={(e) => updatePart(index, e.target.value)}
-                          className="bg-white border border-gray-300 rounded px-1 py-0.5 text-xs"
-                        >
-                          {parenthesisOptions.map((p) => (
-                            <option key={p} value={p}>
-                              {p}
-                            </option>
-                          ))}
-                        </select>
-                      )}
-
-                      {part.type === "number" && (
-                        <input
-                          type="number"
-                          value={part.value}
-                          onChange={(e) => updatePart(index, e.target.value)}
-                          className="w-16 border border-gray-300 rounded px-1 py-0.5 text-xs"
-                          placeholder="0"
-                        />
-                      )}
-
-                      <button
-                        onClick={() => removePart(index)}
-                        className="text-xs text-red-500 hover:text-red-700"
-                      >
-                        ✕
-                      </button>
-                    </div>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
-
-      {/* Add Part Buttons */}
-      <div className="flex gap-2 mt-3">
-        <button
-          onClick={() => addPart("field")}
-          className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200"
-        >
-          + Field
-        </button>
-        <button
-          onClick={() => addPart("operator")}
-          className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200"
-        >
-          + Operator
-        </button>
-        <button
-          onClick={() => addPart("parenthesis")}
-          className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200"
-        >
-          + ( / )
-        </button>
-        <button
-          onClick={() => addPart("number")}
-          className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200"
-        >
-          + Number
-        </button>
+              + Field
+            </button>
+            <button
+              onClick={() => addPart("operator")}
+              className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200"
+            >
+              + Operator
+            </button>
+            <button
+              onClick={() => addPart("parenthesis")}
+              className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200"
+            >
+              + ( / )
+            </button>
+            <button
+              onClick={() => addPart("number")}
+              className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200"
+            >
+              + Number
+            </button>
+          </div>
+        </div>
       </div>
+      <div className="p-2">
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="formula-parts" direction="horizontal">
+            {(provided) => (
+              <div
+                className="flex flex-wrap items-center gap-2"
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+              >
+                {formulaParts.map((part, index) => (
+                  <Draggable
+                    key={index}
+                    draggableId={`part-${index}`}
+                    index={index}
+                  >
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.dragHandleProps}
+                        {...provided.draggableProps}
+                        className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded text-sm shadow-sm"
+                      >
+                        {part.type === "field" && (
+                          <select
+                            value={part.value}
+                            onChange={(e) => updatePart(index, e.target.value)}
+                            className="bg-white border border-gray-300 rounded px-1 py-0.5 text-xs"
+                          >
+                            {fieldOptions.map((f) => (
+                              <option key={f.value} value={f.value}>
+                                {f.label}
+                              </option>
+                            ))}
+                          </select>
+                        )}
 
+                        {part.type === "operator" && (
+                          <select
+                            value={part.value}
+                            onChange={(e) => updatePart(index, e.target.value)}
+                            className="bg-white border border-gray-300 rounded px-1 py-0.5 text-xs"
+                          >
+                            {operatorOptions.map((op) => (
+                              <option key={op} value={op}>
+                                {op}
+                              </option>
+                            ))}
+                          </select>
+                        )}
+
+                        {part.type === "parenthesis" && (
+                          <select
+                            value={part.value}
+                            onChange={(e) => updatePart(index, e.target.value)}
+                            className="bg-white border border-gray-300 rounded px-1 py-0.5 text-xs"
+                          >
+                            {parenthesisOptions.map((p) => (
+                              <option key={p} value={p}>
+                                {p}
+                              </option>
+                            ))}
+                          </select>
+                        )}
+
+                        {part.type === "number" && (
+                          <input
+                            type="number"
+                            value={part.value}
+                            onChange={(e) => updatePart(index, e.target.value)}
+                            className="w-16 border border-gray-300 rounded px-1 py-0.5 text-xs"
+                            placeholder="0"
+                          />
+                        )}
+
+                        <button
+                          onClick={() => removePart(index)}
+                          className="text-xs text-red-500 hover:text-red-700"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+      </div>
+      {/* Add Part Buttons */}
       <div className="mt-2 text-xs text-gray-600">
         <span className="font-medium">Preview:</span>{" "}
         <code className="bg-gray-100 px-2 py-1 rounded">{formulaString}</code>

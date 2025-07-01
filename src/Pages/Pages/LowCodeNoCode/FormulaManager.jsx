@@ -1,7 +1,23 @@
 import React, { useState } from "react";
 import FormulaBuilder from "./FormulaBuilder";
+import { useParams } from "react-router-dom";
+import ExpandableCard from "../DefineLogic/ExpandableCard";
 
 export default function FormulaManager() {
+  const params = useParams();
+
+  return (
+    <div className="bg-white p-4 shadow-md">
+      <h4 class="box-title font-bold text-base mb-3">
+        Formula Manager - {params?.tender}
+      </h4>
+      <ExpandableSection report={{ name: "POS" }} />
+      <ExpandableSection report={{ name: "Zomato" }} />
+    </div>
+  );
+}
+
+const ExpandableSection = ({ report }) => {
   const [formulas, setFormulas] = useState([
     {
       name: "Zomato Commission",
@@ -26,9 +42,8 @@ export default function FormulaManager() {
     copy[index] = updated;
     setFormulas(copy);
   };
-
   return (
-    <div>
+    <ExpandableCard header={report?.name}>
       {formulas.map((f, i) => (
         <FormulaBuilder
           key={i}
@@ -36,6 +51,6 @@ export default function FormulaManager() {
           onUpdate={(updated) => updateFormula(i, updated)}
         />
       ))}
-    </div>
+    </ExpandableCard>
   );
-}
+};

@@ -17,6 +17,7 @@ import Vouchers from "./Pages/Vouchers";
 import ExcelDBMapping from "./Pages/ExcelDBMapping";
 import AuditLog from "./Pages/AuditLog";
 import LowCodeNoCode from "./Pages/LowCodeNoCode";
+import FormulaManager from "./Pages/LowCodeNoCode/FormulaManager";
 
 function AdminNavigator() {
   function WithFooterOnly(children) {
@@ -87,6 +88,11 @@ function AdminNavigator() {
           path="/definelogic"
           exact
           element={WithSidebar(<LowCodeNoCode />, "definelogic")}
+        />
+        <Route
+          path="/formula-manager/:tender"
+          exact
+          element={<FormulaManager />}
         />
         <Route
           path="/uploads"

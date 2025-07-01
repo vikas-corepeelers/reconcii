@@ -31,5 +31,25 @@ export default function LowCodeNoCode() {
 }
 
 const ExpandableSection = ({ report }) => {
-  return <ExpandableCard header={report?.name}></ExpandableCard>;
+  return (
+    <ExpandableCard header={report?.name}>
+      {report?.tenders?.length > 0 ? (
+        <div className="flex flex-col gap-2 p-2">
+          {report?.tenders?.map((tender, index) => (
+            <button
+              key={index}
+              className="flex items-center gap-2 p-3 rounded tender-item"
+              onClick={() =>
+                window.open(`/formula-manager/${tender}`, "_blank")
+              }
+            >
+              {tender}
+            </button>
+          ))}
+        </div>
+      ) : (
+        <div className="text-gray-500 text-sm">No tenders available</div>
+      )}
+    </ExpandableCard>
+  );
 };
