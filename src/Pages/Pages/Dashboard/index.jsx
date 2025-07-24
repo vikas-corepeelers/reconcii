@@ -6,8 +6,10 @@ import BlankDashboard from "./components/BlankDashboard";
 import { useSelector } from "react-redux";
 import { DASHBOARD_ITEMS } from "./DashboardConstants";
 import ThreePODashboardGraphs from "./3PODashboardGraphs";
+import { useLoader } from "../../../Utils/Loader";
 
 const Dashboard = () => {
+  const { isLoading } = useLoader();
   let { dashboardData, dashboardFilters } = useSelector(
     (state) => state.CommonService
   );
@@ -15,18 +17,22 @@ const Dashboard = () => {
     <div>
       <DashboardFilter />
       <DashboardNumbers />
-      {dashboardFilters?.salesLocation === DASHBOARD_ITEMS[0]?.key &&
-        (dashboardData?.sales !== undefined ? (
-          <InStoreDashboardGraphs />
-        ) : (
-          <BlankDashboard />
-        ))}
-      {dashboardFilters?.salesLocation === DASHBOARD_ITEMS[1]?.key &&
-        (dashboardData?.sales !== undefined ? (
-          <ThreePODashboardGraphs />
-        ) : (
-          <BlankDashboard />
-        ))}
+      {!isLoading ? (
+        <>
+          {dashboardFilters?.salesLocation === DASHBOARD_ITEMS[0]?.key &&
+            (dashboardData?.sales !== undefined ? (
+              <InStoreDashboardGraphs />
+            ) : (
+              <BlankDashboard />
+            ))}
+          {dashboardFilters?.salesLocation === DASHBOARD_ITEMS[1]?.key &&
+            (dashboardData?.sales !== undefined ? (
+              <ThreePODashboardGraphs />
+            ) : (
+              <BlankDashboard />
+            ))}
+        </>
+      ) : null}
     </div>
   );
 };
