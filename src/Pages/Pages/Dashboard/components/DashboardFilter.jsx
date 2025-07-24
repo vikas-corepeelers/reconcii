@@ -22,6 +22,7 @@ import {
 import { format } from "date-fns";
 import PrimaryButton from "../../../../components/PrimaryButton";
 import { useLoader } from "../../../../Utils/Loader";
+import moment from "moment";
 const BLANK_FILTERS = {
   startDate: new Date(),
   endDate: new Date(),
@@ -50,48 +51,48 @@ const DashboardFilter = () => {
     fetchTenderWiseStoresMissedInMapping();
     fetchOldEffectiveDate();
 
-    const savedFilters = localStorage.getItem("dashboardFilters");
-    if (savedFilters) {
-      const parsed = JSON.parse(savedFilters);
+    // const savedFilters = localStorage.getItem("dashboardFilters");
+    // if (savedFilters) {
+    //   const parsed = JSON.parse(savedFilters);
 
-      setFilterValues({
-        ...parsed,
-        startDate: parsed.startDate ? new Date(parsed.startDate) : null,
-        endDate: parsed.endDate ? new Date(parsed.endDate) : null,
-      });
-    } else if (dashboardFilterValues) {
-      setFilterValues({
-        ...dashboardFilterValues,
-        startDate: dashboardFilterValues.startDate
-          ? new Date(dashboardFilterValues.startDate)
-          : null,
-        endDate: dashboardFilterValues.endDate
-          ? new Date(dashboardFilterValues.endDate)
-          : null,
-      });
-    } else {
-      setFilterValues({
-        ...BLANK_FILTERS,
-        salesLocation: DASHBOARD_ITEMS[0]?.key,
-        salesType: STORE_SALES_ITEM[0]?.key,
-      });
-    }
+    //   setFilterValues({
+    //     ...parsed,
+    //     startDate: parsed.startDate ? new Date(parsed.startDate) : null,
+    //     endDate: parsed.endDate ? new Date(parsed.endDate) : null,
+    //   });
+    // } else if (dashboardFilterValues) {
+    //   setFilterValues({
+    //     ...dashboardFilterValues,
+    //     startDate: dashboardFilterValues.startDate
+    //       ? new Date(dashboardFilterValues.startDate)
+    //       : null,
+    //     endDate: dashboardFilterValues.endDate
+    //       ? new Date(dashboardFilterValues.endDate)
+    //       : null,
+    //   });
+    // } else {
+    setFilterValues({
+      ...BLANK_FILTERS,
+      salesLocation: DASHBOARD_ITEMS[0]?.key,
+      salesType: STORE_SALES_ITEM[0]?.key,
+    });
+    // }
   }, []);
 
-  useEffect(() => {
-    // Convert date to string before saving to Redux
-    const serializedFilterValues = {
-      ...filterValues,
-      startDate: filterValues?.startDate?.toISOString?.() || null,
-      endDate: filterValues?.endDate?.toISOString?.() || null,
-    };
+  // useEffect(() => {
+  //   // Convert date to string before saving to Redux
+  //   const serializedFilterValues = {
+  //     ...filterValues,
+  //     startDate: filterValues?.startDate?.toISOString?.() || null,
+  //     endDate: filterValues?.endDate?.toISOString?.() || null,
+  //   };
 
-    dispatch(setDashboardFilterValues(serializedFilterValues));
-    localStorage.setItem(
-      "dashboardFilters",
-      JSON.stringify(serializedFilterValues)
-    ); // <-- Save to localStorage
-  }, [filterValues]);
+  //   dispatch(setDashboardFilterValues(serializedFilterValues));
+  //   localStorage.setItem(
+  //     "dashboardFilters",
+  //     JSON.stringify(serializedFilterValues)
+  //   ); // <-- Save to localStorage
+  // }, [filterValues]);
 
   const fetchCityListAndSet = async () => {
     let cityList = await fetchCityList();
@@ -99,7 +100,9 @@ const DashboardFilter = () => {
   };
 
   useEffect(() => {
-    onCityChange(filterValues?.cities);
+    if (filterValues?.cities?.length) {
+      onCityChange(filterValues?.cities);
+    }
   }, [filterValues?.cities?.length]);
 
   const handleFilterChange = (name, value) => {
@@ -144,8 +147,8 @@ const DashboardFilter = () => {
       return null;
     }
     let params = {
-      startDate: format(filterValues?.startDate, "yyyy-MM-dd"),
-      endDate: format(filterValues?.endDate, "yyyy-MM-dd"),
+      startDate: moment(filterValues?.startDate).format("YYYY-MM-DD"),
+      endDate: moment(filterValues?.endDate).format("YYYY-MM-DD"),
       cities: cities,
     };
     let storeList = await fetchStoreList(params);
@@ -161,8 +164,8 @@ const DashboardFilter = () => {
 
   const searchDashboardData = () => {
     let params = {
-      startDate: format(filterValues?.startDate, "yyyy-MM-dd 00:00:00"),
-      endDate: format(filterValues?.endDate, "yyyy-MM-dd 23:59:59"),
+      startDate: moment(filterValues?.startDate).format("YYYY-MM-DD 00:00:00"),
+      endDate: moment(filterValues?.endDate).format("YYYY-MM-DD 23:59:59"),
       stores: filterValues.stores,
     };
     getDashboard(params);

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { apiEndpoints } from "../../../ServiceRequest/APIEndPoints";
 import {
   requestCallGet,
@@ -17,12 +17,28 @@ const BLANK_CUSTOM_REPORT_PARAMS = {
 };
 
 const useReports = () => {
+  const pollingRef = useRef(null);
+  const isUnmounted = useRef(false);
+
   const { makeLog } = useMakeLogs();
   const { setToastMessage, setLoading } = useLoader();
   const [generatedReports, setGeneratedReports] = useState([]);
   const [reportTenders, setReportTenders] = useState([]);
   const [reportColumns, setReportColumns] = useState([]);
   const [filterValues, setFilterValues] = useState(BLANK_CUSTOM_REPORT_PARAMS);
+
+  useEffect(() => {
+    isUnmounted.current = false;
+    // fetchGeneratedReports();
+
+    return () => {
+      isUnmounted.current = true;
+      if (pollingRef.current) {
+        clearTimeout(pollingRef.current);
+      }
+    };
+  }, []);
+
   const handleFilterChange = (name, value) => {
     if (name === "selectedTender") {
       fetchCustomReportFields(value);
@@ -86,9 +102,17 @@ const useReports = () => {
         {}
       );
       if (response.status) {
-        console.log(response?.data?.data);
-        setGeneratedReports(response?.data?.data);
-        // return response?.data?.data;
+        const data = response?.data?.data || [];
+        setGeneratedReports(data);
+
+        const hasProcessing = data.some(
+          (report) => report.status === "processing"
+        );
+
+        // Poll again in 10 seconds if needed
+        if (hasProcessing && !isUnmounted.current) {
+          pollingRef.current = setTimeout(fetchGeneratedReports, 10000);
+        }
       }
     } catch (error) {
       console.error(error);

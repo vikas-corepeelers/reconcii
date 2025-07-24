@@ -156,13 +156,13 @@ const useDashboard = () => {
   const downloadAsyncReport = async (params) => {
     if (params?.reportType === "POSVsThreePO") {
       try {
-        setLoading(true);
+        // setLoading(true);
         const response = await requestCallPost(
           apiEndpoints.POS_VS_3PO_SUMMARY_DOWNLOAD,
           currentDashboardRequest
         );
-        setLoading(false);
-        dispatch(setLoadingDashboard(false));
+        // setLoading(false);
+        // dispatch(setLoadingDashboard(false));
         if (response.status) {
           setToastMessage({
             message: "Request submitted for generating report.",
@@ -178,13 +178,13 @@ const useDashboard = () => {
       return;
     } else if (params?.reportType === "ReceivableVsReceipts") {
       try {
-        setLoading(true);
+        // setLoading(true);
         const response = await requestCallPost(
           apiEndpoints.RECEIVABLE_VS_RECEIPT_SUMMARY_DOWNLOAD,
           currentDashboardRequest
         );
-        setLoading(false);
-        dispatch(setLoadingDashboard(false));
+        // setLoading(false);
+        // dispatch(setLoadingDashboard(false));
         if (response.status) {
           setToastMessage({
             message: "Request submitted for generating report.",

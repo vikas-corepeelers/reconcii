@@ -44,7 +44,7 @@ const reconciiBaseURL = "https://devyaniuploadapi.corepeelers.com";
 const reconciiAdminBaseURL = "https://devyaniadminapi.corepeelers.com";
 
 const sso = "/devyani-sso-service/api/v1";
-const reconcii = "/reconcii-service/api";
+const reconcii = "/devyani-service/api";
 const activityURL = "/api/audit_log";
 const reconciliationNodeURL = "/api/node/reconciliation";
 const RECONCILIATION_SERVICE = "/reconcii-devyani-service";

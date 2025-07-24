@@ -3,13 +3,13 @@ import BlankCard from "../../../components/BlankCard";
 
 import "./reports.style.css";
 import useReports from "./useReports";
-import PrimaryButton from "../../../components/PrimaryButton";
-import DropdownWithCheckbox from "../../../components/DropDownWithCheckbox";
-import DateRangeComponent from "../../../components/DateRange";
-import CustomSelect from "../../../components/CustomSelect";
+// import PrimaryButton from "../../../components/PrimaryButton";
+// import DropdownWithCheckbox from "../../../components/DropDownWithCheckbox";
+// import DateRangeComponent from "../../../components/DateRange";
+// import CustomSelect from "../../../components/CustomSelect";
 import moment from "moment";
 import { reconciiAdminBaseURL } from "../../../ServiceRequest/APIEndPoints";
-
+import spinner from "../../../assets/Images/spinner.gif";
 const STATIC_REPORTS = [
   {
     id: "03",
@@ -144,7 +144,25 @@ export default function Reports() {
         header={<h4 className="box-title font-bold text-base">REPORTS</h4>}
       >
         <div className="pt-3 w-full">
-          <p className="text-black-600">DOWNLOAD GENERATED REPORTS</p>
+          <div className="flex">
+            <div className="flex-1">
+              <p className="text-black-600">DOWNLOAD GENERATED REPORTS</p>
+            </div>
+            <div className="flex">
+              <p className="color-[#ff9900]" style={{ color: "#000000" }}>
+                Auto refreshes in every{" "}
+                <span
+                  style={{
+                    color: "#0000ff",
+                    fontSize: "16px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  10 seconds
+                </span>
+              </p>
+            </div>
+          </div>
           <div
             className="relative overflow-x-auto mt-2 mb-2 custom-table-style"
             style={{ maxHeight: "50vh", overflowY: "auto" }}
@@ -176,7 +194,13 @@ export default function Reports() {
                       <td>{moment(report?.end_date).format("DD MMM YYYY")}</td>
                       {/* <td>{report?.fileSize} mb</td> */}
                       <td>{reportStatus(report?.status)}</td>
-                      <td>{report?.progress}%</td>
+                      <td>
+                        {report?.status === "processing" &&
+                        report?.progress === 100
+                          ? 99
+                          : report?.progress}
+                        %
+                      </td>
                       <td>
                         {moment(report?.created_at).format(
                           "DD MMM YYYY hh:mm:ss A"
@@ -195,7 +219,18 @@ export default function Reports() {
                           >
                             <i className="fa-solid fa-download"></i>
                           </button>
-                        ) : null}
+                        ) : (
+                          <div
+                            style={{
+                              height: "30px",
+                              width: "30px",
+                              backgroundColor: "rgba(0,0,0,0.5)",
+                              borderRadius: "5px",
+                            }}
+                          >
+                            <img src={spinner} alt="spinner" />
+                          </div>
+                        )}
                       </td>
                     </tr>
                   );
